@@ -8,6 +8,8 @@ import "./NFTContract.sol";
 contract Factory is Ownable {
     using Clones for address;
 
+    NFTContract NFT = new NFTContract();
+
     function newNFTContract(
         string memory name,
         string memory symbol,
