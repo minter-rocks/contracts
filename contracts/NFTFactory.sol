@@ -8,7 +8,7 @@ import "./NFTContract.sol";
 contract NFTFactory is Ownable {
     using Clones for address;
 
-    NFTContract NFT = new NFTContract();
+    NFTContract public NFTLib = new NFTContract();
 
     event NewNFTContract(
         string NFTName,
@@ -23,6 +23,7 @@ contract NFTFactory is Ownable {
         string memory symbol,
         string memory baseURI
     ) public {
-
+        address contAddr = address(NFTLib).clone();
+        
     }
 }
