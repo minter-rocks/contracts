@@ -6,4 +6,12 @@ import "@openzeppelin/contracts/proxy/Clones.sol";
 
 contract Factory is Ownable {
     using Clones for address;
+
+    function newNFTContract(
+        string memory name,
+        string memory symbol,
+        string memory baseURI
+    ) public {
+        
+    }
 }
