@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
 import "./NFTContract.sol";
 
-contract Factory is Ownable {
+contract NFTFactory is Ownable {
     using Clones for address;
 
     NFTContract NFT = new NFTContract();
