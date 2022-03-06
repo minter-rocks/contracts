@@ -10,6 +10,14 @@ contract NFTFactory is Ownable {
 
     NFTContract NFT = new NFTContract();
 
+    event NewNFTContract(
+        string NFTName,
+        string NFTSymbol,
+        string baseURI,
+        address contAddr,
+        address contOwner
+    );
+
     function newNFTContract(
         string memory name,
         string memory symbol,
