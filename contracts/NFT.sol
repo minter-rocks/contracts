@@ -7,14 +7,25 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract NFT is ERC721, Ownable {
     using Counters for Counters.Counter;
-
     Counters.Counter private _tokenIdCounter;
 
-    constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) {}
+    string private baseURI;
+
+    constructor(
+        string memory _name,
+        string memory _symbol,
+        string memory baseURI_
+    ) ERC721(_name, _symbol) {
+        baseURI = baseURI_;
+    }
 
     function safeMint(address to) public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return baseURI;
     }
 }
