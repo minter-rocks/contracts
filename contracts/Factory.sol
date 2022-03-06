@@ -3,6 +3,7 @@ pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
+import "./NFTContract.sol";
 
 contract Factory is Ownable {
     using Clones for address;
@@ -12,6 +13,6 @@ contract Factory is Ownable {
         string memory symbol,
         string memory baseURI
     ) public {
-        
+
     }
 }
