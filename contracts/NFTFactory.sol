@@ -24,6 +24,7 @@ contract NFTFactory is Ownable {
         string memory baseURI
     ) public {
         address contAddr = address(NFTLib).clone();
-        
+        NFTContract(contAddr).initialize(name, symbol, baseURI);
+        emit NewNFTContract(name, symbol, baseURI, contAddr, msg.sender);
     }
 }
