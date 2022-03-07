@@ -26,7 +26,7 @@ contract NFTFactory {
         string memory symbol
     ) public {
         address collectionAddr = address(NFTLib).clone();
-        NFTCollection(collectionAddr).initialize(name, symbol);
+        NFTCollection(collectionAddr).initialize(msg.sender, name, symbol);
         emit NewNFTCollection(collectionAddr, msg.sender, name, symbol);
     }
 }
