@@ -5,6 +5,11 @@ import "@openzeppelin/contracts/proxy/Clones.sol";
 import "./NFTCollection.sol";
 
 contract NFTFactory {
+
+    function version() public pure returns(string memory V_) {
+        V_ = "0.1";
+    }
+
     using Clones for address;
 
     NFTCollection public NFTLib = new NFTCollection();
