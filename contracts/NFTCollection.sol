@@ -2,37 +2,48 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
-contract NFTCollection is Initializable, ERC721Upgradeable, OwnableUpgradeable {
+contract NFT is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeable, OwnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
+
     CountersUpgradeable.Counter private _tokenIdCounter;
 
-    string private baseURI;
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() initializer {}
 
-    function initialize(
-        string memory name_,
-        string memory symbol_,
-        string memory baseURI_
-    ) initializer public {
-        __ERC721_init(name_, symbol_);
-        __baseURI_init(baseURI_);
+    function initialize() initializer public {
+        __ERC721_init("NFT", "NFT");
+        __ERC721URIStorage_init();
         __Ownable_init();
     }
 
-    function __baseURI_init(string memory baseURI_) internal onlyInitializing {
-        baseURI = baseURI_;
-    }
 
-    function safeMint(address to) public onlyOwner {
+    function safeMint(address to, string memory uri) public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
+        _setTokenURI(tokenId, uri);
     }
 
-    function _baseURI() internal view override returns (string memory) {
-        return baseURI;
+    // The following functions are overrides required by Solidity.
+
+    function _burn(uint256 tokenId)
+        internal
+        override(ERC721Upgradeable, ERC721URIStorageUpgradeable)
+    {
+        super._burn(tokenId);
+    }
+
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721Upgradeable, ERC721URIStorageUpgradeable)
+        returns (string memory)
+    {
+        return super.tokenURI(tokenId);
     }
 }
