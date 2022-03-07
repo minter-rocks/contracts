@@ -12,11 +12,11 @@ contract NFTCollection is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
 
     CountersUpgradeable.Counter private _tokenIdCounter;
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer {}
-
-    function initialize() initializer public {
-        __ERC721_init("NFT", "NFT");
+    function initialize(
+        string memory _name,
+        string memory _symbol
+    ) initializer public {
+        __ERC721_init(_name, _symbol);
         __ERC721URIStorage_init();
         __Ownable_init();
     }
