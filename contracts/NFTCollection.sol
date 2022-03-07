@@ -3,9 +3,9 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
+import "./OwnableUpgradeable.sol";
 
 contract NFTCollection is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeable, OwnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
@@ -13,12 +13,13 @@ contract NFTCollection is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
     CountersUpgradeable.Counter private _tokenIdCounter;
 
     function initialize(
+        address _owner,
         string memory _name,
         string memory _symbol
     ) initializer public {
         __ERC721_init(_name, _symbol);
         __ERC721URIStorage_init();
-        __Ownable_init();
+        __Ownable_init(_owner);
     }
 
 
