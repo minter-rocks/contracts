@@ -2,14 +2,14 @@
 pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
-import "./NFTContract.sol";
+import "./NFTCollection.sol";
 
 contract NFTFactory {
     using Clones for address;
 
-    NFTContract public NFTLib = new NFTContract();
+    NFTCollection public NFTLib = new NFTCollection();
 
-    event NewNFTContract(
+    event NewNFTCollection(
         string NFTName,
         string NFTSymbol,
         string baseURI,
@@ -17,13 +17,13 @@ contract NFTFactory {
         address contOwner
     );
 
-    function newNFTContract(
+    function newNFTCollection(
         string memory name,
         string memory symbol,
         string memory baseURI
     ) public {
         address contAddr = address(NFTLib).clone();
-        NFTContract(contAddr).initialize(name, symbol, baseURI);
-        emit NewNFTContract(name, symbol, baseURI, contAddr, msg.sender);
+        NFTCollection(contAddr).initialize(name, symbol, baseURI);
+        emit NewNFTCollection(name, symbol, baseURI, contAddr, msg.sender);
     }
 }
