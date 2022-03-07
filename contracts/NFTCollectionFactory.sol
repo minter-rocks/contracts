@@ -15,20 +15,18 @@ contract NFTFactory {
     NFTCollection public NFTLib = new NFTCollection();
 
     event NewNFTCollection(
-        string NFTName,
-        string NFTSymbol,
-        string baseURI,
-        address contAddr,
-        address contOwner
+        address collectionAddr,
+        address collectionOwner,
+        string name,
+        string symbol
     );
 
     function newNFTCollection(
         string memory name,
-        string memory symbol,
-        string memory baseURI
+        string memory symbol
     ) public {
-        address contAddr = address(NFTLib).clone();
-        NFTCollection(contAddr).initialize(name, symbol, baseURI);
-        emit NewNFTCollection(name, symbol, baseURI, contAddr, msg.sender);
+        address collectionAddr = address(NFTLib).clone();
+        NFTCollection(collectionAddr).initialize(name, symbol);
+        emit NewNFTCollection(name, symbol, collectionAddr, msg.sender);
     }
 }
