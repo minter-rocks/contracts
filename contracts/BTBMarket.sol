@@ -9,7 +9,7 @@ contract BTBMarket is BanTheBanNFT {
         bool isForSale;
         uint256 tokenId;
         address seller;
-        uint256 minValue;          // in ether
+        uint256 minValue;
     }
 
     mapping (uint256 => Offer) public tokensOfferedForSale;
