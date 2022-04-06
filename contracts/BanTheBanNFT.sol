@@ -4,14 +4,12 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, AccessControl {
+contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, AccessControl {
     using Counters for Counters.Counter;
 
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
     bytes32 public constant SUPPLY_ACCESS = keccak256("SUPPLY_ACCESS");
 
@@ -19,7 +17,8 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burna
 
     constructor() ERC721("BanTheBanNFT", "BTB") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(MINTER_ROLE, msg.sender);
+        _grantRole(BURNER_ROLE, msg.sender);
+        _grantRole(SUPPLY_ACCESS, msg.sender);
     }
 
     function safeMint(address to, string memory uri) public {
@@ -27,6 +26,10 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burna
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
+    }
+
+    function burn(uint256 tokenId) public virtual onlyRole(BURNER_ROLE) {
+        _burn(tokenId);
     }
 
     // The following functions are overrides required by Solidity.
