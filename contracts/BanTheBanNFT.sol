@@ -16,6 +16,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, AccessContr
     bytes32 public constant SUPPLY_ACCESS = keccak256("SUPPLY_ACCESS");
 
     Counters.Counter private _tokenIdCounter;
+    EnumerableSet.UintSet private _burnedIDs;
 
     constructor() ERC721("BanTheBanNFT", "BTB") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
