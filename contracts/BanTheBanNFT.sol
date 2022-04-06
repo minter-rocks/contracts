@@ -12,6 +12,8 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, AccessContr
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
 
+    uint256 public maxSupply;
+
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
     bytes32 public constant SUPPLY_ACCESS = keccak256("SUPPLY_ACCESS");
 
@@ -30,6 +32,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, AccessContr
             tokenId = _burnedIds.at(0);
             _burnedIds.remove(tokenId);
         } else {
+            require(_tokenIdCounter.current() < maxSupply, "maxSupply filled");
             tokenId = _tokenIdCounter.current();
             _tokenIdCounter.increment();
         }
@@ -40,6 +43,11 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, AccessContr
     function burn(uint256 tokenId) public virtual onlyRole(BURNER_ROLE) {
         _burn(tokenId);
         _burnedIds.add(tokenId);
+    }
+
+    function adjustMaxSupply(uint256 _maxSupply) public virtual onlyRole(SUPPLY_ACCESS) {
+        require(_maxSupply >= _tokenIdCounter.current(), "BanTheBanNFT: Enter a number greater than current supply.");
+        maxSupply = _maxSupply;
     }
 
     // The following functions are overrides required by Solidity.
