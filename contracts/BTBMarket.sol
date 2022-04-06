@@ -20,12 +20,23 @@ contract BTBMarket is BanTheBanNFT {
     event bought(uint256 tokenId, uint256 value, address from, address to);
 
     function offerToken(uint256 tokenId, uint256 minSalePriceInWei, bool isForSale) public {
-        require(_msgSender() == ownerOf(tokenId), "BTBMarket : you do not have access to this token");
+        require(_isApprovedOrOwner(_msgSender(), tokenId), "BTBMarket : you do not have access to this token");
         tokensOfferedForSale[tokenId] = Offer(isForSale, tokenId, _msgSender(), minSalePriceInWei);
         if(isForSale) {
             emit ForSale(tokenId, minSalePriceInWei);
         } else {
             emit noLongerForSale(tokenId);
         }
+    }
+
+    function buyToken(uint256 tokenId) public payable {
+        Offer memory offer = tokensOfferedForSale[tokenId];
+        require(offer.isForSale, "token is not for sale");
+        require(msg.value >= offer.minValue, "Insufficient amount to pay");
+
+        address seller = offer.seller;
+        _safeTransfer(seller, _msgSender(), tokenId, "");
+        pendingWithdrawals[seller] += msg.value;
+        emit bought(tokenId, msg.value, seller, _msgSender());
     }
 }
