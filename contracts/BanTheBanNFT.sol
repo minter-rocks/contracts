@@ -25,8 +25,14 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, AccessContr
     }
 
     function safeMint(address to, string memory uri) public {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
+        uint256 tokenId;
+        if(_burnedIds.length() > 0){
+            tokenId = _burnedIds.at(0);
+            _burnedIds.remove(tokenId);
+        } else {
+            tokenId = _tokenIdCounter.current();
+            _tokenIdCounter.increment();
+        }
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
