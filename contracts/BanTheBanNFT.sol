@@ -6,9 +6,11 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, AccessControl {
     using Counters for Counters.Counter;
+    using EnumerableSet for EnumerableSet.UintSet;
 
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
     bytes32 public constant SUPPLY_ACCESS = keccak256("SUPPLY_ACCESS");
