@@ -5,6 +5,13 @@ import "./BanTheBanNFT.sol";
 
 contract BTBMarket is BanTheBanNFT {
 
+    struct Offer {
+        bool isForSale;
+        uint256 tokenId;
+        address seller;
+        uint256 minValue;          // in ether
+    }
+
     event ForSale(uint256 tokenId, uint256 minValue);
     event noLongerForSale(uint256 tokenId);
     event bought(uint256 tokenId, uint256 value, address from, address to);
