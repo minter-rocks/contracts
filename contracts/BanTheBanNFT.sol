@@ -16,7 +16,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, AccessContr
     bytes32 public constant SUPPLY_ACCESS = keccak256("SUPPLY_ACCESS");
 
     Counters.Counter private _tokenIdCounter;
-    EnumerableSet.UintSet private _burnedIDs;
+    EnumerableSet.UintSet private _burnedIds;
 
     constructor() ERC721("BanTheBanNFT", "BTB") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -33,6 +33,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, AccessContr
 
     function burn(uint256 tokenId) public virtual onlyRole(BURNER_ROLE) {
         _burn(tokenId);
+        _burnedIds.add(tokenId);
     }
 
     // The following functions are overrides required by Solidity.
