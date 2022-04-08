@@ -21,7 +21,7 @@ contract BTBMarket is BanTheBanNFT {
 
     function offerToken(uint256 tokenId, uint256 minSalePriceInWei, bool isForSale) public {
         require(_isApprovedOrOwner(_msgSender(), tokenId), "BTBMarket : you do not have access to this token");
-        tokensOfferedForSale[tokenId] = Offer(isForSale, tokenId, ownerOF(tokenId), minSalePriceInWei);
+        tokensOfferedForSale[tokenId] = Offer(isForSale, tokenId, ownerOf(tokenId), minSalePriceInWei);
         if(isForSale) {
             emit ForSale(tokenId, minSalePriceInWei);
         } else {
