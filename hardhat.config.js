@@ -2,11 +2,20 @@ require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
 require('@openzeppelin/hardhat-upgrades');
 require("@nomiclabs/hardhat-ethers");
+require('hardhat-contract-sizer');
 
 const { PRIVATE_KEY, ALCHEMY_API_KEY, POLYGONSCAN_API_KEY, ETHERSCAN_API_KEY, SNOWTRACE_API_KEY } = require('./secret.json');
 
 module.exports = {
-  solidity: "0.8.11",
+  solidity: {
+    version: "0.8.12",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+    },
+  },
   networks: {
     polygon: {
       url: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
@@ -18,6 +27,10 @@ module.exports = {
     },
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
+      accounts: [`0x${PRIVATE_KEY}`],
+    },
+    ropsten: {
+      url: `https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161`,
       accounts: [`0x${PRIVATE_KEY}`],
     },
     kovan: {
@@ -56,5 +69,11 @@ module.exports = {
       // xdai: "api-key",
       // sokol: "api-key",
     }
+  },
+  contractSizer: {
+    alphaSort: true,
+    disambiguatePaths: false,
+    runOnCompile: true,
+    strict: true,
   },
 };
