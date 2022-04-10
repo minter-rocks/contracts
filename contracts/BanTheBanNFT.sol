@@ -17,6 +17,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
 
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
     bytes32 public constant SUPPLY_ACCESS = keccak256("SUPPLY_ACCESS");
+    bytes32 public constant ROYALTY_ACCESS = keccak256("ROYALTY_ACCESS");
 
     Counters.Counter private _tokenIdCounter;
     EnumerableSet.UintSet private _burnedIds;
@@ -25,6 +26,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(BURNER_ROLE, msg.sender);
         _grantRole(SUPPLY_ACCESS, msg.sender);
+        _grantRole(ROYALTY_ACCESS, msg.sender);
         maxSupply = 100;
     }
 
