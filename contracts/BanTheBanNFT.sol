@@ -15,6 +15,11 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
 
     uint256 public maxSupply;
 
+    mapping (uint256 => address) public tokenIdToCreator;
+    function _setCreator(address creator, uint256 tokenId) internal {
+        tokenIdToCreator[tokenId] = creator;
+    }
+
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
     bytes32 public constant SUPPLY_ACCESS = keccak256("SUPPLY_ACCESS");
     bytes32 public constant ROYALTY_ACCESS = keccak256("ROYALTY_ACCESS");
@@ -40,6 +45,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
             tokenId = _tokenIdCounter.current();
             _tokenIdCounter.increment();
         }
+        _setCreator(msg.sender, tokenId);
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
