@@ -73,12 +73,13 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
         address receiver,
         uint96 feeNumerator
     ) public virtual {
-        require(msg.sender == tokenIdToCreator[tokenId], "only creator of the token can set Royalty");
+        require(msg.sender == tokenIdToCreator[tokenId], "BanTheBanNFT: only creator of the token can set Royalty");
+        require(feeNumerator <= 1000, "BanTheBanNFT: token royalty can be set up to 10 percent");
         _setTokenRoyalty(tokenId, receiver, feeNumerator);
     }
 
     function resetTokenRoyalty(uint256 tokenId) public virtual {
-        require(msg.sender == tokenIdToCreator[tokenId], "only creator of the token can set Royalty");
+        require(msg.sender == tokenIdToCreator[tokenId], "BanTheBanNFT: only creator of the token can set Royalty");
         _resetTokenRoyalty(tokenId);
     }
 
