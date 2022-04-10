@@ -68,6 +68,20 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
         _deleteDefaultRoyalty();
     }
 
+    function setTokenRoyalty(
+        uint256 tokenId,
+        address receiver,
+        uint96 feeNumerator
+    ) public virtual {
+        require(msg.sender == tokenIdToCreator[tokenId], "only creator of the token can set Royalty");
+        _setTokenRoyalty(tokenId, receiver, feeNumerator);
+    }
+
+    function resetTokenRoyalty(uint256 tokenId) public virtual {
+        require(msg.sender == tokenIdToCreator[tokenId], "only creator of the token can set Royalty");
+        _resetTokenRoyalty(tokenId);
+    }
+
     // The following functions are overrides required by Solidity.
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
