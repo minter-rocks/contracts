@@ -21,7 +21,8 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
         tokenIdToCreator[tokenId] = creator;
     }
 
-    bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
+    bytes32 public constant MINTER_ACCESS = keccak256("MINTER_ACCESS");
+    bytes32 public constant BURNER_ACCESS = keccak256("BURNER_ACCESS");
     bytes32 public constant SUPPLY_ACCESS = keccak256("SUPPLY_ACCESS");
     bytes32 public constant ROYALTY_ACCESS = keccak256("ROYALTY_ACCESS");
     bytes32 public constant ARCHIVE_ACCESS = keccak256("ARCHIVE_ACCESS");
@@ -31,14 +32,21 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
 
     constructor() ERC721("BanTheBanNFT", "BTB") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(BURNER_ROLE, msg.sender);
+        _grantRole(MINTER_ACCESS, msg.sender);
+        _grantRole(BURNER_ACCESS, msg.sender);
         _grantRole(SUPPLY_ACCESS, msg.sender);
         _grantRole(ROYALTY_ACCESS, msg.sender);
         _grantRole(ARCHIVE_ACCESS, msg.sender);
         maxSupply = 100;
     }
 
-    function safeMint(address to, string memory uri) public {
+    uint256 mintFee;
+    function setMintFee(uint256 _mintFee) public onlyRole(MINTER_ACCESS) {
+        mintFee = _mintFee;
+    }
+
+    function safeMint(address to, string memory uri) public payable {
+        require(msg.value >= mintFee, "BanTheBanNFT: insufficient mint fee");
         uint256 tokenId;
         if(_burnedIds.length() > 0){
             tokenId = _burnedIds.at(0);
@@ -53,7 +61,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
         _setTokenURI(tokenId, uri);
     }
 
-    function burn(uint256 tokenId) public virtual onlyRole(BURNER_ROLE) {
+    function burn(uint256 tokenId) public virtual onlyRole(BURNER_ACCESS) {
         _burn(tokenId);
         _burnedIds.add(tokenId);
         delete tokenIdToCreator[tokenId];
