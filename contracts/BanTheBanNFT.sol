@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "./BTBArchive.sol";
 
 contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royalty, AccessControl {
     using Counters for Counters.Counter;
@@ -23,6 +24,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
     bytes32 public constant SUPPLY_ACCESS = keccak256("SUPPLY_ACCESS");
     bytes32 public constant ROYALTY_ACCESS = keccak256("ROYALTY_ACCESS");
+    bytes32 public constant ARCHIVE_ACCESS = keccak256("ARCHIVE_ACCESS");
 
     Counters.Counter private _tokenIdCounter;
     EnumerableSet.UintSet private _burnedIds;
@@ -53,6 +55,19 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
     function burn(uint256 tokenId) public virtual onlyRole(BURNER_ROLE) {
         _burn(tokenId);
         _burnedIds.add(tokenId);
+    }
+
+    BanTheBanArchive BTBArchive = new BanTheBanArchive();
+
+    function archiveToken(uint256 tokenId) public virtual onlyRole(ARCHIVE_ACCESS) {
+        BTBArchive.safeMint(ownerOf(tokenId), tokenId, tokenURI(tokenId));
+        _burn(tokenId);
+    }
+
+    function unarchiveToken(uint256 tokenId) public virtual onlyRole(ARCHIVE_ACCESS) {
+        _safeMint(BTBArchive.ownerOf(tokenId), tokenId);
+        _setTokenURI(tokenId, BTBArchive.tokenURI(tokenId));
+        BTBArchive.burn(tokenId);
     }
 
     function adjustMaxSupply(uint256 _maxSupply) public virtual onlyRole(SUPPLY_ACCESS) {
