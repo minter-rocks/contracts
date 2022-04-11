@@ -56,6 +56,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
     function burn(uint256 tokenId) public virtual onlyRole(BURNER_ROLE) {
         _burn(tokenId);
         _burnedIds.add(tokenId);
+        delete tokenIdToCreator[tokenId];
     }
 
     BanTheBanArchive BTBArchive = new BanTheBanArchive();
