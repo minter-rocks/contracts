@@ -40,7 +40,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
         maxSupply = 100;
     }
 
-    uint256 mintFee;
+    uint256 public mintFee;
     function setMintFee(uint256 _mintFee) public onlyRole(MINTER_ACCESS) {
         mintFee = _mintFee;
     }
