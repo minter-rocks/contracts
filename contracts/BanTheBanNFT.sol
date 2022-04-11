@@ -34,6 +34,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
         _grantRole(BURNER_ROLE, msg.sender);
         _grantRole(SUPPLY_ACCESS, msg.sender);
         _grantRole(ROYALTY_ACCESS, msg.sender);
+        _grantRole(ARCHIVE_ACCESS, msg.sender);
         maxSupply = 100;
     }
 
