@@ -31,12 +31,19 @@ contract BTBMarket is BanTheBanNFT {
 
     function buyToken(uint256 tokenId) public payable {
         Offer memory offer = tokensOfferedForSale[tokenId];
+        uint256 availableAmount = msg.value;
         require(offer.isForSale, "token is not for sale");
-        require(msg.value >= offer.minValue, "Insufficient amount to pay");
+        require(availableAmount >= offer.minValue, "Insufficient amount to pay");
 
+        //pay royalty
+        (address royaltyReceiver, uint256 royaltyAmount) = royaltyInfo(tokenId, availableAmount);
+        if (royaltyAmount > 0) {availableAmount -= royaltyAmount;}
+        pendingWithdrawals[royaltyReceiver] += availableAmount;
+
+        //pay main value
         address seller = offer.seller;
         _safeTransfer(seller, _msgSender(), tokenId, "");
-        pendingWithdrawals[seller] += msg.value;
+        pendingWithdrawals[seller] += availableAmount;
         emit bought(tokenId, msg.value, seller, _msgSender());
     }
 
