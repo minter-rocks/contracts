@@ -17,7 +17,7 @@ abstract contract ERC721CreationRecord is ERC721 {
         return createdTokens[tokenId].creationTime;
     }
 
-    function creatorAddr(uint256 tokenId) public view returns(address) {
+    function creatorOf(uint256 tokenId) public view returns(address) {
         return createdTokens[tokenId].creatorAddr;
     }
 

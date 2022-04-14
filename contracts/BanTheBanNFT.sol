@@ -7,19 +7,15 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "./extensions/ERC721CreationRecord.sol";
 import "./BTBArchive.sol";
 import "./libraries/UintQueue.sol";
 
-contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royalty, AccessControl {
+contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royalty, AccessControl, ERC721CreationRecord {
     using Counters for Counters.Counter;
     using UintQueue for UintQueue.Queue;
 
     uint256 public maxSupply;
-
-    mapping (uint256 => address) public tokenIdToCreator;
-    function _setCreator(address creator, uint256 tokenId) internal {
-        tokenIdToCreator[tokenId] = creator;
-    }
 
     bytes32 public constant MINTER_ACCESS = keccak256("MINTER_ACCESS");
     bytes32 public constant BURNER_ACCESS = keccak256("BURNER_ACCESS");
@@ -55,7 +51,6 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
             tokenId = _tokenIdCounter.current();
             _tokenIdCounter.increment();
         }
-        _setCreator(msg.sender, tokenId);
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
@@ -63,7 +58,6 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
     function burn(uint256 tokenId) public virtual onlyRole(BURNER_ACCESS) {
         _burn(tokenId);
         _burnedIds._enqueue(tokenId);
-        delete tokenIdToCreator[tokenId];
     }
 
     BanTheBanArchive BTBArchive = new BanTheBanArchive();
@@ -97,13 +91,13 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
         address receiver,
         uint96 feeNumerator
     ) public virtual {
-        require(msg.sender == tokenIdToCreator[tokenId], "BanTheBanNFT: only creator of the token can set Royalty");
+        require(msg.sender == creatorOf(tokenId), "BanTheBanNFT: only creator of the token can set Royalty");
         require(feeNumerator <= 1000, "BanTheBanNFT: token royalty can be set up to 10 percent");
         _setTokenRoyalty(tokenId, receiver, feeNumerator);
     }
 
     function resetTokenRoyalty(uint256 tokenId) public virtual {
-        require(msg.sender == tokenIdToCreator[tokenId], "BanTheBanNFT: only creator of the token can set Royalty");
+        require(msg.sender == creatorOf(tokenId), "BanTheBanNFT: only creator of the token can set Royalty");
         _resetTokenRoyalty(tokenId);
     }
 
@@ -111,7 +105,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
-        override(ERC721, ERC721Enumerable)
+        override(ERC721, ERC721Enumerable, ERC721CreationRecord)
     {
         super._beforeTokenTransfer(from, to, tokenId);
     }
