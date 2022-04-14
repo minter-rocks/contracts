@@ -7,12 +7,12 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "./BTBArchive.sol";
+import "./utils/UintQueue.sol";
 
 contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royalty, AccessControl {
     using Counters for Counters.Counter;
-    using EnumerableSet for EnumerableSet.UintSet;
+    using UintQueue for UintQueue.Queue;
 
     uint256 public maxSupply;
 
@@ -28,7 +28,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
     bytes32 public constant ARCHIVE_ACCESS = keccak256("ARCHIVE_ACCESS");
 
     Counters.Counter private _tokenIdCounter;
-    EnumerableSet.UintSet private _burnedIds;
+    UintQueue.Queue private _burnedIds;
 
     constructor() ERC721("BanTheBanNFT", "BTB") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -48,9 +48,8 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
     function safeMint(address to, string memory uri) public payable {
         require(msg.value >= mintFee, "BanTheBanNFT: insufficient mint fee");
         uint256 tokenId;
-        if(_burnedIds.length() > 0){
-            tokenId = _burnedIds.at(0);
-            _burnedIds.remove(tokenId);
+        if(_burnedIds._length() > 0){
+            tokenId = _burnedIds._dequeue();
         } else {
             require(_tokenIdCounter.current() < maxSupply, "maxSupply filled");
             tokenId = _tokenIdCounter.current();
@@ -63,7 +62,7 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
 
     function burn(uint256 tokenId) public virtual onlyRole(BURNER_ACCESS) {
         _burn(tokenId);
-        _burnedIds.add(tokenId);
+        _burnedIds._enqueue(tokenId);
         delete tokenIdToCreator[tokenId];
     }
 
