@@ -46,16 +46,19 @@ contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royal
 
     function safeMint(address to, string memory uri) public payable {
         require(msg.value >= mintFee(), "BanTheBanNFT: insufficient mint fee");
-        uint256 tokenId;
-        if(_burnedIds._length() > 0){
-            tokenId = _burnedIds._dequeue();
-        } else {
-            require(_tokenIdCounter.current() < maxSupply, "maxSupply filled");
-            tokenId = _tokenIdCounter.current();
-            _tokenIdCounter.increment();
-        }
+        uint256 tokenId = _nextAvailableId();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
+    }
+
+    function _nextAvailableId() private returns(uint256 _Id) {
+        if(_burnedIds._length() > 0){
+            _Id = _burnedIds._dequeue();
+        } else {
+            require(_tokenIdCounter.current() < maxSupply, "maxSupply filled");
+            _Id = _tokenIdCounter.current();
+            _tokenIdCounter.increment();
+        }
     }
 
     function burn(uint256 tokenId) public virtual onlyRole(BURNER_ACCESS) {
