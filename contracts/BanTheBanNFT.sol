@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./BTBArchive.sol";
-import "./utils/UintQueue.sol";
+import "./libraries/UintQueue.sol";
 
 contract BanTheBanNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Royalty, AccessControl {
     using Counters for Counters.Counter;
