@@ -13,6 +13,11 @@ abstract contract ERC721CreationRecord is ERC721 {
 
     mapping(uint256 => CreatedToken) createdTokens;
 
+    modifier onlyCreator(uint256 tokenId) {
+        require(msg.sender == creatorOf(tokenId), "BanTheBanNFT: only creator of the token can set Royalty");
+        _;
+    }
+
     function creationTime(uint256 tokenId) public view returns(uint256) {
         return createdTokens[tokenId].creationTime;
     }
