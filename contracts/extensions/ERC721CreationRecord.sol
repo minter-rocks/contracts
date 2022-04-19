@@ -22,17 +22,13 @@ abstract contract ERC721CreationRecord is ERC721 {
     }
 
 
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal virtual override {
-        super._beforeTokenTransfer(from, to, tokenId);
+    function _burn(uint256 tokenId) internal override {
+        super._burn(tokenId);
+        delete createdTokens[tokenId];
+    }
 
-        if (from == address(0)) {
-            createdTokens[tokenId] = CreatedToken(_msgSender(), block.timestamp);
-        } else if(to == address(0)) {
-            delete createdTokens[tokenId];
-        }
+    function _mint(address to, uint256 tokenId) internal override {
+        super._mint(to, tokenId);
+        createdTokens[tokenId] = CreatedToken(_msgSender(), block.timestamp);
     }
 }
