@@ -8,7 +8,7 @@ const { PRIVATE_KEY, ALCHEMY_API_KEY, POLYGONSCAN_API_KEY, ETHERSCAN_API_KEY, SN
 
 module.exports = {
   solidity: {
-    version: "0.8.12",
+    version: "0.8.13",
     settings: {
       optimizer: {
         enabled: true,
