@@ -16,8 +16,8 @@ contract Factory {
         string memory contractSymbol,
         string memory creatorName
     ) public {
-        address collectionAddr = address(NFT).clone();
-        collectionAddr.functionDelegateCall(
+        address galleryAddr = address(NFT).clone();
+        galleryAddr.functionDelegateCall(
             abi.encodeWithSelector(
                 NFT.initialize.selector, 
                 contractName, 
