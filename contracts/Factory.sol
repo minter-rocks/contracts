@@ -9,7 +9,7 @@ contract Factory {
 
     Gallery NFT = new Gallery();
 
-    function newNFTContract(
+    function newGallery(
         string memory name,
         string memory symbol
     ) public {
