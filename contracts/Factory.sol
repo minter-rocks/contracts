@@ -9,17 +9,17 @@ contract Factory {
     using Clones for address;
     using Address for address;
 
-    Gallery NFT = new Gallery();
+    Gallery galleryCont = new Gallery();
 
     function newGallery(
         string memory contractName,
         string memory contractSymbol,
         string memory creatorName
     ) public {
-        address galleryAddr = address(NFT).clone();
+        address galleryAddr = address(galleryCont).clone();
         galleryAddr.functionDelegateCall(
             abi.encodeWithSelector(
-                NFT.initialize.selector, 
+                galleryCont.initialize.selector, 
                 contractName, 
                 contractSymbol, 
                 creatorName
