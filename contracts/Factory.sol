@@ -12,10 +12,18 @@ contract Factory {
     Gallery NFT = new Gallery();
 
     function newGallery(
-        string memory name,
-        string memory symbol
+        string memory contractName,
+        string memory contractSymbol,
+        string memory creatorName
     ) public {
         address collectionAddr = address(NFT).clone();
-        collectionAddr.functionDelegateCall(abi.encodeWithSelector(NFT.initialize.selector, name, symbol));
+        collectionAddr.functionDelegateCall(
+            abi.encodeWithSelector(
+                NFT.initialize.selector, 
+                contractName, 
+                contractSymbol, 
+                creatorName
+            )
+        );
     }
 }
