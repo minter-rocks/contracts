@@ -11,17 +11,25 @@ contract Factory {
 
     Gallery galleryCont = new Gallery();
 
+    event NewGallery(
+        string tokenName,
+        string tokenSymbol,
+        string creatorName,
+        address contractAddress,
+        address creatorAddress
+    );
+
     function newGallery(
-        string memory contractName,
-        string memory contractSymbol,
+        string memory tokenName,
+        string memory tokenSymbol,
         string memory creatorName
     ) public {
         address galleryAddr = address(galleryCont).clone();
         galleryAddr.functionDelegateCall(
             abi.encodeWithSelector(
                 galleryCont.initialize.selector, 
-                contractName, 
-                contractSymbol, 
+                tokenName, 
+                tokenSymbol, 
                 creatorName
             )
         );
