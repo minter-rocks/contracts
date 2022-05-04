@@ -13,17 +13,21 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
 
     CountersUpgradeable.Counter private _tokenIdCounter;
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer {}
+    string public creator;
+    function setCreatorName(string memory _creatorName) public onlyOwner {
+        creator = _creatorName;
+    }
 
     function initialize(
         string memory _name, 
-        string memory _symbol
+        string memory _symbol,
+        string memory _creator
     ) initializer public {
         __ERC721_init(_name, _symbol);
         __ERC721URIStorage_init();
         __ERC721Burnable_init();
         __Ownable_init();
+        creator = _creator;
     }
 
     function safeMint(address to, string memory uri) public onlyOwner {
