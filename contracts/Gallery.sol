@@ -38,6 +38,19 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
         _setTokenURI(tokenId, uri);
     }
 
+    function setTokenRoyalty(
+        uint256 tokenId,
+        address receiver,
+        uint96 feeNumerator
+    ) public onlyOwner {
+        require(feeNumerator <= 1000, "BanTheBanNFT: token royalty can be set up to 10 percent");
+        _setTokenRoyalty(tokenId, receiver, feeNumerator);
+    }
+
+    function resetTokenRoyalty(uint256 tokenId) public onlyOwner {
+        _resetTokenRoyalty(tokenId);
+    }
+
     // The following functions are overrides required by Solidity.
 
     function _burn(uint256 tokenId)
