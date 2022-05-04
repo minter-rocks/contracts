@@ -33,5 +33,12 @@ contract Factory {
                 creatorName
             )
         );
+        emit NewGallery(
+            tokenName, 
+            tokenSymbol, 
+            creatorName, 
+            galleryAddr, 
+            msg.sender
+        );
     }
 }
