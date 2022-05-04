@@ -12,7 +12,7 @@ contract Gallery is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
 
     Counters.Counter private _tokenIdCounter;
 
-    constructor() ERC721("gallery", "MTK") {}
+    constructor(string memory _name, string memory _symbol) ERC721(_name, _name) {}
 
     function safeMint(address to, string memory uri) public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
