@@ -12,8 +12,7 @@ contract NFTFactory is Ownable {
 
     function newNFTContract(
         string memory name,
-        string memory symbol,
-        string memory baseURI
+        string memory symbol
     ) public {
 
     }
