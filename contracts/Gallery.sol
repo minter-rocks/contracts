@@ -16,8 +16,11 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
 
-    function initialize() initializer public {
-        __ERC721_init("gallery", "MTK");
+    function initialize(
+        string memory _name, 
+        string memory _symbol
+    ) initializer public {
+        __ERC721_init(_name, _symbol);
         __ERC721URIStorage_init();
         __ERC721Burnable_init();
         __Ownable_init();
