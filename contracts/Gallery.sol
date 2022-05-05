@@ -48,7 +48,7 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
         _setTokenURI(tokenId, uri);
     }
 
-    function safeMintWithRoyalty(
+    function safeMintAndSetRoyalty(
         address to, 
         string memory uri,
         uint96 royaltyNumerator,
