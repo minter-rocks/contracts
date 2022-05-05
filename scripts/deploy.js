@@ -2,10 +2,10 @@ const { ethers, upgrades } = require("hardhat");
 
   async function main() {
     // simple deploy
-    const BTBMarket = await ethers.getContractFactory("BTBMarket");
-    const BTBM = await BTBMarket.deploy();
-    await BTBM.deployed();
-    console.log("BTBMarket Contract Address:", BTBM.address); 
+    const Factory = await ethers.getContractFactory("Factory");
+    const F = await Factory.deploy();
+    await F.deployed();
+    console.log("Factory Contract Address:", F.address); 
   }
     
   main();
