@@ -29,7 +29,8 @@ contract Factory {
         Gallery(galleryAddr).initialize(
             creatorName,
             tokenName, 
-            tokenSymbol, 
+            tokenSymbol,
+            msg.sender,
             royaltyNumerator,
             royaltyReciever
         );
