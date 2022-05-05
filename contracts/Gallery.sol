@@ -54,6 +54,10 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
         _setTokenRoyalty(tokenId, receiver, feeNumerator);
     }
 
+    function deleteDefaultRoyalty() public onlyOwner {
+        _deleteDefaultRoyalty();
+    }
+
     function resetTokenRoyalty(uint256 tokenId) public onlyOwner {
         _resetTokenRoyalty(tokenId);
     }
