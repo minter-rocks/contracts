@@ -20,15 +20,21 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
     }
 
     function initialize(
+        string memory _creator,
         string memory _name, 
         string memory _symbol,
-        string memory _creator
+        uint96 _royaltyNumerator,
+        address _royaltyReciever
     ) initializer public {
+        creator = _creator;
         __ERC721_init(_name, _symbol);
         __ERC721URIStorage_init();
         __ERC721Burnable_init();
         __Ownable_init();
-        creator = _creator;
+        if (_royaltyNumerator > 0) {
+            require(_royaltyReciever != address(0), "Gallery: Invalid Royalty receiver");
+            _setDefaultRoyalty(_royaltyReciever, _royaltyNumerator);
+        }
     }
 
     function safeMint(address to, string memory uri) public onlyOwner {
@@ -43,7 +49,8 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
         address receiver,
         uint96 feeNumerator
     ) public onlyOwner {
-        require(feeNumerator <= 1000, "BanTheBanNFT: token royalty can be set up to 10 percent");
+        require(msg.sender == ownerOf(tokenId), "Gallery: you can only set royalty own your own tokens.");
+        require(feeNumerator <= 1000, "Gallery: token royalty can be set up to 10 percent");
         _setTokenRoyalty(tokenId, receiver, feeNumerator);
     }
 
