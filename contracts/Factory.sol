@@ -9,7 +9,7 @@ contract Factory {
     using Clones for address;
     using Address for address;
 
-    Gallery galleryCont = new Gallery();
+    Gallery public galleryCont = new Gallery();
 
     event NewGallery(
         string creatorName,
