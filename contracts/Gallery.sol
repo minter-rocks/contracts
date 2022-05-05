@@ -40,14 +40,21 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
 
     function safeMint(
         address to, 
-        string memory uri,
-        uint96 royaltyNumerator,
-        address _royaltyReciever
+        string memory uri
     ) public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
+    }
+
+    function safeMintWithRoyalty(
+        address to, 
+        string memory uri,
+        uint96 royaltyNumerator,
+        address _royaltyReciever
+    ) public onlyOwner {
+        safeMint(to, uri);
         if (royaltyNumerator > 0) {
             require(_royaltyReciever != address(0), "Gallery: Invalid Royalty receiver");
             _setDefaultRoyalty(_royaltyReciever, royaltyNumerator);
