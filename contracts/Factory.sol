@@ -12,33 +12,39 @@ contract Factory {
     Gallery galleryCont = new Gallery();
 
     event NewGallery(
+        string creatorName,
         string tokenName,
         string tokenSymbol,
-        string creatorName,
+        address creatorAddress,
         address contractAddress,
-        address creatorAddress
+        uint96 defaultRoyalty
     );
 
     function newGallery(
+        string memory creatorName,
         string memory tokenName,
         string memory tokenSymbol,
-        string memory creatorName
+        uint96 royaltyNumerator,
+        address royaltyReciever
     ) public {
         address galleryAddr = address(galleryCont).clone();
         galleryAddr.functionDelegateCall(
             abi.encodeWithSelector(
                 galleryCont.initialize.selector, 
+                creatorName,
                 tokenName, 
                 tokenSymbol, 
-                creatorName
+                royaltyNumerator,
+                royaltyReciever
             )
         );
         emit NewGallery(
+            creatorName, 
             tokenName, 
             tokenSymbol, 
-            creatorName, 
+            msg.sender,
             galleryAddr, 
-            msg.sender
+            royaltyNumerator
         );
     }
 }
