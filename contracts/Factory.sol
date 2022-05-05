@@ -2,12 +2,10 @@
 pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
 import "./Gallery.sol";
 
 contract Factory {
     using Clones for address;
-    using Address for address;
 
     Gallery public galleryCont = new Gallery();
 
@@ -28,15 +26,12 @@ contract Factory {
         address royaltyReciever
     ) public {
         address galleryAddr = address(galleryCont).clone();
-        galleryAddr.functionDelegateCall(
-            abi.encodeWithSelector(
-                galleryCont.initialize.selector, 
-                creatorName,
-                tokenName, 
-                tokenSymbol, 
-                royaltyNumerator,
-                royaltyReciever
-            )
+        Gallery(galleryAddr).initialize(
+            creatorName,
+            tokenName, 
+            tokenSymbol, 
+            royaltyNumerator,
+            royaltyReciever
         );
         emit NewGallery(
             creatorName, 
