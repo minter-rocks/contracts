@@ -23,6 +23,7 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
         string memory _creator,
         string memory _name, 
         string memory _symbol,
+        address _owner,
         uint96 _royaltyNumerator,
         address _royaltyReciever
     ) initializer public {
@@ -30,7 +31,7 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
         __ERC721_init(_name, _symbol);
         __ERC721URIStorage_init();
         __ERC721Burnable_init();
-        __Ownable_init();
+        __Ownable_init(_owner);
         if (_royaltyNumerator > 0) {
             require(_royaltyReciever != address(0), "Gallery: Invalid Royalty receiver");
             _setDefaultRoyalty(_royaltyReciever, _royaltyNumerator);
