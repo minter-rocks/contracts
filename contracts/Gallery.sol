@@ -14,9 +14,9 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
 
     CountersUpgradeable.Counter private _tokenIdCounter;
 
-    string public creator;
+    string public _creator_;
     function setCreatorName(string memory _creatorName) public onlyOwner {
-        creator = _creatorName;
+        _creator_ = _creatorName;
     }
 
     function initialize(
@@ -27,7 +27,7 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
         uint96 _royaltyNumerator,
         address _royaltyReciever
     ) initializer public {
-        creator = _creator;
+        _creator_ = _creator;
         __ERC721_init(_name, _symbol);
         __ERC721URIStorage_init();
         __ERC721Burnable_init();
