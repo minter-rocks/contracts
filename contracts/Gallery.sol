@@ -63,10 +63,23 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
 
     function safeMint(
         address to, 
+        uint256 tokenId, 
         string memory uri
     ) public onlyOwner {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, uri);
+    }
+
+    function safeMint(
+        address to, 
+        string memory uri
+    ) public onlyOwner {
+        uint256 tokenId;
+        do {
+            tokenId = _tokenIdCounter.current();
+            _tokenIdCounter.increment();
+        } while (_exists(tokenId));
+        
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
