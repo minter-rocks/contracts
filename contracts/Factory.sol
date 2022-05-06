@@ -1,6 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
+/**
+ *             .----------------. 
+ *            | .--------------. |
+ *            | |  _______     | |
+ *            | | |_   __ \    | |
+ *            | |   | |__) |   | |
+ *            | |   |  __ /    | |
+ *            | |  _| |  \ \_  | |
+ *            | | |____| |___| | |
+ *            | |              | |
+ *            | '--------------' |
+ *            '-- MINTER.ROCKS --' 
+ */
+
 import "@openzeppelin/contracts/proxy/Clones.sol";
 import "./Gallery.sol";
 
