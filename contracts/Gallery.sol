@@ -9,16 +9,39 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
+/**
+ * @title NFT Gallery contract
+ */
 contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeable, ERC721BurnableUpgradeable, ERC721RoyaltyUpgradeable, OwnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _tokenIdCounter;
 
+    /**
+     * @notice creator of the gallery.
+     */
     string public _creator_;
+
+    /**
+     * @notice change the creator name.
+     * @param _creatorName new name of the creator.
+     * @dev only owner of the contract can call this function.
+     */
     function setCreatorName(string memory _creatorName) public onlyOwner {
         _creator_ = _creatorName;
     }
 
+    /**
+     * @notice initialize the gallery called by the Factory.
+     * @dev can be called only one time.
+     * @param _creator creator of the gallery.
+     * @param _name name of gallery tokens.
+     * @param _symbol symbol of gallery tokens.
+     * @param _owner address of the creator of the gallery.
+     * @param _royaltyNumerator the numerator of default token royalties which denumerator
+     * is 10000.
+     * @param _royaltyReciever the wallet address that receives the royalty.
+     */
     function initialize(
         string memory _creator,
         string memory _name, 
