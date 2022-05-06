@@ -18,6 +18,12 @@ pragma solidity ^0.8.7;
 import "@openzeppelin/contracts/proxy/Clones.sol";
 import "./Gallery.sol";
 
+/**
+ * @title NFT Gallery Factory
+ * @author Minter.Rocks
+ * @notice create your own NFT gallery contract and convert your files to NFTs
+ * in the simplest way possible.
+ */
 contract Factory {
     using Clones for address;
 
