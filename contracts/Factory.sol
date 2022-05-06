@@ -21,6 +21,9 @@ import "./Gallery.sol";
 contract Factory {
     using Clones for address;
 
+    /**
+     * @notice the predeployed gallery contract abi which the Factory clones.
+     */
     Gallery public galleryCont = new Gallery();
 
     event NewGallery(
@@ -32,6 +35,19 @@ contract Factory {
         uint96 defaultRoyalty
     );
 
+    /**
+     * @notice Create a new NFT gallery.
+     * @param creatorName enter your name as the creator of the new gallery.
+     * @param tokenName name of gallery tokens.
+     * @param tokenSymbol symbol of gallery tokens.
+     * @param royaltyNumerator the numerator of default token royalties which denumerator.
+     * is 10000. if you set a royaltyNumerator, you will earn a fraction of the tokens.
+     * price, every time they tranfers in market places.
+     * @param royaltyReciever the wallet address that receives the royalty.
+     * @dev clones a predeployed gallery contract abi with a new address onchain.
+     * @dev and initializes the new created gallery as the creator desired.
+     * @dev emits a NewGallery event.
+     */
     function newGallery(
         string memory creatorName,
         string memory tokenName,
