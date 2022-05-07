@@ -18,11 +18,11 @@ module.exports = {
   },
   networks: {
     polygon: {
-      url: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      url: `https://polygon-rpc.com/`,
       accounts: [`0x${PRIVATE_KEY}`],
     },
     polygonMumbai: {
-      url: `https://rpc-mumbai.maticvigil.com`,
+      url: `https://matic-testnet-archive-ws.bwarelabs.com`,
       accounts: [`0x${PRIVATE_KEY}`],
     },
     rinkeby: {
