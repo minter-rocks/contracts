@@ -99,17 +99,13 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
         _setTokenURI(tokenId, uri);
     }
 
-    function safeMintAndSetRoyalty(
-        address to, 
-        string memory uri,
-        uint96 royaltyNumerator,
-        address _royaltyReciever
+    function setTokenRoyalty(
+        uint256 tokenId,
+        address receiver,
+        uint96 feeNumerator
     ) public onlyOwner {
-        safeMint(to, uri);
-        if (royaltyNumerator > 0) {
-            require(_royaltyReciever != address(0), "Gallery: Invalid Royalty receiver");
-            _setDefaultRoyalty(_royaltyReciever, royaltyNumerator);
-        }
+        require(msg.sender == ownerOf(tokenId), "Gallery: you must be the owner of the token to set the royalty");
+        _setDefaultRoyalty(receiver, feeNumerator);
     }
 
     /**
