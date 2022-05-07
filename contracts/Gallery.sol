@@ -61,6 +61,14 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
         }
     }
 
+    /**
+     * @notice mint a new token.
+     * @param to address that will own the token.
+     * @param tokenId desired id selected for the token.
+     * @param uri uri of the token.
+     * @dev the tokenId should be not minted before.
+     * @dev only owner of the contract can call this function.
+     */
     function safeMint(
         address to, 
         uint256 tokenId, 
@@ -70,6 +78,13 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
         _setTokenURI(tokenId, uri);
     }
 
+    /**
+     * @notice mint a new token.
+     * @param to address that will own the token.
+     * @param uri uri of the token.
+     * @dev the tokenId will be earned automatically.
+     * @dev only owner of the contract can call this function.
+     */
     function safeMint(
         address to, 
         string memory uri
@@ -79,7 +94,7 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
             tokenId = _tokenIdCounter.current();
             _tokenIdCounter.increment();
         } while (_exists(tokenId));
-        
+
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
