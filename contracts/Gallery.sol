@@ -25,7 +25,7 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
     /**
      * @notice change the creator name.
      * @param _creatorName new name of the creator.
-     * @dev only owner of the contract can call this function.
+     * @notice only owner of the contract can call this function.
      */
     function setCreatorName(string memory _creatorName) public onlyOwner {
         _creator_ = _creatorName;
@@ -67,7 +67,7 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
      * @param tokenId desired id selected for the token.
      * @param uri uri of the token.
      * @dev the tokenId should be not minted before.
-     * @dev only owner of the contract can call this function.
+     * @notice only owner of the contract can call this function.
      */
     function safeMint(
         address to, 
@@ -83,7 +83,7 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
      * @param to address that will own the token.
      * @param uri uri of the token.
      * @dev the tokenId will be earned automatically.
-     * @dev only owner of the contract can call this function.
+     * @notice only owner of the contract can call this function.
      */
     function safeMint(
         address to, 
@@ -112,11 +112,20 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
         }
     }
 
-
+    /**
+     * @notice Delete default royalty of gallery tokens.
+     * @notice It can't be set again after that was removed.
+     * @notice only owner of the contract can call this function.
+     */
     function deleteDefaultRoyalty() public onlyOwner {
         _deleteDefaultRoyalty();
     }
 
+    /**
+     * @notice reset the royalty of the specified token.
+     * @param tokenId tokenId that you want to reset its royalty.
+     * @notice only owner of the contract can call this function.
+     */
     function resetTokenRoyalty(uint256 tokenId) public onlyOwner {
         _resetTokenRoyalty(tokenId);
     }
