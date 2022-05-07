@@ -38,8 +38,7 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
      * @param _name name of gallery tokens.
      * @param _symbol symbol of gallery tokens.
      * @param _owner address of the creator of the gallery.
-     * @param _royaltyNumerator the numerator of default token royalties which denumerator
-     * is 10000.
+     * @param _royaltyNumerator the numerator of default token royalties which denumerator is 10000.
      * @param _royaltyReciever the wallet address that receives the royalty.
      */
     function initialize(
@@ -99,6 +98,13 @@ contract Gallery is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeabl
         _setTokenURI(tokenId, uri);
     }
 
+    /**
+     * @notice set the royalty for the specified token.
+     * @param tokenId tokenId that you want to reset its royalty.
+     * @param receiver the wallet address that receives the royalty.
+     * @param feeNumerator the numerator of the token royalty which denumerator is 10000.
+     * @notice you must be the owner of the contract and also owner of the token.
+     */
     function setTokenRoyalty(
         uint256 tokenId,
         address receiver,
