@@ -1,6 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
-require('@openzeppelin/hardhat-upgrades');
 require("@nomiclabs/hardhat-ethers");
 require('hardhat-contract-sizer');
 
@@ -22,7 +21,7 @@ module.exports = {
       accounts: [`0x${PRIVATE_KEY}`],
     },
     polygonMumbai: {
-      url: `https://matic-testnet-archive-ws.bwarelabs.com`,
+      url: `https://rpc-mumbai.maticvigil.com/`,
       accounts: [`0x${PRIVATE_KEY}`],
     },
     rinkeby: {
