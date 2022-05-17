@@ -24,7 +24,7 @@ import "./Collection1.sol";
  * @notice create your own NFT Collection contract and convert your files to NFTs
  * in the simplest way possible.
  */
-contract Factory1 {
+contract Factory {
     using Clones for address;
 
     /**
