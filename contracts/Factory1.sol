@@ -24,7 +24,7 @@ import "./Gallery.sol";
  * @notice create your own NFT gallery contract and convert your files to NFTs
  * in the simplest way possible.
  */
-contract Factory {
+contract Factory1 {
     using Clones for address;
 
     /**
