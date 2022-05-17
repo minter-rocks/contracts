@@ -16,7 +16,7 @@ pragma solidity ^0.8.7;
  */
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
-import "./Collection1.sol";
+import "./Collection3.sol";
 
 /**
  * @title NFT collection Factory
