@@ -22,7 +22,7 @@ import "./Collection3.sol";
  * @title NFT collection Factory
  * @author Minter.Rocks
  * @notice create your own NFT collection contract and convert your files to NFTs
- * in the simplest way possible.
+ * by the most access to contract parameters.
  */
 contract Factory {
     using Clones for address;
