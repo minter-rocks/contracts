@@ -30,7 +30,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 /**
- * @title NFT Gallery contract
+ * @title NFT Collection contract
  */
 contract Collection is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeable, ERC721BurnableUpgradeable, ERC721RoyaltyUpgradeable, OwnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
@@ -38,7 +38,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721URIStorageUpgrade
     CountersUpgradeable.Counter private _tokenIdCounter;
 
     /**
-     * @notice creator of the gallery.
+     * @notice creator of the collection.
      */
     string public _creator_;
 
@@ -52,12 +52,12 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721URIStorageUpgrade
     }
 
     /**
-     * @notice initialize the gallery called by the Factory.
+     * @notice initialize the collection called by the Factory.
      * @dev can be called only one time.
-     * @param _creator creator of the gallery.
-     * @param _name name of gallery tokens.
-     * @param _symbol symbol of gallery tokens.
-     * @param _owner address of the creator of the gallery.
+     * @param _creator creator of the collection.
+     * @param _name name of collection tokens.
+     * @param _symbol symbol of collection tokens.
+     * @param _owner address of the creator of the collection.
      * @param _royaltyNumerator the numerator of default token royalties which denumerator is 10000.
      * @param _royaltyReciever the wallet address that receives the royalty.
      */
@@ -75,7 +75,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721URIStorageUpgrade
         __ERC721Burnable_init();
         __Ownable_init(_owner);
         if (_royaltyNumerator > 0) {
-            require(_royaltyReciever != address(0), "Gallery: Invalid Royalty receiver");
+            require(_royaltyReciever != address(0), "Collection: Invalid Royalty receiver");
             _setDefaultRoyalty(_royaltyReciever, _royaltyNumerator);
         }
     }
@@ -130,12 +130,12 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721URIStorageUpgrade
         address receiver,
         uint96 feeNumerator
     ) public onlyOwner {
-        require(msg.sender == ownerOf(tokenId), "Gallery: you must be the owner of the token to set the royalty");
+        require(msg.sender == ownerOf(tokenId), "Collection: you must be the owner of the token to set the royalty");
         _setDefaultRoyalty(receiver, feeNumerator);
     }
 
     /**
-     * @notice Delete default royalty of gallery tokens.
+     * @notice Delete default royalty of collection tokens.
      * @notice It can't be set again after that was removed.
      * @notice only owner of the contract can call this function.
      */

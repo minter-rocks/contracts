@@ -19,16 +19,16 @@ import "@openzeppelin/contracts/proxy/Clones.sol";
 import "./Collection1.sol";
 
 /**
- * @title NFT Collection Factory
+ * @title NFT collection Factory
  * @author Minter.Rocks
- * @notice create your own NFT Collection contract and convert your files to NFTs
+ * @notice create your own NFT collection contract and convert your files to NFTs
  * in the simplest way possible.
  */
 contract Factory {
     using Clones for address;
 
     /**
-     * @notice the predeployed Collection contract abi which the Factory clones.
+     * @notice the predeployed collection contract abi which the Factory clones.
      */
     Collection public CollectionCont = new Collection();
 
@@ -42,16 +42,16 @@ contract Factory {
     );
 
     /**
-     * @notice Create a new NFT Collection.
-     * @param creatorName enter your name as the creator of the new Collection.
-     * @param tokenName name of Collection tokens.
-     * @param tokenSymbol symbol of Collection tokens.
+     * @notice Create a new NFT collection.
+     * @param creatorName enter your name as the creator of the new collection.
+     * @param tokenName name of collection tokens.
+     * @param tokenSymbol symbol of collection tokens.
      * @param royaltyNumerator the numerator of default token royalties which denumerator.
      * is 10000. if you set a royaltyNumerator, you will earn a fraction of the tokens.
      * price, every time they tranfers in market places.
      * @param royaltyReciever the wallet address that receives the royalty.
-     * @dev clones a predeployed Collection contract abi with a new address onchain.
-     * @dev and initializes the new created Collection as the creator desired.
+     * @dev clones a predeployed collection contract abi with a new address onchain.
+     * @dev and initializes the new created collection as the creator desired.
      * @dev emits a NewCollection event.
      */
     function newCollection(
@@ -61,8 +61,8 @@ contract Factory {
         uint96 royaltyNumerator,
         address royaltyReciever
     ) public {
-        address CollectionAddr = address(CollectionCont).clone();
-        Collection(CollectionAddr).initialize(
+        address collectionAddr = address(CollectionCont).clone();
+        Collection(collectionAddr).initialize(
             creatorName,
             tokenName, 
             tokenSymbol,
@@ -75,7 +75,7 @@ contract Factory {
             tokenName, 
             tokenSymbol, 
             msg.sender,
-            CollectionAddr, 
+            collectionAddr, 
             royaltyNumerator
         );
     }
