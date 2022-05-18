@@ -51,6 +51,11 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721URIStorageUpgrade
         _creator_ = _creatorName;
     }
 
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+    
     /**
      * @notice initialize the collection called by the Factory.
      * @dev can be called only one time.
