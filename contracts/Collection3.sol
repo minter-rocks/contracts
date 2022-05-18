@@ -34,7 +34,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
  * @notice the contract is ERC721 enumerable.
  * @notice tokenIds are starting from 0 to (maxSupply - 1).
  * @notice tokenURIs are all in the same format baseURI/tokenId.
- * @notice totalSupply is limited and set once at initializing time.
+ * @notice totalSupply is limited but can be set by the owner.
  * @notice safeMint restricted to the owner.
  * @notice safeMint can be auto increment or you can specify the tokenId.
  * @notice there is a default royalty which can be set once at initializing time and 
@@ -78,6 +78,18 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      * @notice maximum number of tokens can be minted.
      */
     uint256 public maxSupply;
+
+    /**
+     * @notice change the maximum Supply.
+     * @param _maxSupply new maximum Supply.
+     * @notice only owner of the contract can call this function.
+     * @notice the new maximum Supply must be greater than or equal to the current supply.
+     */
+    function setMaxSupply(uint256 _maxSupply) public onlyOwner {
+        require(_maxSupply >= _tokenIdCounter.current(), "Collection: maxSupply must be greater than or equal to the current supply.");
+        maxSupply = _maxSupply;
+    }
+
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
