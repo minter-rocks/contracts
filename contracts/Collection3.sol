@@ -35,7 +35,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
  * @notice tokenIds are starting from 0 to (maxSupply - 1).
  * @notice tokenURIs are all in the same format baseURI/tokenId.
  * @notice totalSupply is limited but can be set by the owner.
- * @notice safeMint restricted to the owner.
+ * @notice safeMint public and payable.
  * @notice safeMint by auto increment only.
  * @notice there is a default royalty which can be set once at initializing time.
  * @notice the contract receives royalties.
@@ -127,13 +127,28 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         }
     }
 
+    uint256 baseMintFee;
+    function setBaseMintFee(uint256 _baseMintFee) public onlyOwner {
+        baseMintFee = _baseMintFee;
+    }
+    
+    uint256 mintFeeRatioNumerator;
+    function setMintFeeRatioNumerator(uint256 _mintFeeRatioNumerator) public onlyOwner {
+        mintFeeRatioNumerator = _mintFeeRatioNumerator;
+    }
+    
+    function mintFee() public view returns(uint256) {
+        return baseMintFee + (_tokenIdCounter.current() * mintFeeRatioNumerator / 10000 );
+    }
+
     /**
      * @notice mint a new token.
      * @param to address that will own the token.
      * @dev the tokenId will be earned automatically.
      * @notice only owner of the contract can call this function.
      */
-    function safeMint(address to) public onlyOwner {
+    function safeMint(address to) public payable {
+        require(msg.value >= mintFee(), "Collection: insufficient mint fee");
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
