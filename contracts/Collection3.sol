@@ -37,10 +37,8 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
  * @notice totalSupply is limited but can be set by the owner.
  * @notice safeMint restricted to the owner.
  * @notice safeMint by auto increment only.
- * @notice there is a default royalty which can be set once at initializing time and 
- * also every token can have its particular royalty and does not use default royalty.
- * @notice owner of the contract can delete default royalty and token royalties and only 
- * set royalty for a specific token if they own it.
+ * @notice there is a default royalty which can be set once at initializing time.
+ * @notice owner of the contract can delete default royalty.
  * @notice every token owner can log a comment in the contract by its token and address.
  */
 contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721BurnableUpgradeable, ERC721RoyaltyUpgradeable, OwnableUpgradeable {
@@ -130,7 +128,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
             _setDefaultRoyalty(_royaltyReciever, _royaltyNumerator);
         }
     }
-    
+
     /**
      * @notice mint a new token.
      * @param to address that will own the token.
@@ -144,37 +142,12 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     }
 
     /**
-     * @notice set the royalty for the specified token.
-     * @param tokenId tokenId that you want to reset its royalty.
-     * @param receiver the wallet address that receives the royalty.
-     * @param feeNumerator the numerator of the token royalty which denumerator is 10000.
-     * @notice you must be the owner of the contract and also owner of the token.
-     */
-    function setTokenRoyalty(
-        uint256 tokenId,
-        address receiver,
-        uint96 feeNumerator
-    ) public onlyOwner {
-        require(msg.sender == ownerOf(tokenId), "Collection: you must be the owner of the token to set the royalty");
-        _setDefaultRoyalty(receiver, feeNumerator);
-    }
-
-    /**
      * @notice Delete default royalty of Collection tokens.
      * @notice It can't be set again after that was removed.
      * @notice only owner of the contract can call this function.
      */
     function deleteDefaultRoyalty() public onlyOwner {
         _deleteDefaultRoyalty();
-    }
-
-    /**
-     * @notice reset the royalty of the specified token.
-     * @param tokenId tokenId that you want to reset its royalty.
-     * @notice only owner of the contract can call this function.
-     */
-    function resetTokenRoyalty(uint256 tokenId) public onlyOwner {
-        _resetTokenRoyalty(tokenId);
     }
 
     /**
