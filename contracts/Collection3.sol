@@ -105,6 +105,8 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      * @param _maxSupply maximum number of tokens can be minted.
      * @param _owner address of the creator of the Collection.
      * @param _royaltyNumerator the numerator of default token royalties which denumerator is 10000.
+     * @param _baseMintFee the base fee required to mint the first token.
+     * @param _mintFeeRatioNumerator the numerator of mint fee ratio which denumerator is 10000.
      */
     function initialize(
         string memory _creator,
@@ -113,7 +115,9 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         string memory _uri,
         uint256 _maxSupply,
         address _owner,
-        uint96 _royaltyNumerator
+        uint96 _royaltyNumerator,
+        uint256 _baseMintFee,
+        uint256 _mintFeeRatioNumerator
     ) initializer public {
         _creator_ = _creator;
         __ERC721_init(_name, _symbol);
@@ -125,6 +129,8 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         if (_royaltyNumerator > 0) {
             _setDefaultRoyalty(address(this), _royaltyNumerator);
         }
+        baseMintFee = _baseMintFee;
+        mintFeeRatioNumerator = _mintFeeRatioNumerator;
     }
 
     uint256 baseMintFee;
