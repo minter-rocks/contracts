@@ -38,6 +38,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
  * @notice safeMint restricted to the owner.
  * @notice safeMint by auto increment only.
  * @notice there is a default royalty which can be set once at initializing time.
+ * @notice the contract receives royalties.
  * @notice owner of the contract can delete default royalty.
  * @notice every token owner can log a comment in the contract by its token and address.
  */
@@ -104,7 +105,6 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      * @param _maxSupply maximum number of tokens can be minted.
      * @param _owner address of the creator of the Collection.
      * @param _royaltyNumerator the numerator of default token royalties which denumerator is 10000.
-     * @param _royaltyReciever the wallet address that receives the royalty.
      */
     function initialize(
         string memory _creator,
@@ -113,8 +113,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         string memory _uri,
         uint256 _maxSupply,
         address _owner,
-        uint96 _royaltyNumerator,
-        address _royaltyReciever
+        uint96 _royaltyNumerator
     ) initializer public {
         _creator_ = _creator;
         __ERC721_init(_name, _symbol);
@@ -124,8 +123,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         _baseURI_ = _uri;
         maxSupply = _maxSupply;
         if (_royaltyNumerator > 0) {
-            require(_royaltyReciever != address(0), "Collection: Invalid Royalty receiver");
-            _setDefaultRoyalty(_royaltyReciever, _royaltyNumerator);
+            _setDefaultRoyalty(address(this), _royaltyNumerator);
         }
     }
 
