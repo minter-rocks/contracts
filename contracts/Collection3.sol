@@ -107,6 +107,8 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      * @param _royaltyNumerator the numerator of default token royalties which denumerator is 10000.
      * @param _baseMintFee the base fee required to mint the first token.
      * @param _mintFeeRatioNumerator the numerator of mint fee ratio which denumerator is 10000.
+     * @param _tokenHoldersCommentFee comment fee for the token holders.
+     * @param _guestsCommentFee comment fee for regular people.
      */
     function initialize(
         string memory _creator,
@@ -117,7 +119,9 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         address _owner,
         uint96 _royaltyNumerator,
         uint256 _baseMintFee,
-        uint256 _mintFeeRatioNumerator
+        uint256 _mintFeeRatioNumerator,
+        uint256 _tokenHoldersCommentFee,
+        uint256 _guestsCommentFee
     ) initializer public {
         _creator_ = _creator;
         __ERC721_init(_name, _symbol);
@@ -131,6 +135,8 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         }
         baseMintFee = _baseMintFee;
         mintFeeRatioNumerator = _mintFeeRatioNumerator;
+        tokenHoldersCommentFee = _tokenHoldersCommentFee;
+        guestsCommentFee = _guestsCommentFee;
     }
 
     uint256 baseMintFee;
@@ -187,7 +193,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     function setGuestsCommentFee(uint256 _guestsCommentFee) public onlyOwner {
         guestsCommentFee = _guestsCommentFee;
     }
-    
+
     event Comment(address userAddr, uint256 userBalance, uint256 paidAmount, string text);
     /**
      * @notice comments as event.
