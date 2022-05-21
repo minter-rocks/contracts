@@ -155,21 +155,21 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     }
 
     /**
-     * @notice Delete default royalty of Collection tokens.
-     * @notice It can't be set again after that was removed.
-     * @notice only owner of the contract can call this function.
-     */
-    function deleteDefaultRoyalty() public onlyOwner {
-        _deleteDefaultRoyalty();
-    }
-
-    /**
      * @notice override mint function to change functionality.
      * @notice tokenIds limited to maxSupply.
      */
     function _mint(address to, uint256 tokenId) internal override {
         require (tokenId < maxSupply, "Collection: Invalid token Id");
         super._mint(to, tokenId);
+    }
+
+    /**
+     * @notice Delete default royalty of Collection tokens.
+     * @notice It can't be set again after that was removed.
+     * @notice only owner of the contract can call this function.
+     */
+    function deleteDefaultRoyalty() public onlyOwner {
+        _deleteDefaultRoyalty();
     }
 
     event Comment(uint256 indexed tokenId, address userAddr, string text);
