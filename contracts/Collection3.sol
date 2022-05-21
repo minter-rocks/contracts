@@ -40,7 +40,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
  * @notice there is a default royalty which can be set once at initializing time.
  * @notice the contract receives royalties.
  * @notice owner of the contract can delete default royalty.
- * @notice every token owner can log a comment in the contract by its token and address.
+ * @notice every one can log a comment in the contract but the comment fee varies for token owners.
  */
 contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721BurnableUpgradeable, ERC721RoyaltyUpgradeable, OwnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
@@ -178,13 +178,20 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         _deleteDefaultRoyalty();
     }
 
-    event Comment(uint256 indexed tokenId, address userAddr, string text);
+    uint256 tokenHoldersCommentFee;
+    uint256 guestsCommentFee;
+    event Comment(address userAddr, uint256 userBalance, uint256 paidAmount, string text);
     /**
      * @notice comments as event.
      */
-    function comment(uint256 tokenId, string memory text) public {
-        require(msg.sender == ownerOf(tokenId), "Collection: Invalid token Id");
-        emit Comment(tokenId, msg.sender, text);
+    function comment(string memory text) public payable {
+        uint256 userBalance = balanceOf(msg.sender);
+        if(userBalance > 0){
+            require(msg.value > tokenHoldersCommentFee, "Collection: insufficient fee for tokenHolders.");
+        } else {
+            require(msg.value > tokenHoldersCommentFee, "Collection: insufficient fee for guest.");
+        }
+        emit Comment(msg.sender, userBalance, msg.value, text);
     }
 
 
