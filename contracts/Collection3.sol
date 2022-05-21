@@ -179,7 +179,15 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     }
 
     uint256 tokenHoldersCommentFee;
+    function setTokenHoldersCommentFee(uint256 _tokenHoldersCommentFee) public onlyOwner {
+        tokenHoldersCommentFee = _tokenHoldersCommentFee;
+    }
+
     uint256 guestsCommentFee;
+    function setGuestsCommentFee(uint256 _guestsCommentFee) public onlyOwner {
+        guestsCommentFee = _guestsCommentFee;
+    }
+    
     event Comment(address userAddr, uint256 userBalance, uint256 paidAmount, string text);
     /**
      * @notice comments as event.
