@@ -35,8 +35,8 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
  * @notice tokenIds are starting from 0 to (maxSupply - 1).
  * @notice tokenURIs are all in the same format baseURI/tokenId.
  * @notice totalSupply is limited but can be set by the owner.
- * @notice safeMint public and payable.
  * @notice safeMint by auto increment only.
+ * @notice safeMint public and payable and mintFee increases by the tokenId.
  * @notice there is a default royalty which can be set once at initializing time.
  * @notice the contract receives royalties.
  * @notice owner of the contract can delete default royalty.
