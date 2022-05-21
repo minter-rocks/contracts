@@ -138,7 +138,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     }
     
     function mintFee() public view returns(uint256) {
-        return baseMintFee + (_tokenIdCounter.current() * mintFeeRatioNumerator / 10000 );
+        return baseMintFee + (baseMintFee * _tokenIdCounter.current() * mintFeeRatioNumerator / 10000 );
     }
 
     /**
