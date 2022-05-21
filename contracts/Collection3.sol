@@ -36,7 +36,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
  * @notice tokenURIs are all in the same format baseURI/tokenId.
  * @notice totalSupply is limited but can be set by the owner.
  * @notice safeMint restricted to the owner.
- * @notice safeMint can be auto increment or you can specify the tokenId.
+ * @notice safeMint by auto increment only.
  * @notice there is a default royalty which can be set once at initializing time and 
  * also every token can have its particular royalty and does not use default royalty.
  * @notice owner of the contract can delete default royalty and token royalties and only 
@@ -130,21 +130,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
             _setDefaultRoyalty(_royaltyReciever, _royaltyNumerator);
         }
     }
-
-    /**
-     * @notice mint a new token.
-     * @param to address that will own the token.
-     * @param tokenId desired id selected for the token.
-     * @dev the tokenId should be not minted before.
-     * @notice only owner of the contract can call this function.
-     */
-    function safeMint(
-        address to, 
-        uint256 tokenId
-    ) public onlyOwner {
-        _safeMint(to, tokenId);
-    }
-
+    
     /**
      * @notice mint a new token.
      * @param to address that will own the token.
@@ -152,12 +138,8 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      * @notice only owner of the contract can call this function.
      */
     function safeMint(address to) public onlyOwner {
-        uint256 tokenId;
-        do {
-            tokenId = _tokenIdCounter.current();
-            _tokenIdCounter.increment();
-        } while (_exists(tokenId));
-
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
         _safeMint(to, tokenId);
     }
 
