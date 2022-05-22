@@ -274,6 +274,15 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     }
 
 
+    /**
+     * @notice withdraw specified amount of ETH from contract.
+     * @notice only owner of the contract can call this funcion.
+     */
+    function withdraw(uint256 amount) public onlyOwner {
+        payable(msg.sender).transfer(amount);
+    }
+
+
     // The following functions are overrides required by Solidity.
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
