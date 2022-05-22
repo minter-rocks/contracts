@@ -148,6 +148,31 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         guestsCommentFee = _guestsCommentFee;
     }
 
+    mapping(address => string) users;
+    mapping(string => address) registered;
+
+    function register(string memory _username) public {
+        require(registered[_username] == address(0), "Collection: the username has already been registered");
+        users[msg.sender] = _username;
+    }
+
+    function unRegister() public {
+        delete users[msg.sender];
+    }
+
+    function username(address userAddr) public view returns(string memory) {
+        return users[userAddr];
+    }
+
+    function ownerName(uint256 tokenId) public view returns(string memory) {
+        return username(ownerOf(tokenId));
+    }
+
+    function userBalance(string memory _username) public view returns(uint256) {
+        return balanceOf(registered[_username]);
+    }
+
+
     uint256 baseMintFee;
     function setBaseMintFee(uint256 _baseMintFee) public onlyOwner {
         baseMintFee = _baseMintFee;
@@ -208,13 +233,13 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      * @notice comments as event.
      */
     function comment(string memory text) public payable {
-        uint256 userBalance = balanceOf(msg.sender);
-        if(userBalance > 0){
+        uint256 _userBalance = balanceOf(msg.sender);
+        if(_userBalance > 0){
             require(msg.value > tokenHoldersCommentFee, "Collection: insufficient fee for tokenHolders.");
         } else {
             require(msg.value > tokenHoldersCommentFee, "Collection: insufficient fee for guest.");
         }
-        emit Comment(msg.sender, userBalance, msg.value, text);
+        emit Comment(msg.sender, _userBalance, msg.value, text);
     }
 
 
