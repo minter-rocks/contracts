@@ -158,6 +158,11 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     mapping(string => address) registered;
 
     event Register(address _userAddr, string username);
+    /**
+     * @notice set a username on your wallet address.
+     * @param _username the new username you set.
+     * @notice you cannot use preselected usernames.
+     */
     function register(string memory _username) public {
         require(registered[_username] == address(0), "Collection: the username has already been registered");
         users[msg.sender] = _username;
