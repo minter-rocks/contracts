@@ -170,6 +170,9 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     }
 
     event UnRegister(address _userAddr);
+    /**
+     * @notice delete your username.
+     */
     function unRegister() public {
         delete registered[users[msg.sender]];
         delete users[msg.sender];
