@@ -67,6 +67,15 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     string private _baseURI_;
 
     /**
+     * @notice change the baseURI.
+     * @param baseURI_ base URI of the tokens.
+     * @notice only owner of the contract can call this function.
+     */
+    function setBaseURI(string memory baseURI_) public onlyOwner {
+        _baseURI_ = baseURI_;
+    }
+
+    /**
      * @notice override -baseURI function to define functionality.
      */
     function _baseURI() internal view override returns (string memory) {
