@@ -179,14 +179,23 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         emit UnRegister(msg.sender);
     }
 
+    /**
+     * @notice returns the username of the specified address.
+     */
     function username(address userAddr) public view returns(string memory) {
         return users[userAddr];
     }
 
+    /**
+     * @notice returns the username of the specified tokenId's owner.
+     */
     function ownerName(uint256 tokenId) public view returns(string memory) {
         return username(ownerOf(tokenId));
     }
 
+    /**
+     * @notice returns token balance of the specified _username.
+     */
     function userBalance(string memory _username) public view returns(uint256) {
         return balanceOf(registered[_username]);
     }
