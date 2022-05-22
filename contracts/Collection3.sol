@@ -215,7 +215,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      * @notice returns required fee to mint the next token.
      */
     function mintBatchFee(uint256 tokenOffset, uint256 numberOfTokens) public view returns(uint256) {
-        return numberOfTokens * mintFee((tokenOffset + numberOfTokens) / 2);
+        return numberOfTokens * mintFee(tokenOffset + numberOfTokens / 2);
     }
     
     /**
