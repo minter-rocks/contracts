@@ -113,45 +113,20 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     /**
      * @notice initialize the Collection called by the Factory.
      * @dev can be called only one time.
-     * @param _creator creator of the Collection.
-     * @param _name name of Collection tokens.
-     * @param _symbol symbol of Collection tokens.
-     * @param _uRI the base uRI of the collection on IPFS.
-     * @param _maxSupply maximum number of tokens can be minted.
-     * @param _owner address of the creator of the Collection.
-     * @param _royaltyNumerator the numerator of default token royalties which denumerator is 10000.
-     * @param _baseMintFee the base fee required to mint the first token.
-     * @param _mintFeeRatioNumerator the numerator of mint fee ratio which denumerator is 10000.
-     * @param _tokenHoldersCommentFee comment fee for the token holders.
-     * @param _guestsCommentFee comment fee for regular people.
      */
-    function initialize(
-        string memory _creator,
-        string memory _name, 
-        string memory _symbol,
-        string memory _uRI,
-        uint256 _maxSupply,
-        address _owner,
-        uint96 _royaltyNumerator,
-        uint256 _baseMintFee,
-        uint256 _mintFeeRatioNumerator,
-        uint256 _tokenHoldersCommentFee,
-        uint256 _guestsCommentFee
-    ) initializer public {
-        _creator_ = _creator;
-        __ERC721_init(_name, _symbol);
+    function initialize() initializer public {
+        _creator_ = "Renope"; //creator of the Collection.
+        __ERC721_init("collection3", "c3");
         __ERC721Enumerable_init();
         __ERC721Burnable_init();
-        __Ownable_init(_owner);
-        _baseURI_ = _uRI;
-        maxSupply = _maxSupply;
-        if (_royaltyNumerator > 0) {
-            _setDefaultRoyalty(address(this), _royaltyNumerator);
-        }
-        baseMintFee = _baseMintFee;
-        mintFeeRatioNumerator = _mintFeeRatioNumerator;
-        tokenHoldersCommentFee = _tokenHoldersCommentFee;
-        guestsCommentFee = _guestsCommentFee;
+        __Ownable_init(msg.sender);
+        _baseURI_ = ""; //the base uRI of the collection on IPFS.
+        maxSupply = 100; //maximum number of tokens can be minted.
+        _setDefaultRoyalty(address(this), 500);
+        baseMintFee = 0.05 * 10 ** 18; //the base fee required to mint the first token.
+        mintFeeRatioNumerator = 200; //the numerator of mint fee ratio which denumerator is 10000.
+        tokenHoldersCommentFee = 0.005 * 10 ** 18; //comment fee for the token holders.
+        guestsCommentFee = 0.01 * 10 ** 18; //comment fee for regular people.
     }
 
     mapping(address => string) users;
