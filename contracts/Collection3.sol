@@ -91,6 +91,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      */
     uint256 public maxSupply;
 
+    event SetMaxSupply(uint256 _maxSupply);
     /**
      * @notice change the maximum Supply.
      * @param _maxSupply new maximum Supply.
@@ -100,6 +101,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     function setMaxSupply(uint256 _maxSupply) public onlyOwner {
         require(_maxSupply >= _tokenIdCounter.current(), "Collection: maxSupply must be greater than or equal to the current supply.");
         maxSupply = _maxSupply;
+        emit SetMaxSupply(_maxSupply);
     }
 
 
@@ -155,13 +157,17 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     mapping(address => string) users;
     mapping(string => address) registered;
 
+    event Register(address _userAddr, string username);
     function register(string memory _username) public {
         require(registered[_username] == address(0), "Collection: the username has already been registered");
         users[msg.sender] = _username;
+        emit Register(msg.sender, _username);
     }
 
+    event UnRegister(address _userAddr);
     function unRegister() public {
         delete users[msg.sender];
+        emit UnRegister(msg.sender);
     }
 
     function username(address userAddr) public view returns(string memory) {
