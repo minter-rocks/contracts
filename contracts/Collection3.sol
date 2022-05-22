@@ -240,6 +240,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         super._mint(to, tokenId);
     }
 
+
     uint256 public tokenHoldersCommentFee;
     function setTokenHoldersCommentFee(uint256 _tokenHoldersCommentFee) public onlyOwner {
         tokenHoldersCommentFee = _tokenHoldersCommentFee;
@@ -250,7 +251,9 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         guestsCommentFee = _guestsCommentFee;
     }
 
-    event Comment(address userAddr, uint256 userBalance, uint256 paidAmount, string text);
+    uint256 public commentIndex;
+
+    event Comment(address userAddr, uint256 userBalance, uint256 paidAmount, string text, uint256 _commentIndex);
     /**
      * @notice comments as event.
      */
@@ -261,7 +264,8 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         } else {
             require(msg.value > tokenHoldersCommentFee, "Collection: insufficient fee for guest.");
         }
-        emit Comment(msg.sender, _userBalance, msg.value, text);
+        emit Comment(msg.sender, _userBalance, msg.value, text, commentIndex);
+        commentIndex++;
     }
 
     /**
