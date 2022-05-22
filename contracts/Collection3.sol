@@ -52,6 +52,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      */
     string public _creator_;
 
+    event SetCreatorName(string _creatorName);
     /**
      * @notice change the creator name.
      * @param _creatorName new name of the creator.
@@ -59,6 +60,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      */
     function setCreatorName(string memory _creatorName) public onlyOwner {
         _creator_ = _creatorName;
+        emit SetCreatorName(_creatorName);
     }
 
     /**
