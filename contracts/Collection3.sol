@@ -249,12 +249,12 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         _deleteDefaultRoyalty();
     }
 
-    uint256 tokenHoldersCommentFee;
+    uint256 public tokenHoldersCommentFee;
     function setTokenHoldersCommentFee(uint256 _tokenHoldersCommentFee) public onlyOwner {
         tokenHoldersCommentFee = _tokenHoldersCommentFee;
     }
 
-    uint256 guestsCommentFee;
+    uint256 public guestsCommentFee;
     function setGuestsCommentFee(uint256 _guestsCommentFee) public onlyOwner {
         guestsCommentFee = _guestsCommentFee;
     }
