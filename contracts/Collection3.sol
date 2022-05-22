@@ -273,7 +273,6 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         _deleteDefaultRoyalty();
     }
 
-
     /**
      * @notice withdraw specified amount of ETH from contract.
      * @notice only owner of the contract can call this funcion.
