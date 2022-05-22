@@ -64,10 +64,11 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     }
 
     /**
-     * @notice the base uri of the collection on IPFS.
+     * @notice the base URI of the collection on IPFS.
      */
     string private _baseURI_;
 
+    event SetBaseURI(string baseURI_);
     /**
      * @notice change the baseURI.
      * @param baseURI_ base URI of the tokens.
@@ -75,6 +76,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      */
     function setBaseURI(string memory baseURI_) public onlyOwner {
         _baseURI_ = baseURI_;
+        emit SetBaseURI(baseURI_);
     }
 
     /**
@@ -112,7 +114,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      * @param _creator creator of the Collection.
      * @param _name name of Collection tokens.
      * @param _symbol symbol of Collection tokens.
-     * @param _uri the base uri of the collection on IPFS.
+     * @param _uRI the base uRI of the collection on IPFS.
      * @param _maxSupply maximum number of tokens can be minted.
      * @param _owner address of the creator of the Collection.
      * @param _royaltyNumerator the numerator of default token royalties which denumerator is 10000.
@@ -125,7 +127,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         string memory _creator,
         string memory _name, 
         string memory _symbol,
-        string memory _uri,
+        string memory _uRI,
         uint256 _maxSupply,
         address _owner,
         uint96 _royaltyNumerator,
@@ -139,7 +141,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         __ERC721Enumerable_init();
         __ERC721Burnable_init();
         __Ownable_init(_owner);
-        _baseURI_ = _uri;
+        _baseURI_ = _uRI;
         maxSupply = _maxSupply;
         if (_royaltyNumerator > 0) {
             _setDefaultRoyalty(address(this), _royaltyNumerator);
