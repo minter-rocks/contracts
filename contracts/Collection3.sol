@@ -253,6 +253,8 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         }
     }
 
+    mapping(address => uint256) userPaidValue;
+
     uint256 public tokenHoldersCommentFee;
     function setTokenHoldersCommentFee(uint256 _tokenHoldersCommentFee) public onlyOwner {
         tokenHoldersCommentFee = _tokenHoldersCommentFee;
@@ -271,12 +273,14 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      */
     function comment(string memory text) public payable {
         uint256 _userBalance = balanceOf(msg.sender);
+        uint256 paidAmount = msg.value;
         if(_userBalance > 0){
-            require(msg.value > tokenHoldersCommentFee, "Collection: insufficient fee for tokenHolders.");
+            require(paidAmount > tokenHoldersCommentFee, "Collection: insufficient fee for tokenHolders.");
         } else {
-            require(msg.value > tokenHoldersCommentFee, "Collection: insufficient fee for guest.");
+            require(paidAmount > tokenHoldersCommentFee, "Collection: insufficient fee for guest.");
         }
-        emit Comment(msg.sender, _userBalance, msg.value, text, commentIndex);
+        userPaidValue[msg.sender] += paidAmount;
+        emit Comment(msg.sender, _userBalance, paidAmount, text, commentIndex);
         commentIndex++;
     }
 
