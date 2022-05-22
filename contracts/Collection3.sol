@@ -240,15 +240,6 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         super._mint(to, tokenId);
     }
 
-    /**
-     * @notice Delete default royalty of Collection tokens.
-     * @notice It can't be set again after that was removed.
-     * @notice only owner of the contract can call this function.
-     */
-    function deleteDefaultRoyalty() public onlyOwner {
-        _deleteDefaultRoyalty();
-    }
-
     uint256 public tokenHoldersCommentFee;
     function setTokenHoldersCommentFee(uint256 _tokenHoldersCommentFee) public onlyOwner {
         tokenHoldersCommentFee = _tokenHoldersCommentFee;
@@ -271,6 +262,15 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
             require(msg.value > tokenHoldersCommentFee, "Collection: insufficient fee for guest.");
         }
         emit Comment(msg.sender, _userBalance, msg.value, text);
+    }
+
+    /**
+     * @notice Delete default royalty of Collection tokens.
+     * @notice It can't be set again after that was removed.
+     * @notice only owner of the contract can call this function.
+     */
+    function deleteDefaultRoyalty() public onlyOwner {
+        _deleteDefaultRoyalty();
     }
 
 
