@@ -211,6 +211,9 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         mintFeeRatioNumerator = _mintFeeRatioNumerator;
     }
     
+    /**
+     * @notice returns required fee to mint the next token.
+     */
     function mintFee() public view returns(uint256) {
         return baseMintFee + (baseMintFee * _tokenIdCounter.current() * mintFeeRatioNumerator / 10000 );
     }
