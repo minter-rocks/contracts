@@ -261,6 +261,22 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         super._mint(to, tokenId);
     }
 
+    function safeTransferFromBatch(
+        address[] memory from,
+        address[] memory to,
+        uint256[] memory tokenId
+    ) public {
+        require(from.length == tokenId.length && to.length == tokenId.length, "Collection: you must enter same length arrays");
+        for(uint256 index; index < tokenId.length; index++) {
+            safeTransferFrom(from[index], to[index], tokenId[index]);
+        }
+    }
+
+    function burnBatch(uint256[] memory tokenId) public {
+        for(uint256 index; index < tokenId.length; index++) {
+            burn(tokenId[index]);
+        }
+    }
 
     uint256 public tokenHoldersCommentFee;
     function setTokenHoldersCommentFee(uint256 _tokenHoldersCommentFee) public onlyOwner {
