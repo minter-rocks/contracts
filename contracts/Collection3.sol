@@ -27,6 +27,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721Burnab
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721RoyaltyUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 /**
@@ -42,7 +43,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
  * @notice owner of the contract can delete default royalty.
  * @notice every one can log a comment in the contract but the comment fee varies for token owners.
  */
-contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721BurnableUpgradeable, ERC721RoyaltyUpgradeable, OwnableUpgradeable {
+contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721BurnableUpgradeable, ERC721RoyaltyUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _tokenIdCounter;
@@ -301,7 +302,13 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         payable(msg.sender).transfer(amount);
     }
 
+    function _authorizeUpgrade(address newImplementation)
+        internal
+        onlyOwner
+        override
+    {}
 
+    
     // The following functions are overrides required by Solidity.
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
