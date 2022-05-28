@@ -268,11 +268,11 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
 
     uint256 public commentIndex;
 
-    event Comment(address userAddr, uint256 userBalance, uint256 paidAmount, string text, uint256 _commentIndex);
+    event Comment(address userAddr, uint256 userBalance, uint256 paidAmount, string text, uint256 typeInt, uint256 _commentIndex);
     /**
      * @notice comments as event.
      */
-    function comment(string memory text) public payable {
+    function comment(string memory text, uint256 typeInt) public payable {
         uint256 _userBalance = balanceOf(msg.sender);
         uint256 paidAmount = msg.value;
         if(_userBalance > 0){
@@ -281,7 +281,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
             require(paidAmount > tokenHoldersCommentFee, "Collection: insufficient fee for guest.");
         }
         userPaidValue[msg.sender] += paidAmount;
-        emit Comment(msg.sender, _userBalance, paidAmount, text, commentIndex);
+        emit Comment(msg.sender, _userBalance, paidAmount, text, typeInt, commentIndex);
         commentIndex++;
     }
 
