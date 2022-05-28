@@ -37,7 +37,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
  * @notice tokenURIs are all in the same format baseURI/tokenId.
  * @notice totalSupply is limited but can be set by the owner.
  * @notice safeMint by auto increment only.
- * @notice safeMint public and payable and mintFee increases by the tokenId.
+ * @notice safeMint public and payable and _mintFee increases by the tokenId.
  * @notice there is a default royalty which can be set once at initializing time.
  * @notice the contract receives royalties.
  * @notice owner of the contract can delete default royalty.
@@ -190,14 +190,14 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     /**
      * @notice returns required fee to mint the next token.
      */
-    function mintBatchFee(uint256 tokenOffset, uint256 numberOfTokens) public view returns(uint256) {
-        return numberOfTokens * mintFee(tokenOffset + numberOfTokens / 2);
+    function _mintBatchFee(uint256 tokenOffset, uint256 numberOfTokens) internal view returns(uint256) {
+        return numberOfTokens * _mintFee(tokenOffset + numberOfTokens / 2);
     }
     
     /**
      * @notice returns required fee to mint the next token.
      */
-    function mintFee(uint256 tokenIndex) public view returns(uint256) {
+    function _mintFee(uint256 tokenIndex) internal view returns(uint256) {
         return baseMintFee + (baseMintFee * tokenIndex * mintFeeRatioNumerator / 10000 );
     }
 
@@ -208,7 +208,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      * @notice only owner of the contract can call this function.
      */
     function safeMintBatch(address to, uint256 numberOfTokens) public payable {
-        require(msg.value >= mintBatchFee(_tokenIdCounter.current(), numberOfTokens), "Collection: insufficient mint fee");
+        require(msg.value >= _mintBatchFee(_tokenIdCounter.current(), numberOfTokens), "Collection: insufficient mint fee");
         for(uint256 index; index < numberOfTokens; index++) {
             _safeMint(to, _tokenIdCounter.current());
             _tokenIdCounter.increment();
@@ -223,7 +223,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      */
     function safeMint(address to) public payable {
         uint256 tokenId = _tokenIdCounter.current();
-        require(msg.value >= mintFee(tokenId), "Collection: insufficient mint fee");
+        require(msg.value >= _mintFee(tokenId), "Collection: insufficient mint fee");
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
     }
