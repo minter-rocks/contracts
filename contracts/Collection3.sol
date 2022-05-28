@@ -195,10 +195,18 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     }
     
     /**
-     * @notice returns required fee to mint the next token.
+     * @notice returns required fee to mint the specified tokenn.
      */
     function _mintFee(uint256 tokenIndex) internal view returns(uint256) {
         return baseMintFee + (baseMintFee * tokenIndex * mintFeeRatioNumerator / 10000 );
+    }
+
+    /**
+     * @notice returns required fee to mint the next token(s).
+     */
+    function mintFee(uint256 numberOfTokens) public view returns(uint256) {
+        uint256 tokenId =  _tokenIdCounter.current();
+        return numberOfTokens == 1 ? _mintFee(tokenId) : _mintFeeBatch(tokenId, numberOfTokens);
     }
 
     /**
