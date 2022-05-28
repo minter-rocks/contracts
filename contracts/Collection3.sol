@@ -278,7 +278,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         if(_userBalance > 0){
             require(paidAmount > tokenHoldersCommentFee, "Collection: insufficient fee for tokenHolders.");
         } else {
-            require(paidAmount > tokenHoldersCommentFee, "Collection: insufficient fee for guest.");
+            require(paidAmount > guestsCommentFee, "Collection: insufficient fee for guest.");
         }
         userPaidValue[msg.sender] += paidAmount;
         emit Comment(msg.sender, _userBalance, paidAmount, text, typeInt, commentIndex);
