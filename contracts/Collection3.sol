@@ -316,6 +316,28 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         override
     {}
 
+    // weighted tokens
+
+    mapping(uint256 => uint256) _tokenWeight;
+    mapping(address => uint256) _weights;
+
+    function tokenWeight(uint256 tokenId) public view returns(uint256) {
+        return _tokenWeight(tokenId);
+    }
+
+    function ownerHoldingWeight(address _owner) public view returns(uint256) {
+        return _weights[_owner];
+    }
+    
+    function _afterTokenTransfer(address from, address to, uint256 tokenId)
+        internal
+        override(ERC721Upgradeable, ERC721EnumerableUpgradeable)
+    {
+        super._afterTokenTransfer(from, to, tokenId);
+        if(from != address(0)) {_weights[from] -= tokenWeight}
+        if(to != address(0)) {_weights[to] += tokenWeight}
+    }
+
     
     // The following functions are overrides required by Solidity.
 
