@@ -316,17 +316,18 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         override
     {}
 
+
     // weighted tokens
 
     mapping(uint256 => uint256) _tokenWeight;
-    mapping(address => uint256) _weights;
+    mapping(address => uint256) _ownerHoldingWeight;
 
     function tokenWeight(uint256 tokenId) public view returns(uint256) {
         return _tokenWeight(tokenId);
     }
 
     function ownerHoldingWeight(address _owner) public view returns(uint256) {
-        return _weights[_owner];
+        return _ownerHoldingWeight[_owner];
     }
     
     function _afterTokenTransfer(address from, address to, uint256 tokenId)
@@ -334,19 +335,39 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         override(ERC721Upgradeable, ERC721EnumerableUpgradeable)
     {
         super._afterTokenTransfer(from, to, tokenId);
-        if(from != address(0)) {_weights[from] -= tokenWeight}
-        if(to != address(0)) {_weights[to] += tokenWeight}
+        if(from != address(0)) {_ownerHoldingWeight[from] -= tokenWeight}
+        if(to != address(0)) {_ownerHoldingWeight[to] += tokenWeight}
     }
 
+    //voting power
+
+    mapping(address => uint256) _lastVotingPowerRecorded;
+    mapping(address => uint256) _lastTransferTimestamp;
     
-    // The following functions are overrides required by Solidity.
+    function ownerVotingPower(address _owner) public view returns(uint256) {
+        return _lastVotingPowerRecorded[_owner] + (block.timestamp - _lastTransferTimestamp[_owner]) / 1 days * _ownerHoldingWeight[_owner];
+    }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
         override(ERC721Upgradeable, ERC721EnumerableUpgradeable)
     {
         super._beforeTokenTransfer(from, to, tokenId);
+
+        if(from != address(0)) {
+            _lastVotingPowerRecorded[from] = ownerVotingPower(from);
+            _lastTransferTimestamp[from] = block.timestamp;
+        }
+
+        if(to != address(0)) {
+            _lastVotingPowerRecorded[to] = ownerVotingPower(to);
+            _lastTransferTimestamp[to] = block.timestamp;
+        }
+
     }
+
+    
+    // The following functions are overrides required by Solidity.
 
     function _burn(uint256 tokenId)
         internal
