@@ -229,7 +229,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      * @dev the tokenId will be earned automatically.
      * @notice only owner of the contract can call this function.
      */
-    function safeMint(address to) public payable {
+    function safeMint(address to, uint256 tokenWeight) public payable {
         uint256 tokenId = _tokenIdCounter.current();
         require(msg.value >= _mintFee(tokenId), "Collection: insufficient mint fee");
         _tokenIdCounter.increment();
@@ -329,6 +329,10 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     mapping(uint256 => uint256) _tokenWeight;
     mapping(address => uint256) _ownerHoldingWeight;
 
+    function _setTokenWeight(uint256 _weight) internal {
+        _tokenWeight[tokenId] = _weight;
+    }
+    
     function tokenWeight(uint256 tokenId) public view returns(uint256) {
         return _tokenWeight[tokenId];
     }
