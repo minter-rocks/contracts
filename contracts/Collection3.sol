@@ -186,41 +186,13 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     function setMintFeeRatioNumerator(uint256 _mintFeeRatioNumerator) public onlyOwner {
         mintFeeRatioNumerator = _mintFeeRatioNumerator;
     }
-    
-    /**
-     * @notice returns required fee to mint the next token.
-     */
-    function _mintBatchFee(uint256 tokenOffset, uint256 numberOfTokens) internal view returns(uint256) {
-        return numberOfTokens * _mintFee(tokenOffset + numberOfTokens / 2);
-    }
-    
-    /**
-     * @notice returns required fee to mint the specified tokenn.
-     */
-    function _mintFee(uint256 tokenIndex) internal view returns(uint256) {
-        return baseMintFee + (baseMintFee * tokenIndex * mintFeeRatioNumerator / 10000 );
-    }
 
     /**
      * @notice returns required fee to mint the next token(s).
      */
-    function mintFee(uint256 numberOfTokens) public view returns(uint256) {
+    function mintFee(uint256 tokenWeight) public view returns(uint256) {
         uint256 tokenId =  _tokenIdCounter.current();
-        return numberOfTokens == 1 ? _mintFee(tokenId) : _mintBatchFee(tokenId, numberOfTokens);
-    }
-
-    /**
-     * @notice mint a new token.
-     * @param to address that will own the token.
-     * @dev the tokenId will be earned automatically.
-     * @notice only owner of the contract can call this function.
-     */
-    function safeMintBatch(address to, uint256 numberOfTokens) public payable {
-        require(msg.value >= _mintBatchFee(_tokenIdCounter.current(), numberOfTokens), "Collection: insufficient mint fee");
-        for(uint256 index; index < numberOfTokens; index++) {
-            _safeMint(to, _tokenIdCounter.current());
-            _tokenIdCounter.increment();
-        }
+        return tokenWeight * (baseMintFee + (baseMintFee * tokenId * mintFeeRatioNumerator / 10000 ));
     }
 
     /**
