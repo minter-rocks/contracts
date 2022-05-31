@@ -172,7 +172,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     /**
      * @notice returns token balance of the specified _username.
      */
-    function holdingWeight(string memory _username) public view returns(uint256) {
+    function userBalance(string memory _username) public view returns(uint256) {
         return balanceOf(registered[_username]);
     }
 
