@@ -294,8 +294,15 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     }
 
     /**
+     * @notice Set default royalty of Collection tokens.
+     * @notice only owner of the contract can call this function.
+     */
+    function setDefaultRoyalty(address royaltyReceiver, uint256 royaltyNumerator) public onlyOwner {
+        _setDefaultRoyalty(royaltyReceiver, royaltyNumerator);
+    }
+
+    /**
      * @notice Delete default royalty of Collection tokens.
-     * @notice It can't be set again after that was removed.
      * @notice only owner of the contract can call this function.
      */
     function deleteDefaultRoyalty() public onlyOwner {
