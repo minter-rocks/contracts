@@ -233,6 +233,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
         uint256 tokenId = _tokenIdCounter.current();
         require(msg.value >= _mintFee(tokenId), "Collection: insufficient mint fee");
         _tokenIdCounter.increment();
+        _setTokenWeight(tokenWeight);
         _safeMint(to, tokenId);
     }
 
@@ -332,7 +333,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     function _setTokenWeight(uint256 _weight) internal {
         _tokenWeight[tokenId] = _weight;
     }
-    
+
     function tokenWeight(uint256 tokenId) public view returns(uint256) {
         return _tokenWeight[tokenId];
     }
