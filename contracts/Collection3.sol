@@ -172,7 +172,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     /**
      * @notice returns token balance of the specified _username.
      */
-    function userBalance(string memory _username) public view returns(uint256) {
+    function holdingWeight(string memory _username) public view returns(uint256) {
         return balanceOf(registered[_username]);
     }
 
@@ -276,20 +276,20 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
 
     uint256 public commentIndex;
 
-    event Comment(address userAddr, uint256 userBalance, uint256 paidAmount, string text, uint256 typeInt, uint256 _commentIndex);
+    event Comment(address userAddr, uint256 holdingWeight, uint256 paidAmount, string text, uint256 typeInt, uint256 _commentIndex);
     /**
      * @notice comments as event.
      */
     function comment(string memory text, uint256 typeInt) public payable {
-        uint256 _userBalance = balanceOf(msg.sender);
+        uint256 _holdingWeight = ownerHoldingWeight(msg.sender);
         uint256 paidAmount = msg.value;
-        if(_userBalance > 0){
+        if(_holdingWeight > 0){
             require(paidAmount > tokenHoldersCommentFee, "Collection: insufficient fee for tokenHolders.");
         } else {
             require(paidAmount > guestsCommentFee, "Collection: insufficient fee for guest.");
         }
         userPaidValue[msg.sender] += paidAmount;
-        emit Comment(msg.sender, _userBalance, paidAmount, text, typeInt, commentIndex);
+        emit Comment(msg.sender, _holdingWeight, paidAmount, text, typeInt, commentIndex);
         commentIndex++;
     }
 
