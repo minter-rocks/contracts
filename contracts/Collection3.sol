@@ -297,7 +297,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
      * @notice Set default royalty of Collection tokens.
      * @notice only owner of the contract can call this function.
      */
-    function setDefaultRoyalty(address royaltyReceiver, uint256 royaltyNumerator) public onlyOwner {
+    function setDefaultRoyalty(address royaltyReceiver, uint96 royaltyNumerator) public onlyOwner {
         _setDefaultRoyalty(royaltyReceiver, royaltyNumerator);
     }
 
@@ -330,7 +330,7 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     mapping(address => uint256) _ownerHoldingWeight;
 
     function tokenWeight(uint256 tokenId) public view returns(uint256) {
-        return _tokenWeight(tokenId);
+        return _tokenWeight[tokenId];
     }
 
     function ownerHoldingWeight(address _owner) public view returns(uint256) {
@@ -339,11 +339,11 @@ contract Collection is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrade
     
     function _afterTokenTransfer(address from, address to, uint256 tokenId)
         internal
-        override(ERC721Upgradeable, ERC721EnumerableUpgradeable)
+        override
     {
         super._afterTokenTransfer(from, to, tokenId);
-        if(from != address(0)) {_ownerHoldingWeight[from] -= tokenWeight}
-        if(to != address(0)) {_ownerHoldingWeight[to] += tokenWeight}
+        if(from != address(0)) {_ownerHoldingWeight[from] -= tokenWeight(tokenId);}
+        if(to != address(0)) {_ownerHoldingWeight[to] += tokenWeight(tokenId);}
     }
 
     //voting power
