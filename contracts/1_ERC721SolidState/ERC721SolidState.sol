@@ -11,8 +11,8 @@ import { LibDiamond } from '../0_diamond/libraries/LibDiamond.sol';
 contract ERC721SolidState is ERC721 {
 
     function init() external {
-        _setName("OnChain-Characters");
-        _setSymbol("char");
+        _setName("Minter.Rocks Donation");
+        _setSymbol("Donate");
 
         LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
         ds.supportedInterfaces[type(IERC721).interfaceId] = true;
