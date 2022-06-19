@@ -10,6 +10,8 @@ library ChatRoomStorage {
     struct Layout {
         mapping(address => string) users;
         mapping(string => address) registered;
+        uint256 commentIndex;
+        uint256 guestCommentFee;
     }
 
     function layout() internal pure returns (Layout storage l) {

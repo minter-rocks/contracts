@@ -12,6 +12,10 @@ abstract contract DonationInternal {
         return DonationStorage.layout().nextTokenId++;
     }
 
+    function _userTotalDonation(address userAddr) internal view returns(uint256) {
+        return DonationStorage.layout().userTotalDonation[userAddr];
+    }
+
     function _newDonation(
         uint256 id,
         string memory tag,

@@ -10,6 +10,7 @@ library DonationStorage {
     struct Layout {
         uint256 nextTokenId;
         mapping(uint256 => Donate) donates;
+        mapping(address => uint256) userTotalDonation;
         string notification;
     }
 

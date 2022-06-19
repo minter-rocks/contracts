@@ -11,6 +11,15 @@ contract ChatRoomInternal {
     using StringUtil for string;
     using LiteralRegex for string;
 
+    event Comment(
+        string username_, 
+        address userAddr, 
+        uint256 userTotalDonation, 
+        uint256 paidAmount, 
+        string text, 
+        uint256 typeInt, 
+        uint256 commentIndex_
+    );
     event Register(address userAddr, string username);
     event UnRegister(address _userAddr);
 
@@ -50,5 +59,32 @@ contract ChatRoomInternal {
      */
     function _username(address userAddr) public view returns(string memory) {
         return ChatRoomStorage.layout().users[userAddr];
+    }
+
+    function _comment(
+        address userAddr,
+        uint256 userTotalDonation,
+        uint256 paidAmount,
+        string memory text,
+        uint256 typeInt
+    ) internal {
+
+        if(userTotalDonation == 0){
+            require(paidAmount > ChatRoomStorage.layout().guestCommentFee, "Collection: insufficient fee for guest.");
+        }
+
+        emit Comment(
+            _username(userAddr),
+            userAddr, 
+            userTotalDonation, 
+            paidAmount, 
+            text, 
+            typeInt, 
+            ChatRoomStorage.layout().commentIndex++
+        );
+    }
+
+    function _setGuestCommentFee(uint256 commentFee) internal {
+        ChatRoomStorage.layout().guestCommentFee = commentFee;
     }
 }
