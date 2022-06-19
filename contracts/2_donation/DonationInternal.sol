@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.7;
+
+import "./DonationStorage.sol";
+
+abstract contract DonationInternal {
+    using DonationStorage for DonationStorage.Layout;
+    using DonationStorage for DonationStorage.Donate;
+
+    function _nextTokenId() internal returns(uint256) {
+        return DonationStorage.layout().nextTokenId++;
+    }
+
+    function _newDonation(
+        uint256 id,
+        string memory tag,
+        uint256 amount_Matic,
+        uint256 amount_USD,
+        uint256 blockNumber
+    ) internal {
+        DonationStorage.layout().donates[id] = DonationStorage.Donate(
+            tag, 
+            amount_Matic, 
+            amount_USD, 
+            blockNumber
+        );
+    }
+
+    function _newNotification(string memory notification) internal {
+        DonationStorage.layout().notification = notification;
+    }
+}
