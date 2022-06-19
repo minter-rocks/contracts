@@ -15,6 +15,11 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
 
 
     function donate(string memory tag) public payable {
+        uint256 paidAmount = msg.value;
+        require(
+            paidAmount >= 10 ** 18,
+            "Donation: minimum donation is 1 MATIC."
+        );
         require(
             bytes(tag).length < 40,
             "Donation: please insert a tag lesser than 40 characters."
@@ -22,7 +27,6 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         uint256 tokenId = _nextTokenId();
         _safeMint(msg.sender, tokenId);
 
-        uint256 paidAmount = msg.value;
         _newDonation(tokenId, tag, paidAmount, _IN_USD_18(paidAmount), block.number);
     }
 
