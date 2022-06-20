@@ -25,9 +25,10 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
             "Donation: please insert a tag lesser than 40 characters."
         );
         uint256 tokenId = _nextTokenId();
-        _safeMint(msg.sender, tokenId);
+        address userAddr = msg.sender;
+        _safeMint(userAddr, tokenId);
 
-        _newDonation(tokenId, tag, paidAmount, _IN_USD_18(paidAmount), block.number);
+        _newDonation(userAddr, tokenId, tag, paidAmount, _IN_USD_18(paidAmount), block.number);
     }
 
     function newNotification(string memory notification) public onlyOwner {
