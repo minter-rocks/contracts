@@ -30,7 +30,7 @@ abstract contract DonationInternal {
             tag, 
             amount_Matic, 
             amount_USD, 
-            amount_Matic / l.powerDenumenator,
+            amount_Matic * l.powerNumenator / 10000,
             blockNumber
         );
         l.userTotalDonation[userAddr] += amount_USD;
