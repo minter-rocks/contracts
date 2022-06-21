@@ -9,6 +9,7 @@ library DonationStorage {
 
     struct Layout {
         uint256 nextTokenId;
+        uint256 powerDenumenator;
         mapping(uint256 => Donate) donates;
         mapping(address => uint256) userTotalDonation;
         string notification;
@@ -18,6 +19,7 @@ library DonationStorage {
         string tag;
         uint256 amount_MATIC;
         uint256 amount_USD;
+        uint256 votingPower;
         uint256 blockNumber;
     }
 

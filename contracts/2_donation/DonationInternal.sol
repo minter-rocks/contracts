@@ -26,7 +26,13 @@ abstract contract DonationInternal {
     ) internal {
         DonationStorage.Layout storage l = DonationStorage.layout();
 
-        l.donates[id] = DonationStorage.Donate(tag, amount_Matic, amount_USD, blockNumber);
+        l.donates[id] = DonationStorage.Donate(
+            tag, 
+            amount_Matic, 
+            amount_USD, 
+            amount_Matic / l.powerDenumenator,
+            blockNumber
+        );
         l.userTotalDonation[userAddr] += amount_USD;
     }
 
