@@ -13,7 +13,6 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         _;
     }
 
-
     function donate(string memory tag) public payable {
         uint256 paidAmount = msg.value;
         require(
@@ -35,4 +34,7 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         _newNotification(notification);
     }
 
+    function withdraw(uint256 amount) public onlyOwner {
+        payable(msg.sender).transfer(amount);
+    }
 }
