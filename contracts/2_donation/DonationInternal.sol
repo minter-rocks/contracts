@@ -36,6 +36,10 @@ abstract contract DonationInternal {
         l.userTotalDonation[userAddr] += amount_USD;
     }
 
+    function _setPowerNumenator(uint256 powerNumenator) internal {
+        DonationStorage.layout().powerNumenator = powerNumenator;
+    }
+
     function _newNotification(string memory notification) internal {
         DonationStorage.layout().notification = notification;
     }

@@ -13,6 +13,10 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         _;
     }
 
+    function init() public {
+        _setPowerNumenator(10000);
+    }
+
     function donate(string memory tag) public payable {
         uint256 paidAmount = msg.value;
         require(
