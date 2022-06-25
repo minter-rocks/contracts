@@ -27,7 +27,7 @@ contract OnchainMetadata is ERC721BaseInternal {
                 '"image": "', 
                     _image({
                         tag : d.donates[tokenId].tag,
-                        cardPower : d.donates[tokenId].votingPower.floatString(18, 4),
+                        cardPower : d.donates[tokenId].votingPower.floatString(20, 4),
                         notification : d.notification,
                         blockNumber : d.donates[tokenId].blockNumber.toString(),
                         donationMatic : d.donates[tokenId].amount_MATIC.floatString(18, 2),
