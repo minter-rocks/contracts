@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.0;
 
+import { Pausable } from '@solidstate/contracts/security/Pausable.sol';
 import { ERC721Base, ERC721BaseInternal } from './base/ERC721Base.sol';
 import { ERC721Enumerable } from './enumerable/ERC721Enumerable.sol';
 import { ERC721Metadata } from './metadata/ERC721Metadata.sol';
@@ -9,7 +10,7 @@ import { ERC721Metadata } from './metadata/ERC721Metadata.sol';
 /**
  * @title SolidState ERC721 implementation, including recommended extensions
  */
-abstract contract ERC721 is ERC721Base, ERC721Enumerable, ERC721Metadata {
+abstract contract ERC721 is Pausable, ERC721Base, ERC721Enumerable, ERC721Metadata {
     
     /**
      * @notice ERC721 hook: revert if value is included in external approve function call
@@ -45,7 +46,12 @@ abstract contract ERC721 is ERC721Base, ERC721Enumerable, ERC721Metadata {
         address from,
         address to,
         uint256 tokenId
-    ) internal virtual override(ERC721BaseInternal, ERC721Metadata) {
+    ) 
+        internal 
+        virtual 
+        override(ERC721BaseInternal, ERC721Metadata) 
+        whenNotPaused
+    {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 }

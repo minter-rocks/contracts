@@ -18,4 +18,14 @@ contract ERC721SolidState is ERC721 {
         ds.supportedInterfaces[type(IERC721).interfaceId] = true;
         ds.supportedInterfaces[type(IERC721Enumerable).interfaceId] = true;
     }
+
+    function pause() public {
+        LibDiamond.enforceIsContractOwner();
+        _pause();
+    }
+
+    function unpause() public {
+        LibDiamond.enforceIsContractOwner();
+        _unpause();
+    }
 }
