@@ -30,10 +30,14 @@ abstract contract DonationInternal {
             tag, 
             amount_Matic, 
             amount_USD, 
-            amount_Matic * l.powerNumenator / 10000,
+            consumePower(amount_Matic),
             blockNumber
         );
         l.userTotalDonation[userAddr] += amount_USD;
+    }
+
+    function consumePower(uint256 paidAmount) internal returns(uint256) {
+        return paidAmount * DonationStorage.layout().powerNumenator-- / 10000;
     }
 
     function _setPowerNumenator(uint256 powerNumenator) internal {
