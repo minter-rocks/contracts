@@ -12,7 +12,13 @@ contract ChatRoom is DonationInternal, ChatRoomInternal{
         LibDiamond.enforceIsContractOwner();
         _;
     }
+
+    function init() public {}
     
+    function registered(string memory username_) public view returns(bool) {
+        return _registered(username_);
+    }
+
     function register(string memory username_) public {
         _register(msg.sender, username_);
     }    

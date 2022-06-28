@@ -23,6 +23,10 @@ contract ChatRoomInternal {
     event Register(address userAddr, string username);
     event UnRegister(address _userAddr);
 
+    function _registered(string memory username_) internal view returns(bool) {
+        return ChatRoomStorage.layout().registered[username_.lower()] != address(0);
+    }
+
     function _register(address userAddr, string memory username_) public {
         ChatRoomStorage.Layout storage l = ChatRoomStorage.layout();
 
