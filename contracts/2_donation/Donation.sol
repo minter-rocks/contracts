@@ -14,7 +14,7 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
     }
 
     function init() public {
-        _setPowerNumenator(10000000);
+        _setPowerNumenator(10 ** 10);
         _setMinDonation(10 ** 18);
     }
 
@@ -22,7 +22,7 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         uint256 paidAmount = msg.value;
         require(
             bytes(tag).length < 20,
-            "Donation: please insert a tag lesser than 40 characters."
+            "Donation: please insert a tag lesser than 20 characters."
         );
         uint256 tokenId = _nextTokenId();
         address userAddr = msg.sender;

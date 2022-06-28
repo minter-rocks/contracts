@@ -16,16 +16,16 @@ abstract contract DonationInternal {
         return DonationStorage.layout().donates[tokenId].votingPower;
     }
 
-    function _userTotalDonation(address userAddr) internal view returns(uint256) {
-        return DonationStorage.layout().userTotalDonation[userAddr];
+    function _userPower(address userAddr) internal view returns(uint256) {
+        return DonationStorage.layout().userPower[userAddr];
     }
 
-    function _increaseUserTotalDonation(address userAddr, uint256 amount) internal {
-        DonationStorage.layout().userTotalDonation[userAddr] += amount;
+    function _increaseUserPower(address userAddr, uint256 amount) internal {
+        DonationStorage.layout().userPower[userAddr] += amount;
     }
 
-    function _decreaseUserTotalDonation(address userAddr, uint256 amount) internal {
-        DonationStorage.layout().userTotalDonation[userAddr] -= amount;
+    function _decreaseUserPower(address userAddr, uint256 amount) internal {
+        DonationStorage.layout().userPower[userAddr] -= amount;
     }
 
     function _newDonation(
@@ -38,22 +38,25 @@ abstract contract DonationInternal {
     ) internal {
         DonationStorage.Layout storage l = DonationStorage.layout();
         require(
-            amount_Matic >= 10 ** 18,
-            "DonationInternal: minimum donation is 1 MATIC."
+            amount_Matic >= l.minDonation,
+            "DonationInternal: minimum donation error."
         );
+
+        uint256 power = _consumePower(amount_Matic);
+
         l.donates[id] = DonationStorage.Donate(
             tag, 
             amount_Matic, 
             amount_USD, 
-            _consumePower(amount_Matic),
+            power,
             blockNumber
         );
-        l.userTotalDonation[userAddr] += amount_USD;
+        l.userPower[userAddr] += power;
     }
 
     function _consumePower(uint256 paidAmount) internal returns(uint256 powerAmount) {
-        powerAmount = paidAmount * DonationStorage.layout().powerNumenator / 1000000;
-        DonationStorage.layout().powerNumenator -= DonationStorage.layout().powerNumenator / 100000;
+        powerAmount = paidAmount / (10 ** 8) * DonationStorage.layout().powerNumenator;
+        DonationStorage.layout().powerNumenator -= DonationStorage.layout().powerNumenator / 300;
     }
 
     function _setPowerNumenator(uint256 powerNumenator) internal {

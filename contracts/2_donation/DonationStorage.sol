@@ -12,7 +12,7 @@ library DonationStorage {
         uint256 minDonation;
         uint256 powerNumenator; //denumerator is 10,000
         mapping(uint256 => Donate) donates;
-        mapping(address => uint256) userTotalDonation;
+        mapping(address => uint256) userPower;
         string notification;
     }
 
