@@ -13,8 +13,6 @@ contract ChatRoom is DonationInternal, ChatRoomInternal{
         _;
     }
 
-    function init() public {}
-    
     function registered(string memory username_) public view returns(bool) {
         return _registered(username_);
     }
