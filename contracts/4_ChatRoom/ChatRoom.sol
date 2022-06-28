@@ -29,7 +29,7 @@ contract ChatRoom is DonationInternal, ChatRoomInternal{
     function comment(string memory text, uint256 typeInt) public payable {
         _comment({
             userAddr : msg.sender, 
-            userTotalDonation : _userTotalDonation(msg.sender), 
+            userPower : _userPower(msg.sender), 
             paidAmount : msg.value, 
             text : text, 
             typeInt : typeInt

@@ -13,11 +13,11 @@ contract ChatRoomInternal {
 
     event Comment(
         string username_, 
-        address userAddr, 
-        uint256 userTotalDonation, 
+        address indexed userAddr, 
+        uint256 userPower, 
         uint256 paidAmount, 
         string text, 
-        uint256 typeInt, 
+        uint256 indexed typeInt, 
         uint256 commentIndex_
     );
     event Register(address userAddr, string username);
@@ -63,20 +63,23 @@ contract ChatRoomInternal {
 
     function _comment(
         address userAddr,
-        uint256 userTotalDonation,
+        uint256 userPower,
         uint256 paidAmount,
         string memory text,
         uint256 typeInt
     ) internal {
 
-        if(userTotalDonation == 0){
-            require(paidAmount > ChatRoomStorage.layout().guestCommentFee, "Collection: insufficient fee for guest.");
+        if(userPower == 0){
+            require(
+                paidAmount > ChatRoomStorage.layout().guestCommentFee,
+                "Collection: insufficient fee for guest."
+            );
         }
 
         emit Comment(
             _username(userAddr),
             userAddr, 
-            userTotalDonation, 
+            userPower, 
             paidAmount, 
             text, 
             typeInt, 
