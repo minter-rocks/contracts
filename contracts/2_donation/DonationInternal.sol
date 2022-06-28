@@ -52,6 +52,7 @@ abstract contract DonationInternal {
             blockNumber
         );
         l.userPower[userAddr] += power;
+        l.totalDonation += amount_Matic;
     }
 
     function _consumePower(uint256 paidAmount) internal returns(uint256 powerAmount) {
@@ -70,4 +71,5 @@ abstract contract DonationInternal {
     function _newNotification(string memory notification) internal {
         DonationStorage.layout().notification = notification;
     }
+
 }

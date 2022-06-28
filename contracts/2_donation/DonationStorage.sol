@@ -14,6 +14,7 @@ library DonationStorage {
         mapping(uint256 => Donate) donates;
         mapping(address => uint256) userPower;
         string notification;
+        uint256 totalDonation;
     }
 
     struct Donate {

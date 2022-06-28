@@ -28,7 +28,10 @@ contract OnchainMetadata is ERC721BaseInternal {
                     _image({
                         tag : d.donates[tokenId].tag,
                         cardPower : d.donates[tokenId].votingPower.floatString(20, 4),
-                        notification : address(this).balance.floatString(18, 2),
+                        notification : string.concat(
+                            'First Goal: ',
+                            d.totalDonation.floatString(18, 2),
+                            'of 8000'),
                         blockNumber : d.donates[tokenId].blockNumber.toString(),
                         donationMatic : d.donates[tokenId].amount_MATIC.floatString(18, 2),
                         donationUSD : d.donates[tokenId].amount_USD.floatString(18, 2)
@@ -57,9 +60,9 @@ contract OnchainMetadata is ERC721BaseInternal {
                 blockNumber,
                 '</text><text class="cls-6" transform="translate(54 708)"> this card has ',
                 cardPower,
-                ' power in chat room.</text><text class="cls-7" transform="translate(54 806)"> First Goal: ',
+                ' power in chat room.</text><text class="cls-7" transform="translate(54 806)">',
                 notification,
-                ' of 8000</text><text class="cls-8" transform="translate(54 223)"> ',
+                '</text><text class="cls-8" transform="translate(54 223)"> ',
                 bytes(tag).length == 0 ?'I Love NFT' : tag,
                 '</text><text class="cls-8" transform="translate(54.94 138.23)"> Minter.Rocks</text><circle class="cls-9" cx="131.66" cy="385.4" r="15"/><circle class="cls-9" cx="223.68" cy="322.15" r="4.36"/><circle class="cls-10" cx="309.36" cy="336.47" r="12.64"/><circle class="cls-10" cx="60.97" cy="363.44" r="6.97"/><circle class="cls-11" cx="172.69" cy="346.76" r="5.86"/><circle class="cls-11" cx="366.05" cy="375.72" r="7.24"/><circle class="cls-12" cx="235.63" cy="378.39" r="7.59"/><circle class="cls-12" cx="430.01" cy="349.11" r="10.01"/><circle class="cls-12" cx="97.76" cy="320.03" r="3.8"/></svg>'
         );

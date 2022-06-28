@@ -36,7 +36,7 @@ contract ERC721SolidState is ERC721, DonationInternal {
         uint256 tokenId
     ) internal virtual override {
         uint256 cardPower = _cardPower(tokenId);
-        if(from == address(0)) {
+        if(from != address(0)) {
             _decreaseUserPower(from, cardPower);
         }
         if(to != address(0)) {
