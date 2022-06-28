@@ -43,7 +43,7 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         return address(this).balance;
     }
 
-    function withdraw(uint256 amount) public onlyOwner {
-        payable(msg.sender).transfer(amount);
+    function withdraw(uint256 amount, address receiver) public onlyOwner {
+        payable(receiver).transfer(amount);
     }
 }
