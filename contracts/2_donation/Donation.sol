@@ -14,17 +14,14 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
     }
 
     function init() public {
-        _setPowerNumenator(100000);
+        _setPowerNumenator(10000000);
+        _setMinDonation(10 ** 18);
     }
 
     function donate(string memory tag) public payable {
         uint256 paidAmount = msg.value;
         require(
-            paidAmount >= 10 ** 18,
-            "Donation: minimum donation is 1 MATIC."
-        );
-        require(
-            bytes(tag).length < 40,
+            bytes(tag).length < 20,
             "Donation: please insert a tag lesser than 40 characters."
         );
         uint256 tokenId = _nextTokenId();
@@ -36,6 +33,14 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
 
     function newNotification(string memory notification) public onlyOwner {
         _newNotification(notification);
+    }
+
+    function setMinDonation(uint256 amount) public onlyOwner {
+        _setMinDonation(amount);
+    }
+
+    function contractBalance() public view returns(uint256) {
+        return address(this).balance;
     }
 
     function withdraw(uint256 amount) public onlyOwner {

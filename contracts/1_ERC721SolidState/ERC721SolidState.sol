@@ -7,8 +7,9 @@ import { IERC721Enumerable } from './enumerable/IERC721Enumerable.sol';
 import { IERC721 } from './IERC721.sol';
 import { ERC721 } from './ERC721.sol';
 import { LibDiamond } from '../0_diamond/libraries/LibDiamond.sol';
+import { DonationInternal } from '../2_donation/DonationInternal.sol';
 
-contract ERC721SolidState is ERC721 {
+contract ERC721SolidState is ERC721, DonationInternal {
 
     function init() external {
         _setName("Minter.Rocks Donation");
@@ -28,4 +29,19 @@ contract ERC721SolidState is ERC721 {
         LibDiamond.enforceIsContractOwner();
         _unpause();
     }
+
+    function _afterTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual override {
+        uint256 cardPower = _cardPower(tokenId);
+        if(from == address(0)) {
+            _decreaseUserTotalDonation(from, cardPower);
+        }
+        if(to != address(0)) {
+            _increaseUserTotalDonation(to, cardPower);
+        }
+    }
+    
 }

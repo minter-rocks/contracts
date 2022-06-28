@@ -80,6 +80,8 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         l.holderTokens[to].add(tokenId);
         l.tokenOwners.set(tokenId, to);
 
+        _afterTokenTransfer(address(0), to, tokenId);
+
         emit Transfer(address(0), to, tokenId);
     }
 
@@ -110,6 +112,8 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         l.holderTokens[owner].remove(tokenId);
         l.tokenOwners.remove(tokenId);
 
+        _afterTokenTransfer(owner, address(0), tokenId);
+
         emit Transfer(owner, address(0), tokenId);
     }
 
@@ -132,6 +136,8 @@ abstract contract ERC721BaseInternal is IERC721Internal {
         l.holderTokens[from].remove(tokenId);
         l.holderTokens[to].add(tokenId);
         l.tokenOwners.set(tokenId, to);
+
+        _afterTokenTransfer(from, to, tokenId);
 
         emit Transfer(from, to, tokenId);
     }
@@ -221,6 +227,19 @@ abstract contract ERC721BaseInternal is IERC721Internal {
      * @param tokenId id of transferred token
      */
     function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual {}
+
+    /**
+     * @notice ERC721 hook, called after all transfers including mint and burn
+     * @dev function should be overridden and new implementation must call super
+     * @param from sender of token
+     * @param to receiver of token
+     * @param tokenId id of transferred token
+     */
+    function _afterTokenTransfer(
         address from,
         address to,
         uint256 tokenId
