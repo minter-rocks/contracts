@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="100 0 300 500" width="300" height="500" xmlns="http://www.w3.org/2000/svg">
+  <polyline style="fill: none; stroke-opacity: 0.22; stroke-width: 3px; stroke-linejoin: round; stroke-linecap: round; stroke: rgb(75, 40, 30);" 
+  points="90.317 99.439 457.137 74.755 90.892 206.787 406.047 251.563 418.102 27.108 74.818 377.854 441.064 373.836 72.522 489.221 74.818 481.758"/>
+</svg>
