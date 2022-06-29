@@ -27,7 +27,7 @@ contract ChatRoomInternal {
         return ChatRoomStorage.layout().registered[username_.lower()] != address(0);
     }
 
-    function _register(address userAddr, string memory username_) public {
+    function _register(address userAddr, string memory username_) internal {
         ChatRoomStorage.Layout storage l = ChatRoomStorage.layout();
 
         require(
@@ -51,7 +51,7 @@ contract ChatRoomInternal {
     /**
      * @notice delete your username.
      */
-    function _unRegister(address userAddr) public {
+    function _unRegister(address userAddr) internal {
         ChatRoomStorage.Layout storage l = ChatRoomStorage.layout();
         delete l.registered[l.users[userAddr].lower()];
         delete l.users[userAddr];
@@ -61,7 +61,7 @@ contract ChatRoomInternal {
     /**
      * @notice returns the username of the specified address.
      */
-    function _username(address userAddr) public view returns(string memory) {
+    function _username(address userAddr) internal view returns(string memory) {
         return ChatRoomStorage.layout().users[userAddr];
     }
 

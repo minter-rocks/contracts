@@ -27,9 +27,9 @@ contract OnchainMetadata is ERC721BaseInternal {
                 '"image": "', 
                     _image({
                         tag : d.donates[tokenId].tag,
-                        cardPower : d.donates[tokenId].votingPower.floatString(20, 4),
+                        cardPower : d.donates[tokenId].votingPower.floatString(20, 3),
                         notification : bytes(d.notification).length > 0 ? d.notification : 
-                        string.concat('First Goal: ',d.totalDonation.floatString(18, 2),'of 8000'),
+                        string.concat('First Goal : ',d.totalDonation.floatString(18, 2),' of 8000 MATIC'),
                         blockNumber : d.donates[tokenId].blockNumber.toString(),
                         donationMatic : d.donates[tokenId].amount_MATIC.floatString(18, 2),
                         donationUSD : d.donates[tokenId].amount_USD.floatString(18, 2)
@@ -51,10 +51,8 @@ contract OnchainMetadata is ERC721BaseInternal {
         
         string memory imageString = string.concat(
                 '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 493 840"><defs><style>.cls-1{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3,.cls-7{fill:#fff;}.cls-4{fill:#f8f8f8;}.cls-5{font-size:32px;}.cls-5,.cls-8{font-family:Poppins-SemiBold, Poppins;font-weight:600;}.cls-6,.cls-7{font-size:24px;font-family:Poppins-Regular, Poppins;}.cls-8{font-size:40px;}.cls-9{fill:#86efac;}.cls-10{fill:#a5f3fc;}.cls-11{fill:#fca5a5;}.cls-12{fill:#fef08a;}</style><clipPath id="clip-path" transform="translate(6)"><rect class="cls-1" width="480" height="840" rx="48"/></clipPath></defs><g class="cls-2"><rect class="cls-3" x="6" width="480" height="840" rx="48"/><rect class="cls-4" x="41" y="81" width="341" height="83" rx="10"/><rect class="cls-4" x="41" y="408" width="410" height="181" rx="10"/><rect y="761" width="493" height="79"/></g><text class="cls-5" transform="translate(54 462)">',
-                donationMatic,
-                '<tspan x="20.61" y="0" xml:space="preserve"> ',
-                'MATIC (', donationUSD, ' $)',
-                '</tspan></text><text class="cls-5" transform="translate(54 516)"> Donate</text><text class="cls-6" transform="translate(54 560)"> Block Number : ',
+                donationMatic, ' MATIC (', donationUSD, ' $)',
+                '</text><text class="cls-5" transform="translate(54 516)"> Donate</text><text class="cls-6" transform="translate(54 560)"> Block Number : ',
                 blockNumber,
                 '</text><text class="cls-6" transform="translate(54 708)"> card voting power : ',
                 cardPower,
