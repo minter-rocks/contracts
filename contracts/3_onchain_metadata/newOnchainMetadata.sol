@@ -66,7 +66,7 @@
 //         while(tokenId > 1000) {
 //             points = string.concat(
 //                 points,
-//                 ((tokenId /= 1000) % 1000).toString(),
+//                 ((tokenId /= 1000) % 1000 / 2).toString(),
 //                 " "
 //             );
 //         }
