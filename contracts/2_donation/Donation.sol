@@ -5,6 +5,7 @@ import "../0_diamond/libraries/LibDiamond.sol";
 import "../1_ERC721SolidState/base/ERC721BaseInternal.sol";
 import "./DonationInternal.sol";
 import "./utils/PriceFeed.sol";
+import "./utils/SVGTextRegex.sol";
 
 contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
 
@@ -23,6 +24,10 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         require(
             bytes(tag).length < 20,
             "Donation: please insert a tag lesser than 20 characters."
+        );
+        require(
+            SVGTextRegex.isValid(tag),
+            'Donation: the tag cannot contain [&"<]'
         );
         uint256 tokenId = _nextTokenId();
         address userAddr = msg.sender;
