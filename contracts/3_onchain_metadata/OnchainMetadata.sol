@@ -8,6 +8,7 @@ import '@solidstate/contracts/utils/AddressUtils.sol';
 import '@solidstate/contracts/utils/UintUtils.sol';
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "./utils/UintToFloatString.sol";
+import "./utils/SVGTextValidator.sol";
 
 contract OnchainMetadata is ERC721BaseInternal {
     using AddressUtils for address;
@@ -26,7 +27,7 @@ contract OnchainMetadata is ERC721BaseInternal {
                 '"description": "donation receipt card", ',
                 '"image": "', 
                     _image({
-                        tag : d.donates[tokenId].tag,
+                        tag : SVGTextValidator.validate(d.donates[tokenId].tag),
                         cardPower : d.donates[tokenId].votingPower.floatString(20, 3),
                         notification : bytes(d.notification).length > 0 ? d.notification : 
                         string.concat('First Goal : ',d.totalDonation.floatString(18, 2),' of 8000 MATIC'),
