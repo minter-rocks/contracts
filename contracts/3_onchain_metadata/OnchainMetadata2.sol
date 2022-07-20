@@ -20,52 +20,27 @@ contract OnchainMetadata is ERC721BaseInternal {
         require(ERC721BaseStorage.layout().exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
         DonationStorage.Layout storage l = DonationStorage.layout();
-        DonationStorage.Donate storage d = DonationStorage.layout().donates[tokenId];
-
-        string memory tag = SVGTextValidator.validate(d.tag);
-        string memory cardPower = d.votingPower.floatString(20, 3);
-        string memory notification = bytes(l.notification).length > 0 ? l.notification : 
-            string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC');
-        string memory blockNumber = d.blockNumber.toString();
-        string memory donationMatic = d.amount_MATIC.floatString(18, 2);
-        string memory donationUSD = d.amount_USD.floatString(18, 2);
-
-        string memory image = 
-                    _image(
-                        tag ,
-                        cardPower ,
-                        notification ,
-                        blockNumber ,
-                        donationMatic ,
-                        donationUSD 
-                    );
+        DonationStorage.Donate memory d = DonationStorage.layout().donates[tokenId];
 
         return string.concat('data:application/json;base64,', Base64.encode(abi.encodePacked(
-            '{"name": "donation number ', 
-                "", 
-            '", "description": "', 
-                d.tag, 
-            '", "image": "',
-                image,
-            '"}'
+            '{',
+                '"name": "donation number', tokenId.toString(), '", ',
+                '"description": "', d.tag, '", ',
+                '"image": "', 
+                    _image({
+                        tag : SVGTextValidator.validate(d.tag),
+                        cardPower : d.votingPower.floatString(20, 3),
+                        notification : bytes(l.notification).length > 0 ? l.notification : 
+                        string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC'),
+                        blockNumber : d.blockNumber.toString(),
+                        donationMatic : d.amount_MATIC.floatString(18, 2),
+                        donationUSD : d.amount_USD.floatString(18, 2)
+                    }),
+                '"', 
+            '}'
             ))
         ); 
     }
-
-    // function _points(uint256 tokenId, uint256 cardPower) private pure returns(string memory points) {
-    //     uint256 counter = cardPower / 10 ** 21 + 1;
-    //     uint256 hashNum = uint256(keccak256(abi.encode(tokenId)));
-    //     while(counter > 0) {
-    //         if(hashNum > 1000) {
-    //             points = string.concat(
-    //                 points,
-    //                 ((hashNum /= 10) % 1000 / 2).toString(),
-    //                 " "
-    //             );
-    //             counter --;
-    //         }
-    //     }
-    // }
 
     function _image(
         string memory tag,
@@ -92,34 +67,4 @@ contract OnchainMetadata is ERC721BaseInternal {
         
         return string.concat('data:image/svg+xml;base64,', Base64.encode(abi.encodePacked(imageString)));
     }
-
-    // function _image2(
-    //     string memory tag,
-    //     string memory cardPower,
-    //     string memory notification,
-    //     string memory blockNumber,
-    //     string memory donationMatic,
-    //     string memory donationUSD,
-    //     string memory points
-    // ) private pure returns(string memory) {      
-    //     string memory imageString = string.concat(
-    //         '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="100 0 300 500"><defs><style>.cls-1,.cls-9{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{stroke:#1d1d1b;}.cls-3,.cls-9{stroke-miterlimit:10;}.cls-14,.cls-4,.cls-6,.cls-7,.cls-8{font-size:10px;}.cls-11,.cls-14,.cls-4{fill:#99cf29;}.cls-11,.cls-13,.cls-4,.cls-5,.cls-6,.cls-7,.cls-8{font-family:CourierNewPS-BoldMT, Courier New;font-weight:700;}.cls-5{font-size:12px;}.cls-13,.cls-5{fill:#fff;}.cls-6{fill:#a80054;}.cls-12,.cls-7{fill:#dd6400;}.cls-8{fill:#00e1f2;}.cls-9{stroke:#dadada;stroke-width:0.5px;}.cls-10{fill:#1b1718;opacity:0.98;}.cls-11{font-size:14px;}.cls-13{overflow: scroll; font-size:7px;}.cls-14{text-align: right; font-family:CourierNewPSMT, Courier New;}</style><clipPath id="clip-path" transform="translate(78.35 72.9)"><rect class="cls-1" width="195.23" height="265.56"/></clipPath></defs><g class="cls-2"><rect class="cls-3" x="78.35" y="72.9" width="195.23" height="265.14"/><text class="cls-4" transform="translate(87.76 273.1)">Voting</text><text class="cls-5" transform="translate(87.76 236.5)">',
-    //         donationMatic, ' MATIC (', donationUSD, 
-    //         ' $)</text><text class="cls-6" transform="translate(162.09 257.92)">',
-    //         blockNumber,
-    //         '</text><text class="cls-7" transform="translate(87.76 257.92)">Block</text><text class="cls-7" transform="translate(128.81 273.1)">Power</text><text class="cls-8" transform="translate(122.42 257.92)">number</text><polygon class="cls-9" points="',
-    //         points,
-    //         '"/><rect class="cls-10" x="78.35" y="69.5" width="195.23" height="57.3"/><rect class="cls-10" x="76.13" y="284.56" width="197.45" height="53.9"/><text class="cls-11" transform="translate(87.76 94.59)">Minter.<tspan class="cls-12" x="58.81" y="0">rocks</tspan></text><text class="cls-8" transform="translate(163.96 273.1)">',
-    //         cardPower,
-    //         '</text><text class="cls-13" transform="translate(87.76 105.97)">',
-    //         tag,
-    //         '</tspan></text><text class="cls-14" transform="translate(87.75 303.68)">NOTIFICATION</text><text class="cls-14" transform="translate(87.76 322.84)">',
-    //         notification,
-    //         '</text></g></svg>'
-    //     );
-        
-    //     return string.concat('data:image/svg+xml;base64,', Base64.encode(abi.encodePacked(imageString)));
-    // }
-
-
 }
