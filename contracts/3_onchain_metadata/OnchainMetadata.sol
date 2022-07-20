@@ -19,37 +19,41 @@ contract OnchainMetadata is ERC721BaseInternal {
     function tokenURI(uint256 tokenId) public view virtual returns (string memory) {
         require(ERC721BaseStorage.layout().exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
-        DonationStorage.Layout storage d = DonationStorage.layout();
+        DonationStorage.Layout storage l = DonationStorage.layout();
+        DonationStorage.Donate memory d = DonationStorage.layout().donates[tokenId];
 
-        uint256 cardPower = d.donates[tokenId].votingPower;
+        uint256 cardPower = d.votingPower;
 
-        return string.concat('data:application/json;base64,', Base64.encode(abi.encodePacked(
-            '{',
-                '"name": "donation number ', tokenId, '", ',
-                '"description": "', d.donates[tokenId].tag, '", ',
-                '"image": "',
+        string memory image = 
                     cardPower < 10 ** 21 ?
                     _image({
-                        tag : SVGTextValidator.validate(d.donates[tokenId].tag),
+                        tag : SVGTextValidator.validate(d.tag),
                         cardPower : cardPower.floatString(20, 3),
-                        notification : bytes(d.notification).length > 0 ? d.notification : 
-                        string.concat('First Goal : ',d.totalDonation.floatString(18, 2),' of 8000 MATIC'),
-                        blockNumber : d.donates[tokenId].blockNumber.toString(),
-                        donationMatic : d.donates[tokenId].amount_MATIC.floatString(18, 2),
-                        donationUSD : d.donates[tokenId].amount_USD.floatString(18, 2)
+                        notification : bytes(l.notification).length > 0 ? l.notification : 
+                        string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC'),
+                        blockNumber : d.blockNumber.toString(),
+                        donationMatic : d.amount_MATIC.floatString(18, 2),
+                        donationUSD : d.amount_USD.floatString(18, 2)
                     }) :
                     _image2({
-                        tag : SVGTextValidator.validate(d.donates[tokenId].tag),
+                        tag : SVGTextValidator.validate(d.tag),
                         cardPower : cardPower.floatString(20, 3),
-                        notification : bytes(d.notification).length > 0 ? d.notification : 
-                        string.concat('First Goal : ',d.totalDonation.floatString(18, 2),' of 8000 MATIC'),
-                        blockNumber : d.donates[tokenId].blockNumber.toString(),
-                        donationMatic : d.donates[tokenId].amount_MATIC.floatString(18, 2),
-                        donationUSD : d.donates[tokenId].amount_USD.floatString(18, 2),
+                        notification : bytes(l.notification).length > 0 ? l.notification : 
+                        string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC'),
+                        blockNumber : d.blockNumber.toString(),
+                        donationMatic : d.amount_MATIC.floatString(18, 2),
+                        donationUSD : d.amount_USD.floatString(18, 2),
                         points : _points(tokenId, cardPower)
-                    }),
-                '"', 
-            '}'
+                    });
+
+        return string.concat('data:application/json;base64,', Base64.encode(abi.encodePacked(
+            '{"name": "donation number ', 
+                tokenId, 
+            '", "description": "', 
+                d.tag, 
+            '", "image": "',
+                image,
+            '"}'
             ))
         ); 
     }
