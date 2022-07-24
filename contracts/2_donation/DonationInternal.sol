@@ -21,11 +21,15 @@ abstract contract DonationInternal {
     }
 
     function _increaseUserPower(address userAddr, uint256 amount) internal {
-        DonationStorage.layout().userPower[userAddr] += amount;
+        DonationStorage.Layout storage l = DonationStorage.layout();
+        l.userPower[userAddr] += amount;
+        l.totalPower += amount;
     }
 
     function _decreaseUserPower(address userAddr, uint256 amount) internal {
-        DonationStorage.layout().userPower[userAddr] -= amount;
+        DonationStorage.Layout storage l = DonationStorage.layout();
+        l.userPower[userAddr] -= amount;
+        l.totalPower -= amount;
     }
 
     function _newDonation(
@@ -51,7 +55,7 @@ abstract contract DonationInternal {
             power,
             blockNumber
         );
-        l.userPower[userAddr] += power;
+        _increaseUserPower(userAddr, power);
         l.totalDonation += amount_Matic;
     }
 
