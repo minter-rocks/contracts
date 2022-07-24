@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+// pragma solidity ^0.8.0;
 
-import "../1_ERC721SolidState/base/ERC721BaseInternal.sol";
-import "../2_donation/DonationStorage.sol";
-import '@solidstate/contracts/utils/AddressUtils.sol';
-import '@solidstate/contracts/utils/UintUtils.sol';
-import "@openzeppelin/contracts/utils/Base64.sol";
-import "./utils/UintToFloatString.sol";
+// import "../1_ERC721SolidState/base/ERC721BaseInternal.sol";
+// import "../2_donation/DonationStorage.sol";
+// import '@solidstate/contracts/utils/AddressUtils.sol';
+// import '@solidstate/contracts/utils/UintUtils.sol';
+// import "@openzeppelin/contracts/utils/Base64.sol";
+// import "./utils/UintToFloatString.sol";
 
-contract OnchainMetadata is ERC721BaseInternal {
+// contract OnchainMetadata is ERC721BaseInternal {
 //     using AddressUtils for address;
-    using UintUtils for uint;
+    // using UintUtils for uint;
 //     using UintToFloatString for uint;
 //     using ERC721BaseStorage for ERC721BaseStorage.Layout;
 
@@ -62,13 +62,13 @@ contract OnchainMetadata is ERC721BaseInternal {
 //         return string.concat('data:image/svg+xml;base64,', Base64.encode(abi.encodePacked(imageString)));
 //     }
 
-    function _points(uint256 tokenId) public pure returns(string memory points) {
-        while(tokenId > 1000) {
-            points = string.concat(
-                points,
-                ((tokenId /= 1000) % 1000 / 2).toString(),
-                " "
-            );
-        }
-    }
-}
+//     function _points(uint256 tokenId) public pure returns(string memory points) {
+//         while(tokenId > 1000) {
+//             points = string.concat(
+//                 points,
+//                 ((tokenId /= 1000) % 1000 / 2).toString(),
+//                 " "
+//             );
+//         }
+//     }
+// }
