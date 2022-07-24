@@ -20,6 +20,10 @@ abstract contract DonationInternal {
         return DonationStorage.layout().userPower[userAddr];
     }
 
+    function _totalPower() internal view returns(uint256) {
+        return DonationStorage.layout().totalPower;
+    }
+
     function _increaseUserPower(address userAddr, uint256 amount) internal {
         DonationStorage.Layout storage l = DonationStorage.layout();
         l.userPower[userAddr] += amount;

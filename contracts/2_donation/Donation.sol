@@ -18,8 +18,12 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         _setMinDonation(10 ** 18);
     }
 
-    function userPower(address userAddr) internal view returns(uint256) {
+    function userPower(address userAddr) public view returns(uint256) {
         return _userPower(userAddr);
+    }
+
+    function totalPower() public view returns(uint256) {
+        return _totalPower();
     }
 
     function donate(string memory tag) public payable {
