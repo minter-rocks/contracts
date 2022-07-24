@@ -4,4 +4,6 @@ pragma solidity ^0.8.4;
 interface IDonation {
 
     function userPower(address userAddr) external view returns(uint256);
+
+    function totalPower() external view returns(uint256);
 }
