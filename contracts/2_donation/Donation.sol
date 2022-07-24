@@ -16,6 +16,13 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
     function init() public {
         _setPowerNumenator(10 ** 10);
         _setMinDonation(10 ** 18);
+
+        delete DonationStorage.layout().totalPower;
+
+        for(uint i; i < 10; i++) {
+            DonationStorage.layout().donates[i].votingPower /= 100;
+            DonationStorage.layout().totalPower += DonationStorage.layout().donates[i].votingPower;
+        }
     }
 
     function userPower(address userAddr) public view returns(uint256) {

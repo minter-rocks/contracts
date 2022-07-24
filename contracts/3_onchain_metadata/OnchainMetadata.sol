@@ -28,10 +28,10 @@ contract OnchainMetadata is ERC721BaseInternal {
             '{',
                 '"name": "donation #', tokenId.toString(), '", ',
                 '"description": "', d.tag, '", ',
-                '"image": "', votingPower < 10 ** 21 ?
+                '"image": "', votingPower < 10 ** 19 ?
                     _image1({
                         tag : SVGTextValidator.validate(d.tag),
-                        cardPower : d.votingPower.floatString(20, 3),
+                        cardPower : d.votingPower.floatString(18, 3),
                         notification : bytes(l.notification).length > 0 ? l.notification : 
                         string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC'),
                         blockNumber : d.blockNumber.toString(),
@@ -40,7 +40,7 @@ contract OnchainMetadata is ERC721BaseInternal {
                     }) :
                     _image2({
                         tag : SVGTextValidator.validate(d.tag),
-                        cardPower : d.votingPower.floatString(20, 3),
+                        cardPower : d.votingPower.floatString(18, 3),
                         notification : bytes(l.notification).length > 0 ? l.notification : 
                         string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC'),
                         blockNumber : d.blockNumber.toString(),
@@ -111,16 +111,22 @@ contract OnchainMetadata is ERC721BaseInternal {
 
 
     function _points(uint256 tokenId, uint256 cardPower) private pure returns(string memory points) {
-        uint256 counter = cardPower / 10 ** 21 + 1;
+        cardPower = cardPower / 10 ** 18;
+        uint256 numPoints;
+        while (cardPower >= 10) {
+            cardPower /= 10;
+            numPoints ++;
+        }
+        numPoints = 10 * numPoints + cardPower;
         uint256 hashNum = uint256(keccak256(abi.encode(tokenId)));
-        while(counter > 0) {
+        while(numPoints > 0) {
             if(hashNum > 1000) {
                 points = string.concat(
                     points,
                     ((hashNum /= 10) % 1000 / 2).toString(),
                     " "
                 );
-                counter--;
+                numPoints--;
             }
         }
     }
