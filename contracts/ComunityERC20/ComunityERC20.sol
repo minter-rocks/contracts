@@ -23,6 +23,10 @@ contract ComunityERC20 is ERC20, ERC20Burnable, Ownable, ERC20Permit, ERC20Votes
         return super.balanceOf(account) + don.userPower(account);
     }
 
+    function totalSupply() public view virtual override returns (uint256) {
+        return super.totalSupply() + don.totalPower();
+    }
+
     // The following functions are overrides required by Solidity.
 
     function _afterTokenTransfer(address from, address to, uint256 amount)
