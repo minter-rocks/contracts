@@ -9,7 +9,7 @@ const { assert } = require('chai')
 
 async function deployERC721SolidState () { 
 
-  const diamondAddress = "0xB42cE907d99b74578b9913A560B9c5C1A237356b" //diamond on polygon
+  const diamondAddress = "0x9f5C41dA4dbDD0c59f663053Ac79364D02a5381D" //deploy2 diamond on polygon
   let  diamondCut = await ethers.getContractAt('DiamondCutFacet', diamondAddress)
 
   let tx
