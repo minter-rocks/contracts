@@ -25,6 +25,7 @@ library DonationStorage {
         uint256 votingPower;
         uint256 blockNumber;
         string tag2;
+        uint256 nonce;
     }
 
     function layout() internal pure returns (Layout storage l) {

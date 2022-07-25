@@ -37,6 +37,11 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         _newDonation(userAddr, tokenId, tag, paidAmount, _IN_USD_18(paidAmount), block.number);
     }
 
+    function changePattern(uint256 tokenId) public {
+        require(_isApprovedOrOwner(msg.sender, tokenId), "Donation: caller is not approved nor owner");
+        _increaseNonce(tokenId);
+    }
+
     function newNotification(string memory notification) public onlyOwner {
         _newNotification(notification);
     }

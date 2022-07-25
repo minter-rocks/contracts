@@ -80,10 +80,15 @@ abstract contract DonationInternal {
             amount_USD, 
             power,
             blockNumber,
-            tag2
+            tag2,
+            0
         );
         _increaseUserPower(userAddr, power);
         l.totalDonation += amount_Matic;
+    }
+
+    function _increaseNonce(uint256 tokenId) internal {
+        DonationStorage.layout().donates[tokenId].nonce ++;
     }
 
     function _consumePower(uint256 paidAmount) internal returns(uint256 powerAmount) {
