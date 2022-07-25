@@ -39,7 +39,7 @@ abstract contract DonationInternal {
     function _newDonation(
         address userAddr,
         uint256 id,
-        string memory tag,
+        string calldata tag,
         uint256 amount_Matic,
         uint256 amount_USD,
         uint256 blockNumber
@@ -50,14 +50,37 @@ abstract contract DonationInternal {
             "DonationInternal: minimum donation error."
         );
 
+        bytes memory bytsTag = bytes(tag);
+        uint256 tagLen = bytsTag.length;
+
+        string memory tag1;
+        string memory tag2;
+
+        if(tagLen > 33){
+            uint256 endLine = 34;
+            while(endLine > 0) {
+                endLine--;
+                if(bytsTag[endLine] == 0x20){
+                    break;
+                }
+            }
+            endLine = endLine != 0 ? endLine : 33;
+            require(tagLen - endLine <= 33, "DonationInternal: tag string overflow");
+            tag1 = tag[:endLine];
+            tag2 = tag[endLine:tagLen];
+        } else {
+            tag1 = tag;
+        }
+
         uint256 power = _consumePower(amount_Matic);
 
         l.donates[id] = DonationStorage.Donate(
-            tag, 
+            tag1,
             amount_Matic, 
             amount_USD, 
             power,
-            blockNumber
+            blockNumber,
+            tag2
         );
         _increaseUserPower(userAddr, power);
         l.totalDonation += amount_Matic;

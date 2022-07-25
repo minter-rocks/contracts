@@ -14,15 +14,8 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
     }
 
     function init() public {
-        _setPowerNumenator(10 ** 10);
-        _setMinDonation(10 ** 18);
-
-        delete DonationStorage.layout().totalPower;
-
-        for(uint i; i < 10; i++) {
-            DonationStorage.layout().donates[i].votingPower /= 100;
-            DonationStorage.layout().totalPower += DonationStorage.layout().donates[i].votingPower;
-        }
+        // _setPowerNumenator(10 ** 10);
+        // _setMinDonation(10 ** 18);
     }
 
     function userPower(address userAddr) public view returns(uint256) {
@@ -33,14 +26,12 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         return _totalPower();
     }
 
-    function donate(string memory tag) public payable {
+    function donate(string calldata  tag) public payable {
         uint256 paidAmount = msg.value;
-        require(
-            bytes(tag).length < 20,
-            "Donation: please insert a tag lesser than 20 characters."
-        );
-        uint256 tokenId = _nextTokenId();
         address userAddr = msg.sender;
+
+        uint256 tokenId = _nextTokenId();
+        
         _safeMint(userAddr, tokenId);
 
         _newDonation(userAddr, tokenId, tag, paidAmount, _IN_USD_18(paidAmount), block.number);

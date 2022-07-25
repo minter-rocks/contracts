@@ -24,13 +24,10 @@ contract OnchainMetadata is ERC721BaseInternal {
 
         uint256 votingPower = d.votingPower;
 
-        return string.concat('data:application/json;base64,', Base64.encode(abi.encodePacked(
-            '{',
-                '"name": "donation #', tokenId.toString(), '", ',
-                '"description": "', d.tag, '", ',
-                '"image": "', votingPower < 10 ** 19 ?
+        string memory image = votingPower < 10 ** 19 ?
                     _image1({
-                        tag : SVGTextValidator.validate(d.tag),
+                        tag1 : SVGTextValidator.validate(d.tag1),
+                        tag2 : SVGTextValidator.validate(d.tag2),
                         cardPower : d.votingPower.floatString(18, 3),
                         notification : bytes(l.notification).length > 0 ? l.notification : 
                         string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC'),
@@ -39,7 +36,8 @@ contract OnchainMetadata is ERC721BaseInternal {
                         donationUSD : d.amount_USD.floatString(18, 2)
                     }) :
                     _image2({
-                        tag : SVGTextValidator.validate(d.tag),
+                        tag1 : SVGTextValidator.validate(d.tag1),
+                        tag2 : SVGTextValidator.validate(d.tag2),
                         cardPower : d.votingPower.floatString(18, 3),
                         notification : bytes(l.notification).length > 0 ? l.notification : 
                         string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC'),
@@ -47,16 +45,20 @@ contract OnchainMetadata is ERC721BaseInternal {
                         donationMatic : d.amount_MATIC.floatString(18, 2),
                         donationUSD : d.amount_USD.floatString(18, 2),
                         points : _points(tokenId, d.votingPower)
-                    }),
+                    });
 
-                '"', 
-            '}'
+        return string.concat('data:application/json;base64,', Base64.encode(abi.encodePacked(
+            '{',
+                '"name": "donation #', tokenId.toString(), '", "description": "',
+                 d.tag1, ' ', d.tag2,
+                  '", "image": "', image, '"}'
             ))
         ); 
     }
 
     function _image1(
-        string memory tag,
+        string memory tag1,
+        string memory tag2,
         string memory cardPower,
         string memory notification,
         string memory blockNumber,
@@ -73,16 +75,19 @@ contract OnchainMetadata is ERC721BaseInternal {
                 cardPower,
                 '</text><text class="cls-7" transform="translate(54 806)">',
                 notification,
-                '</text><text class="cls-8" transform="translate(54 223)"> ',
-                tag,
-                '</text><text class="cls-8" transform="translate(54.94 138.23)"> Minter.Rocks</text><circle class="cls-9" cx="131.66" cy="385.4" r="15"/><circle class="cls-9" cx="223.68" cy="322.15" r="4.36"/><circle class="cls-10" cx="309.36" cy="336.47" r="12.64"/><circle class="cls-10" cx="60.97" cy="363.44" r="6.97"/><circle class="cls-11" cx="172.69" cy="346.76" r="5.86"/><circle class="cls-11" cx="366.05" cy="375.72" r="7.24"/><circle class="cls-12" cx="235.63" cy="378.39" r="7.59"/><circle class="cls-12" cx="430.01" cy="349.11" r="10.01"/><circle class="cls-12" cx="97.76" cy="320.03" r="3.8"/></svg>'
+                '</text><text class="cls-8" style="font-size: 28px;" transform="translate(54 223)">',
+                tag1,
+                '<tspan x="0" y="40">',
+                tag2,
+                '</tspan></text><text class="cls-8" transform="translate(54.94 138.23)"> Minter.Rocks</text><circle class="cls-9" cx="131.66" cy="385.4" r="15"/><circle class="cls-9" cx="223.68" cy="322.15" r="4.36"/><circle class="cls-10" cx="309.36" cy="336.47" r="12.64"/><circle class="cls-10" cx="60.97" cy="363.44" r="6.97"/><circle class="cls-11" cx="172.69" cy="346.76" r="5.86"/><circle class="cls-11" cx="366.05" cy="375.72" r="7.24"/><circle class="cls-12" cx="235.63" cy="378.39" r="7.59"/><circle class="cls-12" cx="430.01" cy="349.11" r="10.01"/><circle class="cls-12" cx="97.76" cy="320.03" r="3.8"/></svg>'
         );
         
         return string.concat('data:image/svg+xml;base64,', Base64.encode(abi.encodePacked(imageString)));
     }
 
     function _image2(
-        string memory tag,
+        string memory tag1,
+        string memory tag2,
         string memory cardPower,
         string memory notification,
         string memory blockNumber,
@@ -91,17 +96,19 @@ contract OnchainMetadata is ERC721BaseInternal {
         string memory points
     ) private pure returns(string memory) {      
         string memory imageString = string.concat(
-            '<?xml version="1.0" encoding="utf-8"?><svg viewBox="200 0 600 1000" width="600" height="1000" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com"><defs><clipPath id="clip-path" transform="translate(78.35 72.9)"><rect class="cls-1" width="195.23" height="265.56"/></clipPath><style>.cls-1,.cls-9{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{stroke:#1d1d1b;}.cls-3,.cls-9{stroke-miterlimit:10;}.cls-14,.cls-4,.cls-6,.cls-7,.cls-8{font-size:10px;}.cls-11,.cls-14,.cls-4{fill:#99cf29;}.cls-11,.cls-13,.cls-4,.cls-5,.cls-6,.cls-7,.cls-8{font-family:CourierNewPS-BoldMT, Courier New;font-weight:700;}.cls-5{font-size:12px;}.cls-13,.cls-5{fill:#fff;}.cls-6{fill:#a80054;}.cls-12,.cls-7{fill:#dd6400;}.cls-8{fill:#00e1f2;}.cls-9{stroke:#dadada;stroke-width:1px;}.cls-10{fill:#1b1718;opacity:0.98;}.cls-11{font-size:14px;}.cls-13{font-size:7px;}.cls-14{font-family:CourierNewPSMT, Courier New;}</style></defs><g class="cls-2" transform="matrix(3.073298, 0, 0, 3.765627, -40.792856, -274.514233)"><rect class="cls-3" x="78.35" y="72.9" width="195.23" height="265.14"/><text class="cls-4" style=" font-size: 10px;" x="88.111" y="273.1">Voting</text><text class="cls-5" style=" font-size: 12px;" x="88.111" y="236.5" transform="matrix(0.922287, 0, 0, 1, 6.847331, 0)">',
+            '<?xml version="1.0" encoding="utf-8"?><svg viewBox="200 0 600 1000" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="clip-path" transform="translate(78.35 72.9)"><rect class="cls-1" width="195.23" height="265.56"/></clipPath><style>.cls-1,.cls-9{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{stroke:#1d1d1b;}.cls-3,.cls-9{stroke-miterlimit:10;}.cls-14,.cls-4,.cls-6,.cls-7,.cls-8{font-size:10px;}.cls-11,.cls-14,.cls-4{fill:#99cf29;}.cls-11,.cls-13,.cls-4,.cls-5,.cls-6,.cls-7,.cls-8{font-family:CourierNewPS-BoldMT, Courier New;font-weight:700;}.cls-5{font-size:12px;}.cls-13,.cls-5{fill:#fff;}.cls-6{fill:#a80054;}.cls-12,.cls-7{fill:#dd6400;}.cls-8{fill:#00e1f2;}.cls-9{stroke:#dadada;stroke-width:1px;}.cls-10{fill:#1b1718;opacity:0.98;}.cls-11{font-size:14px;}.cls-13{font-size:9px;}.cls-14{font-family:CourierNewPSMT, Courier New;}</style></defs><g class="cls-2" transform="matrix(3.073298, 0, 0, 3.765627, -40.792856, -274.514233)"><rect class="cls-3" x="78.35" y="72.9" width="195.23" height="265.14"/><text class="cls-4" style=" font-size: 10px;" x="88.111" y="273.1">Voting</text><text class="cls-5" style=" font-size: 12px;" x="88.111" y="236.5" transform="matrix(0.922287, 0, 0, 1, 6.847331, 0)">',
             donationMatic, ' MATIC (', donationUSD, ' $)',
             '</text><text class="cls-6" style=" font-size: 10px;" x="162.95" y="257.92">',
             blockNumber,
-            '</text><text class="cls-7" style=" font-size: 10px;" x="88.111" y="257.92">Block</text><text class="cls-7" style=" font-size: 10px;" x="129.11" y="273.1">Power</text><text class="cls-8" style=" font-size: 10px;" x="122.602" y="257.92">number</text></g><polygon class="cls-9" points="',
+            '</text><text class="cls-7" style=" font-size: 10px;" x="88.111" y="257.92">Block</text><text class="cls-7" style=" font-size: 10px;" x="129.11" y="273.1">Power</text><text class="cls-8" style=" font-size: 10px;" x="122.602" y="257.92">number</text></g><polyline class="cls-9" points="',
             points,
-            '"/><g class="cls-2" style="" transform="matrix(3.073298, 0, 0, 3.765627, -40.792856, -274.514233)"><rect class="cls-10" x="78.35" y="72.9" width="195.23" height="53.112" bx:origin="0.5 0.5"/><rect class="cls-10" x="78.35" y="285.348" width="195.23" height="53.112"/><text class="cls-11" x="88.111" y="94.59">Minter.<tspan class="cls-12" x="146.921" y="94.59" style="font-size: 14px; word-spacing: 0px;">rocks</tspan></text><text class="cls-8" style=" font-size: 10px;" x="164.902" y="273.1">',
+            '"/><g class="cls-2" transform="matrix(3.073298, 0, 0, 3.765627, -40.792856, -274.514233)"><rect class="cls-10" x="78.35" y="72.9" width="195.23" height="53.112"/><rect class="cls-10" x="78.35" y="285.348" width="195.23" height="53.112"/><text class="cls-11" x="88.111" y="94.59">Minter.<tspan class="cls-12" x="146.921" y="94.59" style="font-size: 14px; word-spacing: 0px;">rocks</tspan></text><text class="cls-8" style=" font-size: 10px;" x="164.902" y="273.1">',
             cardPower,
-            '</text><text class="cls-13" x="88.111" y="105.97">',
-            tag,
-            '</text><text class="cls-14" transform="matrix(0.813628, 0, 0, 1.01345, 91.365326, 304.546661)" style="fill: rgb(118, 155, 44); paint-order: fill; " bx:origin="0.494311 0.497584">notification</text><text class="cls-14" transform="matrix(0.994492, 0, 0, 1, 88.111488, 322.839996)">',
+            '</text><text class="cls-13" x="88.111" y="112">',
+            tag1,
+            '<tspan x="88.111" y="123">',
+            tag2,
+            '</tspan></text><text class="cls-14" transform="matrix(0.813628, 0, 0, 1.01345, 91.365326, 304.546661)" style="fill: rgb(118, 155, 44); paint-order: fill; ">notification</text><text class="cls-14" transform="matrix(0.994492, 0, 0, 1, 88.111488, 322.839996)">',
             notification,
             '</text></g></svg>'
         );

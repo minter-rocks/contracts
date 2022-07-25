@@ -26,7 +26,7 @@ async function deployDonation () {
   console.log(`${FacetName} deployed: ${facet.address}`)
   cut.push({
     facetAddress: facet.address,
-    action: FacetCutAction.Add,
+    action: FacetCutAction.Replace,
     functionSelectors: getSelectors(facet).remove(['init()'])
   })
 

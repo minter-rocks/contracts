@@ -19,11 +19,12 @@ library DonationStorage {
     }
 
     struct Donate {
-        string tag;
+        string tag1;
         uint256 amount_MATIC;
         uint256 amount_USD;
         uint256 votingPower;
         uint256 blockNumber;
+        string tag2;
     }
 
     function layout() internal pure returns (Layout storage l) {
