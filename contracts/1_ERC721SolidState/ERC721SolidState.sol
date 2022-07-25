@@ -12,8 +12,8 @@ import { DonationInternal } from '../2_donation/DonationInternal.sol';
 contract ERC721SolidState is ERC721, DonationInternal {
 
     function init() external {
-        _setName("Minter.Rocks Donation");
-        _setSymbol("Donate");
+        _setName("Minter.Rocks DonationDAO");
+        _setSymbol("DDAO");
 
         LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
         ds.supportedInterfaces[type(IERC721).interfaceId] = true;
