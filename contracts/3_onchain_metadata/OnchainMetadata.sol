@@ -29,7 +29,8 @@ contract OnchainMetadata is ERC721BaseInternal {
                         tag1 : SVGTextValidator.validate(d.tag1),
                         tag2 : SVGTextValidator.validate(d.tag2),
                         cardPower : d.votingPower.floatString(18, 3),
-                        notification : bytes(l.notification).length > 0 ? l.notification : 
+                        notification1 : l.notification1,
+                        notification2 : bytes(l.notification2).length > 0 ? l.notification2 : 
                         string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC'),
                         blockNumber : d.blockNumber.toString(),
                         donationMatic : d.amount_MATIC.floatString(18, 2),
@@ -39,7 +40,8 @@ contract OnchainMetadata is ERC721BaseInternal {
                         tag1 : SVGTextValidator.validate(d.tag1),
                         tag2 : SVGTextValidator.validate(d.tag2),
                         cardPower : d.votingPower.floatString(18, 3),
-                        notification : bytes(l.notification).length > 0 ? l.notification : 
+                        notification1 : l.notification1,
+                        notification2 : bytes(l.notification2).length > 0 ? l.notification2 : 
                         string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC'),
                         blockNumber : d.blockNumber.toString(),
                         donationMatic : d.amount_MATIC.floatString(18, 2),
@@ -60,7 +62,8 @@ contract OnchainMetadata is ERC721BaseInternal {
         string memory tag1,
         string memory tag2,
         string memory cardPower,
-        string memory notification,
+        string memory notification1,
+        string memory notification2,
         string memory blockNumber,
         string memory donationMatic,
         string memory donationUSD
@@ -89,14 +92,15 @@ contract OnchainMetadata is ERC721BaseInternal {
         string memory tag1,
         string memory tag2,
         string memory cardPower,
-        string memory notification,
+        string memory notification1,
+        string memory notification2,
         string memory blockNumber,
         string memory donationMatic,
         string memory donationUSD,
         string memory points
     ) private pure returns(string memory) {      
         string memory imageString = string.concat(
-            '<?xml version="1.0" encoding="utf-8"?><svg viewBox="200 0 600 1000" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="clip-path" transform="translate(78.35 72.9)"><rect class="cls-1" width="195.23" height="265.56"/></clipPath><style>.cls-1,.cls-9{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{stroke:#1d1d1b;}.cls-3,.cls-9{stroke-miterlimit:10;}.cls-14,.cls-4,.cls-6,.cls-7,.cls-8{font-size:10px;}.cls-11,.cls-14,.cls-4{fill:#99cf29;}.cls-11,.cls-13,.cls-4,.cls-5,.cls-6,.cls-7,.cls-8{font-family:CourierNewPS-BoldMT, Courier New;font-weight:700;}.cls-5{font-size:12px;}.cls-13,.cls-5{fill:#fff;}.cls-6{fill:#a80054;}.cls-12,.cls-7{fill:#dd6400;}.cls-8{fill:#00e1f2;}.cls-9{stroke:#dadada;stroke-width:1px;}.cls-10{fill:#1b1718;opacity:0.98;}.cls-11{font-size:14px;}.cls-13{font-size:9px;}.cls-14{font-family:CourierNewPSMT, Courier New;}</style></defs><g class="cls-2" transform="matrix(3.073298, 0, 0, 3.765627, -40.792856, -274.514233)"><rect class="cls-3" x="78.35" y="72.9" width="195.23" height="265.14"/><text class="cls-4" style=" font-size: 10px;" x="88.111" y="273.1">Voting</text><text class="cls-5" style=" font-size: 12px;" x="88.111" y="236.5" transform="matrix(0.922287, 0, 0, 1, 6.847331, 0)">',
+            '<?xml version="1.0" encoding="utf-8"?><svg viewBox="200 0 600 1000" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="clip-path" transform="translate(78.35 72.9)"><rect class="cls-1" width="195.23" height="265.56"/></clipPath><style>.cls-1,.cls-9{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{stroke:#1d1d1b;}.cls-3,.cls-9{stroke-miterlimit:10;}.cls-14,.cls-4,.cls-6,.cls-7,.cls-8{font-size:10px;}.cls-11,.cls-14,.cls-4{fill:#99cf29;}.cls-11,.cls-13,.cls-4,.cls-5,.cls-6,.cls-7,.cls-8{font-family:CourierNewPS-BoldMT, Courier New;font-weight:700;}.cls-5{font-size:12px;}.cls-13,.cls-5{fill:#fff;}.cls-6{fill:#a80054;}.cls-12,.cls-7{fill:#dd6400;}.cls-8{fill:#00e1f2;}.cls-9{stroke:#dadada;stroke-width:1px;}.cls-10{fill:#1b1718;opacity:0.98;}.cls-11{font-size:14px;}.cls-13{font-size:9px;}.cls-14{font-family:CourierNewPSMT,font-size: 10px, Courier New;}</style></defs><g class="cls-2" transform="matrix(3.073298, 0, 0, 3.765627, -40.792856, -274.514233)"><rect class="cls-3" x="78.35" y="72.9" width="195.23" height="265.14"/><text class="cls-4" style=" font-size: 10px;" x="88.111" y="273.1">Voting</text><text class="cls-5" style=" font-size: 12px;" x="88.111" y="236.5" transform="matrix(0.922287, 0, 0, 1, 6.847331, 0)">',
             donationMatic, ' MATIC (', donationUSD, ' $)',
             '</text><text class="cls-6" style=" font-size: 10px;" x="162.95" y="257.92">',
             blockNumber,
@@ -108,9 +112,11 @@ contract OnchainMetadata is ERC721BaseInternal {
             tag1,
             '<tspan x="88.111" y="123">',
             tag2,
-            '</tspan></text><text class="cls-14" transform="matrix(0.813628, 0, 0, 1.01345, 91.365326, 304.546661)" style="fill: rgb(118, 155, 44); paint-order: fill; ">notification</text><text class="cls-14" transform="matrix(0.994492, 0, 0, 1, 88.111488, 322.839996)">',
-            notification,
-            '</text></g></svg>'
+            '</tspan></text><text class="cls-14" x="0" y="-5" transform="matrix(0.813628, 0, 0, 1.01345, 91.365326, 304.546661)" style="fill: rgb(118, 150, 44); paint-order: fill;">notification</text><text class="cls-14" x="0" y="-10" transform="matrix(0.994492, 0, 0, 1, 88.111488, 322.839996)">',
+            notification1,
+            '<tspan x="0" y="5">',
+            notification2,
+            '</tspan></text></g></svg>'
         );
         
         return string.concat('data:image/svg+xml;base64,', Base64.encode(abi.encodePacked(imageString)));

@@ -13,18 +13,19 @@ library DonationStorage {
         uint256 powerNumenator; //denumerator is 10,000
         mapping(uint256 => Donate) donates;
         mapping(address => uint256) userPower;
-        string notification;
         uint256 totalDonation;
         uint256 totalPower;
+        string notification1;
+        string notification2;
     }
 
     struct Donate {
         string tag1;
+        string tag2;
         uint256 amount_MATIC;
         uint256 amount_USD;
         uint256 votingPower;
         uint256 blockNumber;
-        string tag2;
         uint256 nonce;
     }
 

@@ -76,11 +76,11 @@ abstract contract DonationInternal {
 
         l.donates[id] = DonationStorage.Donate(
             tag1,
+            tag2,
             amount_Matic, 
             amount_USD, 
             power,
             blockNumber,
-            tag2,
             0
         );
         _increaseUserPower(userAddr, power);
@@ -104,8 +104,12 @@ abstract contract DonationInternal {
         DonationStorage.layout().minDonation = minDonation;
     }
 
-    function _newNotification(string memory notification) internal {
-        DonationStorage.layout().notification = notification;
+    function _setNotification(
+        string memory notification1,
+        string memory notification2
+    ) internal {
+        DonationStorage.layout().notification1 = notification1;
+        DonationStorage.layout().notification2 = notification2;
     }
 
 }

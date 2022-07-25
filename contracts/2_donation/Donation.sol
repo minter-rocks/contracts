@@ -42,8 +42,11 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         _increaseNonce(tokenId);
     }
 
-    function newNotification(string memory notification) public onlyOwner {
-        _newNotification(notification);
+    function setNotification(
+        string memory notification1,
+        string memory notification2
+    ) public onlyOwner {
+        _setNotification(notification1, notification2);
     }
 
     function setMinDonation(uint256 amount) public onlyOwner {
