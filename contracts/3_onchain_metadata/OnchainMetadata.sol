@@ -44,14 +44,14 @@ contract OnchainMetadata is ERC721BaseInternal {
                         blockNumber : d.blockNumber.toString(),
                         donationMatic : d.amount_MATIC.floatString(18, 2),
                         donationUSD : d.amount_USD.floatString(18, 2),
-                        points : _points(tokenId, d.votingPower)
+                        points : _points(uint256(keccak256(abi.encodePacked(d.tag1, d.nonce))), d.votingPower)
                     });
 
         return string.concat('data:application/json;base64,', Base64.encode(abi.encodePacked(
-            '{',
-                '"name": "donation #', tokenId.toString(), '", "description": "',
-                 d.tag1, ' ', d.tag2,
-                  '", "image": "', image, '"}'
+              '{"name": "donation #', tokenId.toString(), 
+            '", "description": "', d.tag1, ' ', d.tag2,
+            '", "image": "', image,
+            '", "interaction" : {"read":[],"write":[{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"changePattern","outputs":[],"stateMutability":"nonpayable","type":"function"}]}}'
             ))
         ); 
     }
@@ -117,7 +117,7 @@ contract OnchainMetadata is ERC721BaseInternal {
     }
 
 
-    function _points(uint256 tokenId, uint256 cardPower) private pure returns(string memory points) {
+    function _points(uint256 hashNum, uint256 cardPower) private pure returns(string memory points) {
         cardPower = cardPower / 10 ** 18;
         uint256 numPoints;
         while (cardPower >= 10) {
@@ -125,7 +125,6 @@ contract OnchainMetadata is ERC721BaseInternal {
             numPoints ++;
         }
         numPoints = 10 * numPoints + cardPower;
-        uint256 hashNum = uint256(keccak256(abi.encode(tokenId)));
         while(numPoints > 0) {
             if(hashNum > 1000) {
                 points = string.concat(
