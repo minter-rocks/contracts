@@ -26,8 +26,8 @@ async function deployERC721SolidState () {
   console.log(`${FacetName} deployed: ${facet.address}`)
   cut.push({
     facetAddress: facet.address,
-    action: FacetCutAction.Replace,
-    functionSelectors: getSelectors(facet).remove(['init()', 'tokenURI(uint256)'])
+    action: FacetCutAction.Add,
+    functionSelectors: getSelectors(facet).remove(['init()'])
   })
 
   // upgrade diamond with facet
