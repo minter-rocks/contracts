@@ -24,30 +24,18 @@ contract OnchainMetadata is ERC721BaseInternal {
 
         uint256 votingPower = d.votingPower;
 
-        string memory image = votingPower < 10 ** 19 ?
-                    _image1({
-                        tag1 : SVGTextValidator.validate(d.tag1),
-                        tag2 : SVGTextValidator.validate(d.tag2),
-                        cardPower : d.votingPower.floatString(18, 3),
-                        notification1 : l.notification1,
-                        notification2 : bytes(l.notification2).length > 0 ? l.notification2 : 
-                        string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC'),
-                        blockNumber : d.blockNumber.toString(),
-                        donationMatic : d.amount_MATIC.floatString(18, 2),
-                        donationUSD : d.amount_USD.floatString(18, 2)
-                    }) :
-                    _image2({
-                        tag1 : SVGTextValidator.validate(d.tag1),
-                        tag2 : SVGTextValidator.validate(d.tag2),
-                        cardPower : d.votingPower.floatString(18, 3),
-                        notification1 : l.notification1,
-                        notification2 : bytes(l.notification2).length > 0 ? l.notification2 : 
-                        string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC'),
-                        blockNumber : d.blockNumber.toString(),
-                        donationMatic : d.amount_MATIC.floatString(18, 2),
-                        donationUSD : d.amount_USD.floatString(18, 2),
-                        points : _points(uint256(keccak256(abi.encodePacked(d.tag1, d.nonce))), d.votingPower)
-                    });
+        string memory image =_image({
+            tag1 : SVGTextValidator.validate(d.tag1),
+            tag2 : SVGTextValidator.validate(d.tag2),
+            cardPower : votingPower.floatString(18, 3),
+            notification1 : l.notification1,
+            notification2 : bytes(l.notification2).length > 0 ? l.notification2 : 
+            string.concat('First Goal : ',l.totalDonation.floatString(18, 2),' of 8000 MATIC'),
+            blockNumber : d.blockNumber.toString(),
+            donationMatic : d.amount_MATIC.floatString(18, 2),
+            donationUSD : d.amount_USD.floatString(18, 2),
+            points : _points(uint256(keccak256(abi.encodePacked(d.tag1, d.nonce))), votingPower)
+        });
 
         return string.concat('data:application/json;base64,', Base64.encode(abi.encodePacked(
               '{"name": "donation #', tokenId.toString(), 
@@ -58,37 +46,7 @@ contract OnchainMetadata is ERC721BaseInternal {
         ); 
     }
 
-    function _image1(
-        string memory tag1,
-        string memory tag2,
-        string memory cardPower,
-        string memory notification1,
-        string memory notification2,
-        string memory blockNumber,
-        string memory donationMatic,
-        string memory donationUSD
-    ) internal pure returns(string memory) {
-        
-        string memory imageString = string.concat(
-                '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 493 840"><defs><style>.cls-1{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3,.cls-7{fill:#fff;}.cls-4{fill:#f8f8f8;}.cls-5{font-size:32px;}.cls-5,.cls-8{font-family:Poppins-SemiBold, Poppins;font-weight:600;}.cls-6,.cls-7{font-size:24px;font-family:Poppins-Regular, Poppins;}.cls-8{font-size:40px;}.cls-9{fill:#86efac;}.cls-10{fill:#a5f3fc;}.cls-11{fill:#fca5a5;}.cls-12{fill:#fef08a;}</style><clipPath id="clip-path" transform="translate(6)"><rect class="cls-1" width="480" height="840" rx="48"/></clipPath></defs><g class="cls-2"><rect class="cls-3" x="6" width="480" height="840" rx="48"/><rect class="cls-4" x="41" y="81" width="341" height="83" rx="10"/><rect class="cls-4" x="41" y="408" width="410" height="181" rx="10"/><rect y="761" width="493" height="79"/></g><text class="cls-5" transform="translate(54 462)">',
-                donationMatic, ' MATIC (', donationUSD, ' $)',
-                '</text><text class="cls-5" transform="translate(54 516)"> Donate</text><text class="cls-6" transform="translate(54 560)"> Block Number : ',
-                blockNumber,
-                '</text><text class="cls-6" transform="translate(54 708)"> card voting power : ',
-                cardPower,
-                '</text><text class="cls-7" transform="translate(54 806)">',
-                notification,
-                '</text><text class="cls-8" style="font-size: 28px;" transform="translate(54 223)">',
-                tag1,
-                '<tspan x="0" y="40">',
-                tag2,
-                '</tspan></text><text class="cls-8" transform="translate(54.94 138.23)"> Minter.Rocks</text><circle class="cls-9" cx="131.66" cy="385.4" r="15"/><circle class="cls-9" cx="223.68" cy="322.15" r="4.36"/><circle class="cls-10" cx="309.36" cy="336.47" r="12.64"/><circle class="cls-10" cx="60.97" cy="363.44" r="6.97"/><circle class="cls-11" cx="172.69" cy="346.76" r="5.86"/><circle class="cls-11" cx="366.05" cy="375.72" r="7.24"/><circle class="cls-12" cx="235.63" cy="378.39" r="7.59"/><circle class="cls-12" cx="430.01" cy="349.11" r="10.01"/><circle class="cls-12" cx="97.76" cy="320.03" r="3.8"/></svg>'
-        );
-        
-        return string.concat('data:image/svg+xml;base64,', Base64.encode(abi.encodePacked(imageString)));
-    }
-
-    function _image2(
+    function _image(
         string memory tag1,
         string memory tag2,
         string memory cardPower,
@@ -121,7 +79,6 @@ contract OnchainMetadata is ERC721BaseInternal {
         
         return string.concat('data:image/svg+xml;base64,', Base64.encode(abi.encodePacked(imageString)));
     }
-
 
     function _points(uint256 hashNum, uint256 cardPower) private pure returns(string memory points) {
         cardPower = cardPower / 10 ** 18;
