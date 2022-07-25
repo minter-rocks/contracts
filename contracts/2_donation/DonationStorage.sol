@@ -10,7 +10,7 @@ library DonationStorage {
     struct Layout {
         uint256 nextTokenId;
         uint256 minDonation;
-        uint256 powerNumenator; //denumerator is 10,000
+        uint256 powerNumenator; //denumerator is 10,000,000,000
         mapping(uint256 => Donate) donates;
         mapping(address => uint256) userPower;
         uint256 totalDonation;

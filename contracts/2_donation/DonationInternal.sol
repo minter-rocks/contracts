@@ -92,8 +92,9 @@ abstract contract DonationInternal {
     }
 
     function _consumePower(uint256 paidAmount) internal returns(uint256 powerAmount) {
-        powerAmount = paidAmount / (10 ** 6) * DonationStorage.layout().powerNumenator;
-        DonationStorage.layout().powerNumenator -= DonationStorage.layout().powerNumenator / 300;
+        DonationStorage.Layout storage d = DonationStorage.layout();
+        powerAmount = paidAmount / (10 ** 10) * d.powerNumenator;
+        d.powerNumenator -= d.powerNumenator / 330;
     }
 
     function _setPowerNumenator(uint256 powerNumenator) internal {
