@@ -30,7 +30,7 @@ contract Factory5 {
 
     function newCollection() public {
         address collectionAddr = address(collectionCont).clone();
-        Collection5(collectionAddr).initialize();
+        Collection5(collectionAddr).initialize(msg.sender);
         emit NewCollection(collectionAddr);
     }
 }

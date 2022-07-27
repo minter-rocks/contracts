@@ -14,9 +14,9 @@ contract Collection5 is Initializable, ERC1155Upgradeable, OwnableUpgradeable, E
         _disableInitializers();
     }
 
-    function initialize() initializer public {
+    function initialize(address owner) initializer public {
         __ERC1155_init("https://someURI/");
-        __Ownable_init(msg.sender);
+        __Ownable_init(owner);
         __ERC1155Burnable_init();
         __ERC1155Supply_init();
         __UUPSUpgradeable_init();
