@@ -24,13 +24,13 @@ import "./Collection1.sol";
  * @notice create your own NFT collection contract and convert your files to NFTs
  * in the simplest way possible.
  */
-contract Factory {
+contract Factory1 {
     using Clones for address;
 
     /**
      * @notice the predeployed collection contract abi which the Factory clones.
      */
-    Collection public CollectionCont = new Collection();
+    Collection1 public CollectionCont = new Collection1();
 
     event NewCollection(
         string creatorName,
@@ -62,7 +62,7 @@ contract Factory {
         address royaltyReciever
     ) public {
         address collectionAddr = address(CollectionCont).clone();
-        Collection(collectionAddr).initialize(
+        Collection1(collectionAddr).initialize(
             creatorName,
             tokenName, 
             tokenSymbol,
