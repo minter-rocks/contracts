@@ -59,10 +59,11 @@ abstract contract DonationInternal {
         if(tagLen > 33){
             uint256 endLine = 34;
             while(endLine > 0) {
-                endLine--;
                 if(bytsTag[endLine] == 0x20){
+                    endLine ++;
                     break;
                 }
+                endLine--;
             }
             endLine = endLine != 0 ? endLine : 33;
             require(tagLen - endLine <= 33, "DonationInternal: tag string overflow");
