@@ -3,7 +3,7 @@
 const {
   getSelectors,
   FacetCutAction
-} = require('./libraries/diamond.js')
+} = require('./libraries/diamond.js.js')
     
 const { assert } = require('chai')
 

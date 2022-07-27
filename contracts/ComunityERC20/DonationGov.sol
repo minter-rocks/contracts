@@ -7,12 +7,12 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Snapshot.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
-import "../2_donation/IDonation.sol";
+import "../community/2_donation/IDonation.sol";
 
 contract DonationGov is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, ERC20Permit, ERC20Votes {
 
-    // on polygon
-    IDonation constant don = IDonation(0xB42cE907d99b74578b9913A560B9c5C1A237356b);
+    // deploy2 on polygon
+    IDonation constant don = IDonation(0x9f5C41dA4dbDD0c59f663053Ac79364D02a5381D);
 
     constructor() ERC20("DonationGov", "DG") ERC20Permit("DonationGov") {}
 
