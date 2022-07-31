@@ -45,6 +45,7 @@ abstract contract TagInternal {
         uint256 blockNumber
     ) internal {
         TagStorage.Layout storage l = TagStorage.layout();
+        TagStorage.Tag storage t = l.tags[id];
 
         require(
             amount_MATIC >= l.minValue,
@@ -76,14 +77,20 @@ abstract contract TagInternal {
 
         uint256 power = _consumePower(amount_MATIC);
 
-        l.tags[id] = TagStorage.Tag(
+        (
+            t.notion1,
+            t.notion2,
+            t.amount_MATIC,
+            t.amount_USD,
+            t.votingPower,
+            t.blockNumber
+        ) = (
             notion1,
             notion2,
             amount_MATIC, 
             amount_USD, 
             power,
-            blockNumber,
-            new TagStorage.Donate[](0)
+            blockNumber
         );
         _increaseUserPower(userAddr, power);
         l.totalValue += amount_MATIC;
@@ -105,9 +112,8 @@ abstract contract TagInternal {
 
         l.tags[id].amount_MATIC += amount_MATIC;
         l.tags[id].votingPower += power;
-        l.tags[id].donates.push(
-            TagStorage.Donate(msg.sender, amount_MATIC, mention)
-        );
+        l.tags[id].donates[l.tags[id].donatesCount++] =
+            TagStorage.Donate(msg.sender, amount_MATIC, mention);
 
         _increaseUserPower(tokenOwner, power);
         l.totalValue += amount_MATIC;

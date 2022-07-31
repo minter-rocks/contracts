@@ -20,25 +20,35 @@ contract OnchainMetadata is ERC721BaseInternal {
         require(ERC721BaseStorage.layout().exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
         TagStorage.Layout storage l = TagStorage.layout();
-        TagStorage.Tag memory d = TagStorage.layout().tags[tokenId];
+        TagStorage.Tag storage t = TagStorage.layout().tags[tokenId];
 
-        uint256 votingPower = d.votingPower;
+        uint256 votingPower = t.votingPower;
+
+        string memory donates;
+        for (uint256 i; i < t.donatesCount; i++){
+            donates = string.concat(
+                t.donates[i].amount.floatString(18, 3),
+                ", ",
+                t.donates[i].mention,
+                " /n"
+            );
+        }
 
         string memory image =_image({
-            notion1 : SVGTextValidator.validate(d.notion1),
-            notion2 : SVGTextValidator.validate(d.notion2),
+            notion1 : SVGTextValidator.validate(t.notion1),
+            notion2 : SVGTextValidator.validate(t.notion2),
             cardPower : votingPower.floatString(18, 3),
             notification1 : l.notification1,
             notification2 : bytes(l.notification2).length > 0 ? l.notification2 : 
             string.concat('First Goal : ',l.totalValue.floatString(18, 2),' of 8000 MATIC'),
-            blockNumber : d.blockNumber.toString(),
-            valueMatic : d.amount_MATIC.floatString(18, 2),
-            points : _points(uint256(keccak256(abi.encodePacked(d.notion1, d.amount_MATIC))), votingPower)
+            blockNumber : t.blockNumber.toString(),
+            valueMatic : t.amount_MATIC.floatString(18, 2),
+            points : _points(uint256(keccak256(abi.encodePacked(t.notion1, t.amount_MATIC))), votingPower)
         });
 
         return string.concat('data:application/json;base64,', Base64.encode(abi.encodePacked(
               '{"name": "#', tokenId.toString(), 
-            '", "description": "', d.notion1, ' ', d.notion2,
+            '", "description": "', donates,
             '", "image": "', image,
             '", "interaction" : {"read":[],"write":[{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"changePattern","outputs":[],"stateMutability":"nonpayable","type":"function"}]}}'
             ))

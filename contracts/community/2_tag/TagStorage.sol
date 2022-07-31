@@ -27,7 +27,8 @@ library TagStorage {
         uint256 amount_USD;
         uint256 votingPower;
         uint256 blockNumber;
-        Donate[] donates;
+        uint256 donatesCount;
+        mapping(uint256 => Donate) donates;
     }
 
     struct Donate{
