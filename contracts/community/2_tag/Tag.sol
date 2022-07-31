@@ -4,9 +4,8 @@ pragma solidity ^0.8.4;
 import "../0_diamond/libraries/LibDiamond.sol";
 import "../1_ERC721SolidState/base/ERC721BaseInternal.sol";
 import "./TagInternal.sol";
-import "./utils/PriceFeed.sol";
 
-contract Tag is ERC721BaseInternal, TagInternal, PriceFeed {
+contract Tag is ERC721BaseInternal, TagInternal {
 
     modifier onlyOwner() {
         LibDiamond.enforceIsContractOwner();
@@ -15,7 +14,7 @@ contract Tag is ERC721BaseInternal, TagInternal, PriceFeed {
 
     function init() public {
         // _setPowerNumerator(10 ** 10);
-        // _setMinTag(10 ** 18);
+        // _setMinValue(10 ** 18);
     }
 
     function userPower(address userAddr) public view returns(uint256) {
@@ -34,7 +33,7 @@ contract Tag is ERC721BaseInternal, TagInternal, PriceFeed {
         
         _safeMint(userAddr, tokenId);
 
-        _newTag(userAddr, tokenId, notion, paidAmount, _IN_USD_18(paidAmount), block.number);
+        _newTag(userAddr, tokenId, notion, paidAmount, 0, block.number);
     }
 
     function levelup(uint256 tokenId) public payable {
@@ -47,8 +46,8 @@ contract Tag is ERC721BaseInternal, TagInternal, PriceFeed {
         _setNotification(notification1, notification2);
     }
 
-    function setMinTag(uint256 amount) public onlyOwner {
-        _setMinTag(amount);
+    function setMinValue(uint256 amount) public onlyOwner {
+        _setMinValue(amount);
     }
 
     function contractBalance() public view returns(uint256) {

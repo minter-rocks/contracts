@@ -46,7 +46,7 @@ abstract contract TagInternal {
     ) internal {
         TagStorage.Layout storage l = TagStorage.layout();
         require(
-            amount_Matic >= l.minTag,
+            amount_Matic >= l.minValue,
             "TagInternal: minimum tag error."
         );
 
@@ -94,7 +94,7 @@ abstract contract TagInternal {
     ) internal {
         TagStorage.Layout storage l = TagStorage.layout();
         require(
-            msg.value >= l.minTag,
+            msg.value >= l.minValue,
             "TagInternal: minimum tag error."
         );
     }
@@ -113,8 +113,8 @@ abstract contract TagInternal {
         TagStorage.layout().powerNumerator = powerNumerator;
     }
 
-    function _setMinTag(uint256 minTag) internal {
-        TagStorage.layout().minTag = minTag;
+    function _setMinValue(uint256 minValue) internal {
+        TagStorage.layout().minValue = minValue;
     }
 
     function _setNotification(

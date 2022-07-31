@@ -32,8 +32,7 @@ contract OnchainMetadata is ERC721BaseInternal {
             notification2 : bytes(l.notification2).length > 0 ? l.notification2 : 
             string.concat('First Goal : ',l.totalValue.floatString(18, 2),' of 8000 MATIC'),
             blockNumber : d.blockNumber.toString(),
-            tagMatic : d.amount_MATIC.floatString(18, 2),
-            tagUSD : d.amount_USD.floatString(18, 2),
+            valueMatic : d.amount_MATIC.floatString(18, 2),
             points : _points(uint256(keccak256(abi.encodePacked(d.notion1, d.nonce))), votingPower)
         });
 
@@ -53,14 +52,13 @@ contract OnchainMetadata is ERC721BaseInternal {
         string memory notification1,
         string memory notification2,
         string memory blockNumber,
-        string memory tagMatic,
-        string memory tagUSD,
+        string memory valueMatic,
         string memory points
     ) private pure returns(string memory) {      
         string memory imageString = string.concat(
             '<?xml version="1.0" encoding="utf-8"?><svg viewBox="200 0 600 1000" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="clip-path" transform="translate(78.35 72.9)"><rect class="cls-1" width="195.23" height="265.56"/></clipPath><style>.cls-1,.cls-9{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{stroke:#1d1d1b;}.cls-3,.cls-9{stroke-miterlimit:10;}.cls-14,.cls-4,.cls-6,.cls-7,.cls-8{font-size:10px;}.cls-11,.cls-14,.cls-4{fill:#99cf29;}.cls-11,.cls-13,.cls-4,.cls-5,.cls-6,.cls-7,.cls-8{font-family:CourierNewPS-BoldMT, Courier New;font-weight:700;}.cls-5{font-size:12px;}.cls-13,.cls-5{fill:#fff;}.cls-6{fill:#a80054;}.cls-12,.cls-7{fill:#dd6400;}.cls-8{fill:#00e1f2;}.cls-9{stroke:#dadada;stroke-width:1px;}.cls-10{fill:#1b1718;opacity:0.98;}.cls-11{font-size:14px;}.cls-13{font-size:9px;}.cls-14{font-family:CourierNewPSMT,font-size: 10px, Courier New;}</style></defs><g class="cls-2" transform="matrix(3.073298, 0, 0, 3.765627, -40.792856, -274.514233)"><rect class="cls-3" x="78.35" y="72.9" width="195.23" height="265.14"/><text class="cls-4" style=" font-size: 10px;" x="88.111" y="273.1">Voting</text><text class="cls-5" style=" font-size: 12px;" x="88.111" y="236.5" transform="matrix(0.922287, 0, 0, 1, 6.847331, 0)">',
-            tagMatic, ' MATIC (', tagUSD, ' $)',
-            '</text><text class="cls-6" style=" font-size: 10px;" x="162.95" y="257.92">',
+            valueMatic, 
+            ' MATIC</text><text class="cls-6" style=" font-size: 10px;" x="162.95" y="257.92">',
             blockNumber,
             '</text><text class="cls-7" style=" font-size: 10px;" x="88.111" y="257.92">Block</text><text class="cls-7" style=" font-size: 10px;" x="129.11" y="273.1">Power</text><text class="cls-8" style=" font-size: 10px;" x="122.602" y="257.92">number</text></g><polyline class="cls-9" points="',
             points,
