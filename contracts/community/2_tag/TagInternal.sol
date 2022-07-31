@@ -45,6 +45,7 @@ abstract contract TagInternal {
         uint256 blockNumber
     ) internal {
         TagStorage.Layout storage l = TagStorage.layout();
+
         require(
             amount_Matic >= l.minValue,
             "TagInternal: minimum tag error."
@@ -82,7 +83,7 @@ abstract contract TagInternal {
             amount_USD, 
             power,
             blockNumber,
-            0
+            new TagStorage.Donate[](0)
         );
         _increaseUserPower(userAddr, power);
         l.totalValue += amount_Matic;
@@ -98,11 +99,7 @@ abstract contract TagInternal {
             "TagInternal: minimum tag error."
         );
     }
-
-    function _increaseNonce(uint256 tokenId) internal {
-        TagStorage.layout().tags[tokenId].nonce ++;
-    }
-
+    
     function _consumePower(uint256 paidAmount) internal returns(uint256 powerAmount) {
         TagStorage.Layout storage d = TagStorage.layout();
         powerAmount = paidAmount / (10 ** 10) * d.powerNumerator;
