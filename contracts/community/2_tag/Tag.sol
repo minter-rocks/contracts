@@ -13,8 +13,9 @@ contract Tag is ERC721BaseInternal, TagInternal {
     }
 
     function init() public {
-        // _setPowerNumerator(10 ** 10);
-        // _setMinValue(10 ** 18);
+        _setPowerNumerator(10 ** 10);
+        _setMinValue(10 ** 18);
+        _setMinValue(10 ** 17);
     }
 
     function userPower(address userAddr) public view returns(uint256) {
@@ -36,7 +37,16 @@ contract Tag is ERC721BaseInternal, TagInternal {
         _newTag(userAddr, tokenId, notion, paidAmount, 0, block.number);
     }
 
-    function levelup(uint256 tokenId) public payable {
+    function levelup(
+        uint256 tokenId,
+        string memory mention
+    ) public payable {
+        _levelup(
+            tokenId,
+            _ownerOf(tokenId),
+            msg.value,
+            mention
+        );
     }
 
     function setNotification(
@@ -48,6 +58,10 @@ contract Tag is ERC721BaseInternal, TagInternal {
 
     function setMinValue(uint256 amount) public onlyOwner {
         _setMinValue(amount);
+    }
+
+    function setMinLevelup(uint256 amount) public onlyOwner {
+        _setMinLevelup(amount);
     }
 
     function contractBalance() public view returns(uint256) {

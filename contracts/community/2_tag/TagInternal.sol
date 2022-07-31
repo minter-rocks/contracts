@@ -40,15 +40,15 @@ abstract contract TagInternal {
         address userAddr,
         uint256 id,
         string calldata notion,
-        uint256 amount_Matic,
+        uint256 amount_MATIC,
         uint256 amount_USD,
         uint256 blockNumber
     ) internal {
         TagStorage.Layout storage l = TagStorage.layout();
 
         require(
-            amount_Matic >= l.minValue,
-            "TagInternal: minimum tag error."
+            amount_MATIC >= l.minValue,
+            "TagInternal: minimum value error."
         );
 
         bytes memory bytsTag = bytes(notion);
@@ -74,32 +74,45 @@ abstract contract TagInternal {
             notion1 = notion;
         }
 
-        uint256 power = _consumePower(amount_Matic);
+        uint256 power = _consumePower(amount_MATIC);
 
         l.tags[id] = TagStorage.Tag(
             notion1,
             notion2,
-            amount_Matic, 
+            amount_MATIC, 
             amount_USD, 
             power,
             blockNumber,
             new TagStorage.Donate[](0)
         );
         _increaseUserPower(userAddr, power);
-        l.totalValue += amount_Matic;
+        l.totalValue += amount_MATIC;
     }
 
     function _levelup(
-        uint256 tokenId,
+        uint256 id,
+        address tokenOwner,
+        uint256 amount_MATIC,
         string memory mention
     ) internal {
         TagStorage.Layout storage l = TagStorage.layout();
         require(
-            msg.value >= l.minValue,
-            "TagInternal: minimum tag error."
+            amount_MATIC >= l.minLevelup,
+            "TagInternal: minimum value error."
         );
+
+        uint256 power = _consumePower(amount_MATIC);
+
+        l.tags[id].amount_MATIC += amount_MATIC;
+        l.tags[id].votingPower += power;
+        l.tags[id].donates.push(
+            TagStorage.Donate(msg.sender, amount_MATIC, mention)
+        );
+
+        _increaseUserPower(tokenOwner, power);
+        l.totalValue += amount_MATIC;
     }
-    
+
     function _consumePower(uint256 paidAmount) internal returns(uint256 powerAmount) {
         TagStorage.Layout storage d = TagStorage.layout();
         powerAmount = paidAmount / (10 ** 10) * d.powerNumerator;
@@ -112,6 +125,10 @@ abstract contract TagInternal {
 
     function _setMinValue(uint256 minValue) internal {
         TagStorage.layout().minValue = minValue;
+    }
+
+    function _setMinLevelup(uint256 minLevelup) internal {
+        TagStorage.layout().minLevelup = minLevelup;
     }
 
     function _setNotification(
