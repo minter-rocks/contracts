@@ -33,7 +33,7 @@ contract OnchainMetadata is ERC721BaseInternal {
             string.concat('First Goal : ',l.totalValue.floatString(18, 2),' of 8000 MATIC'),
             blockNumber : d.blockNumber.toString(),
             valueMatic : d.amount_MATIC.floatString(18, 2),
-            points : _points(uint256(keccak256(abi.encodePacked(d.notion1, d.nonce))), votingPower)
+            points : _points(uint256(keccak256(abi.encodePacked(d.notion1, d.amount_MATIC))), votingPower)
         });
 
         return string.concat('data:application/json;base64,', Base64.encode(abi.encodePacked(

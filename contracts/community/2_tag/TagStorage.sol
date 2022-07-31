@@ -27,7 +27,13 @@ library TagStorage {
         uint256 amount_USD;
         uint256 votingPower;
         uint256 blockNumber;
-        uint256 nonce;
+        Donate[] donates;
+    }
+
+    struct Donate{
+        address donator;
+        uint256 amount;
+        string mention;
     }
 
     function layout() internal pure returns (Layout storage l) {
