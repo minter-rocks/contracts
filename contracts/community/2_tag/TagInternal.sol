@@ -85,7 +85,18 @@ abstract contract TagInternal {
             0
         );
         _increaseUserPower(userAddr, power);
-        l.totalTag += amount_Matic;
+        l.totalValue += amount_Matic;
+    }
+
+    function _levelup(
+        uint256 tokenId,
+        string memory mention
+    ) internal {
+        TagStorage.Layout storage l = TagStorage.layout();
+        require(
+            msg.value >= l.minTag,
+            "TagInternal: minimum tag error."
+        );
     }
 
     function _increaseNonce(uint256 tokenId) internal {

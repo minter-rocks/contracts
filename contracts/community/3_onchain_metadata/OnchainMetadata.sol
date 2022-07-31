@@ -30,7 +30,7 @@ contract OnchainMetadata is ERC721BaseInternal {
             cardPower : votingPower.floatString(18, 3),
             notification1 : l.notification1,
             notification2 : bytes(l.notification2).length > 0 ? l.notification2 : 
-            string.concat('First Goal : ',l.totalTag.floatString(18, 2),' of 8000 MATIC'),
+            string.concat('First Goal : ',l.totalValue.floatString(18, 2),' of 8000 MATIC'),
             blockNumber : d.blockNumber.toString(),
             tagMatic : d.amount_MATIC.floatString(18, 2),
             tagUSD : d.amount_USD.floatString(18, 2),

@@ -37,9 +37,7 @@ contract Tag is ERC721BaseInternal, TagInternal, PriceFeed {
         _newTag(userAddr, tokenId, notion, paidAmount, _IN_USD_18(paidAmount), block.number);
     }
 
-    function changePattern(uint256 tokenId) public {
-        require(_isApprovedOrOwner(msg.sender, tokenId), "Tag: caller is not approved nor owner");
-        _increaseNonce(tokenId);
+    function levelup(uint256 tokenId) public payable {
     }
 
     function setNotification(
