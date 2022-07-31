@@ -7,12 +7,12 @@ import { IERC721Enumerable } from './enumerable/IERC721Enumerable.sol';
 import { IERC721 } from './IERC721.sol';
 import { ERC721 } from './ERC721.sol';
 import { LibDiamond } from '../0_diamond/libraries/LibDiamond.sol';
-import { DonationInternal } from '../2_donation/DonationInternal.sol';
+import { TagInternal } from '../2_tag/TagInternal.sol';
 
-contract ERC721SolidState is ERC721, DonationInternal {
+contract ERC721SolidState is ERC721, TagInternal {
 
     function init() external {
-        _setName("Minter.Rocks Donation DAO");
+        _setName("Minter.Rocks Tag DAO");
         _setSymbol("DDAO");
 
         LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();

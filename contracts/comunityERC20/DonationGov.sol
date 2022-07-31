@@ -7,14 +7,14 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Snapshot.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
-import "../community/2_donation/IDonation.sol";
+import "../community/2_tag/ITag.sol";
 
-contract DonationGov is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, ERC20Permit, ERC20Votes {
+contract TagGov is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, ERC20Permit, ERC20Votes {
 
     // deploy2 on polygon
-    IDonation constant don = IDonation(0x9f5C41dA4dbDD0c59f663053Ac79364D02a5381D);
+    ITag constant don = ITag(0x9f5C41dA4dbDD0c59f663053Ac79364D02a5381D);
 
-    constructor() ERC20("DonationGov", "DG") ERC20Permit("DonationGov") {}
+    constructor() ERC20("TagGov", "DG") ERC20Permit("TagGov") {}
 
     function snapshot() public onlyOwner {
         _snapshot();

@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "Donation",
-  "sourceName": "contracts/community/2_donation/Donation.sol",
+  "contractName": "Tag",
+  "sourceName": "contracts/community/2_tag/Tag.sol",
   "abi": [
     {
       "anonymous": false,
@@ -112,7 +112,7 @@
           "type": "string"
         }
       ],
-      "name": "donate",
+      "name": "tag",
       "outputs": [],
       "stateMutability": "payable",
       "type": "function"
@@ -132,7 +132,7 @@
           "type": "uint256"
         }
       ],
-      "name": "setMinDonation",
+      "name": "setMinTag",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

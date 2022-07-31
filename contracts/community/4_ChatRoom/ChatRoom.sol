@@ -3,10 +3,10 @@
 pragma solidity ^0.8.7;
 
 import "../0_diamond/libraries/LibDiamond.sol";
-import "../2_donation/DonationInternal.sol";
+import "../2_tag/TagInternal.sol";
 import "./ChatRoomInternal.sol";
 
-contract ChatRoom is DonationInternal, ChatRoomInternal{
+contract ChatRoom is TagInternal, ChatRoomInternal{
 
     modifier onlyOwner() {
         LibDiamond.enforceIsContractOwner();

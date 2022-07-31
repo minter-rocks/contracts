@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "DonationInternal",
-  "sourceName": "contracts/community/2_donation/DonationInternal.sol",
+  "contractName": "TagInternal",
+  "sourceName": "contracts/community/2_tag/TagInternal.sol",
   "abi": [],
   "bytecode": "0x",
   "deployedBytecode": "0x",

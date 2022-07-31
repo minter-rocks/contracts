@@ -7,7 +7,7 @@ const {
     
 const { assert } = require('chai')
 
-async function deployDonation () { 
+async function deployTag () { 
 
   const diamondAddress = "0x9f5C41dA4dbDD0c59f663053Ac79364D02a5381D" //deploy2 diamond on polygon
   let  diamondCut = await ethers.getContractAt('DiamondCutFacet', diamondAddress)
@@ -17,8 +17,8 @@ async function deployDonation () {
 
   // deploy facet
   console.log('')
-  console.log('Deploying Donation')
-  const FacetName = "Donation"
+  console.log('Deploying Tag')
+  const FacetName = "Tag"
   const cut = []
   const Facet = await ethers.getContractFactory(FacetName)
   const facet = await Facet.deploy()
@@ -43,7 +43,7 @@ async function deployDonation () {
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 if (require.main === module) {
-  deployDonation()
+  deployTag()
     .then(() => process.exit(0))
     .catch(error => {
       console.error(error)
@@ -51,4 +51,4 @@ if (require.main === module) {
     })
 }
 
-exports.deployDonation = deployDonation
+exports.deployTag = deployTag

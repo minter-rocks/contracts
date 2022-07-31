@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "DonationGov",
-  "sourceName": "contracts/comunityERC20/DonationGov.sol",
+  "contractName": "TagGov",
+  "sourceName": "contracts/comunityERC20/TagGov.sol",
   "abi": [
     {
       "inputs": [],

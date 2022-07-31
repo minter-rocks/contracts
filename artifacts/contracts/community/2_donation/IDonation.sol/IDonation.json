@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "IDonation",
-  "sourceName": "contracts/community/2_donation/IDonation.sol",
+  "contractName": "ITag",
+  "sourceName": "contracts/community/2_tag/ITag.sol",
   "abi": [
     {
       "inputs": [],

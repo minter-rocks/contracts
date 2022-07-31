@@ -3,23 +3,23 @@
 pragma solidity ^0.8.7;
 
 
-library DonationStorage {
+library TagStorage {
 
     bytes32 constant DONATION_STORAGE_POSITION = keccak256("DONATION_STORAGE_POSITION");
 
     struct Layout {
         uint256 nextTokenId;
-        uint256 minDonation;
-        uint256 powerNumenator; //denumerator is 10,000,000,000
-        mapping(uint256 => Donate) donates;
+        uint256 minTag;
+        uint256 powerNumerator; //denumerator is 10,000,000,000
+        mapping(uint256 => Tag) tags;
         mapping(address => uint256) userPower;
-        uint256 totalDonation;
+        uint256 totalTag;
         uint256 totalPower;
         string notification1;
         string notification2;
     }
 
-    struct Donate {
+    struct Tag {
         string notion1;
         string notion2;
         uint256 amount_MATIC;

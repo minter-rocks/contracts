@@ -3,10 +3,10 @@ pragma solidity ^0.8.4;
 
 import "../0_diamond/libraries/LibDiamond.sol";
 import "../1_ERC721SolidState/base/ERC721BaseInternal.sol";
-import "./DonationInternal.sol";
+import "./TagInternal.sol";
 import "./utils/PriceFeed.sol";
 
-contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
+contract Tag is ERC721BaseInternal, TagInternal, PriceFeed {
 
     modifier onlyOwner() {
         LibDiamond.enforceIsContractOwner();
@@ -14,8 +14,8 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
     }
 
     function init() public {
-        // _setPowerNumenator(10 ** 10);
-        // _setMinDonation(10 ** 18);
+        // _setPowerNumerator(10 ** 10);
+        // _setMinTag(10 ** 18);
     }
 
     function userPower(address userAddr) public view returns(uint256) {
@@ -26,7 +26,7 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         return _totalPower();
     }
 
-    function donate(string calldata  notion) public payable {
+    function tag(string calldata  notion) public payable {
         uint256 paidAmount = msg.value;
         address userAddr = msg.sender;
 
@@ -34,11 +34,11 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         
         _safeMint(userAddr, tokenId);
 
-        _newDonation(userAddr, tokenId, notion, paidAmount, _IN_USD_18(paidAmount), block.number);
+        _newTag(userAddr, tokenId, notion, paidAmount, _IN_USD_18(paidAmount), block.number);
     }
 
     function changePattern(uint256 tokenId) public {
-        require(_isApprovedOrOwner(msg.sender, tokenId), "Donation: caller is not approved nor owner");
+        require(_isApprovedOrOwner(msg.sender, tokenId), "Tag: caller is not approved nor owner");
         _increaseNonce(tokenId);
     }
 
@@ -49,8 +49,8 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         _setNotification(notification1, notification2);
     }
 
-    function setMinDonation(uint256 amount) public onlyOwner {
-        _setMinDonation(amount);
+    function setMinTag(uint256 amount) public onlyOwner {
+        _setMinTag(amount);
     }
 
     function contractBalance() public view returns(uint256) {

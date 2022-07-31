@@ -2,10 +2,10 @@ const { ethers } = require("hardhat");
 
   async function main() {
     // simple deploy
-    const DonationGov = await ethers.getContractFactory("DonationGov");
-    const DG = await DonationGov.deploy();
+    const TagGov = await ethers.getContractFactory("TagGov");
+    const DG = await TagGov.deploy();
     await DG.deployed();
-    console.log("DonationGov Contract Address:", DG.address); 
+    console.log("TagGov Contract Address:", DG.address); 
   }
     
   main();

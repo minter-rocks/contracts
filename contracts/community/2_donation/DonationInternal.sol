@@ -2,41 +2,41 @@
 
 pragma solidity ^0.8.7;
 
-import "./DonationStorage.sol";
+import "./TagStorage.sol";
 
-abstract contract DonationInternal {
-    using DonationStorage for DonationStorage.Layout;
-    using DonationStorage for DonationStorage.Donate;
+abstract contract TagInternal {
+    using TagStorage for TagStorage.Layout;
+    using TagStorage for TagStorage.Tag;
 
     function _nextTokenId() internal returns(uint256) {
-        return DonationStorage.layout().nextTokenId++;
+        return TagStorage.layout().nextTokenId++;
     }
 
     function _cardPower(uint256 tokenId) internal view returns(uint256) {
-        return DonationStorage.layout().donates[tokenId].votingPower;
+        return TagStorage.layout().tags[tokenId].votingPower;
     }
 
     function _userPower(address userAddr) internal view returns(uint256) {
-        return DonationStorage.layout().userPower[userAddr];
+        return TagStorage.layout().userPower[userAddr];
     }
 
     function _totalPower() internal view returns(uint256) {
-        return DonationStorage.layout().totalPower;
+        return TagStorage.layout().totalPower;
     }
 
     function _increaseUserPower(address userAddr, uint256 amount) internal {
-        DonationStorage.Layout storage l = DonationStorage.layout();
+        TagStorage.Layout storage l = TagStorage.layout();
         l.userPower[userAddr] += amount;
         l.totalPower += amount;
     }
 
     function _decreaseUserPower(address userAddr, uint256 amount) internal {
-        DonationStorage.Layout storage l = DonationStorage.layout();
+        TagStorage.Layout storage l = TagStorage.layout();
         l.userPower[userAddr] -= amount;
         l.totalPower -= amount;
     }
 
-    function _newDonation(
+    function _newTag(
         address userAddr,
         uint256 id,
         string calldata notion,
@@ -44,10 +44,10 @@ abstract contract DonationInternal {
         uint256 amount_USD,
         uint256 blockNumber
     ) internal {
-        DonationStorage.Layout storage l = DonationStorage.layout();
+        TagStorage.Layout storage l = TagStorage.layout();
         require(
-            amount_Matic >= l.minDonation,
-            "DonationInternal: minimum donation error."
+            amount_Matic >= l.minTag,
+            "TagInternal: minimum tag error."
         );
 
         bytes memory bytsTag = bytes(notion);
@@ -66,7 +66,7 @@ abstract contract DonationInternal {
                 endLine--;
             }
             endLine = endLine != 0 ? endLine : 33;
-            require(notionLen - endLine <= 33, "DonationInternal: notion string overflow");
+            require(notionLen - endLine <= 33, "TagInternal: notion string overflow");
             notion1 = notion[:endLine];
             notion2 = notion[endLine:notionLen];
         } else {
@@ -75,7 +75,7 @@ abstract contract DonationInternal {
 
         uint256 power = _consumePower(amount_Matic);
 
-        l.donates[id] = DonationStorage.Donate(
+        l.tags[id] = TagStorage.Tag(
             notion1,
             notion2,
             amount_Matic, 
@@ -85,33 +85,33 @@ abstract contract DonationInternal {
             0
         );
         _increaseUserPower(userAddr, power);
-        l.totalDonation += amount_Matic;
+        l.totalTag += amount_Matic;
     }
 
     function _increaseNonce(uint256 tokenId) internal {
-        DonationStorage.layout().donates[tokenId].nonce ++;
+        TagStorage.layout().tags[tokenId].nonce ++;
     }
 
     function _consumePower(uint256 paidAmount) internal returns(uint256 powerAmount) {
-        DonationStorage.Layout storage d = DonationStorage.layout();
-        powerAmount = paidAmount / (10 ** 10) * d.powerNumenator;
-        d.powerNumenator -= d.powerNumenator / 666;
+        TagStorage.Layout storage d = TagStorage.layout();
+        powerAmount = paidAmount / (10 ** 10) * d.powerNumerator;
+        d.powerNumerator -= d.powerNumerator / 666;
     }
 
-    function _setPowerNumenator(uint256 powerNumenator) internal {
-        DonationStorage.layout().powerNumenator = powerNumenator;
+    function _setPowerNumerator(uint256 powerNumerator) internal {
+        TagStorage.layout().powerNumerator = powerNumerator;
     }
 
-    function _setMinDonation(uint256 minDonation) internal {
-        DonationStorage.layout().minDonation = minDonation;
+    function _setMinTag(uint256 minTag) internal {
+        TagStorage.layout().minTag = minTag;
     }
 
     function _setNotification(
         string memory notification1,
         string memory notification2
     ) internal {
-        DonationStorage.layout().notification1 = notification1;
-        DonationStorage.layout().notification2 = notification2;
+        TagStorage.layout().notification1 = notification1;
+        TagStorage.layout().notification2 = notification2;
     }
 
 }

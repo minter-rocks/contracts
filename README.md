@@ -13,7 +13,7 @@
 
   $ npx run scripts/upgrade1.js (--network <network_name>) 
   
-- deploy ERC721 donation:
+- deploy ERC721 tag:
 
   $ npx run scripts/upgrade2.js (--network <network_name>) 
   
