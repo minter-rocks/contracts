@@ -20,8 +20,8 @@ library DonationStorage {
     }
 
     struct Donate {
-        string tag1;
-        string tag2;
+        string notion1;
+        string notion2;
         uint256 amount_MATIC;
         uint256 amount_USD;
         uint256 votingPower;

@@ -26,7 +26,7 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         return _totalPower();
     }
 
-    function donate(string calldata  tag) public payable {
+    function donate(string calldata  notion) public payable {
         uint256 paidAmount = msg.value;
         address userAddr = msg.sender;
 
@@ -34,7 +34,7 @@ contract Donation is ERC721BaseInternal, DonationInternal, PriceFeed {
         
         _safeMint(userAddr, tokenId);
 
-        _newDonation(userAddr, tokenId, tag, paidAmount, _IN_USD_18(paidAmount), block.number);
+        _newDonation(userAddr, tokenId, notion, paidAmount, _IN_USD_18(paidAmount), block.number);
     }
 
     function changePattern(uint256 tokenId) public {

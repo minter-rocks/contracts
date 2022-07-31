@@ -25,8 +25,8 @@ contract OnchainMetadata is ERC721BaseInternal {
         uint256 votingPower = d.votingPower;
 
         string memory image =_image({
-            tag1 : SVGTextValidator.validate(d.tag1),
-            tag2 : SVGTextValidator.validate(d.tag2),
+            notion1 : SVGTextValidator.validate(d.notion1),
+            notion2 : SVGTextValidator.validate(d.notion2),
             cardPower : votingPower.floatString(18, 3),
             notification1 : l.notification1,
             notification2 : bytes(l.notification2).length > 0 ? l.notification2 : 
@@ -34,12 +34,12 @@ contract OnchainMetadata is ERC721BaseInternal {
             blockNumber : d.blockNumber.toString(),
             donationMatic : d.amount_MATIC.floatString(18, 2),
             donationUSD : d.amount_USD.floatString(18, 2),
-            points : _points(uint256(keccak256(abi.encodePacked(d.tag1, d.nonce))), votingPower)
+            points : _points(uint256(keccak256(abi.encodePacked(d.notion1, d.nonce))), votingPower)
         });
 
         return string.concat('data:application/json;base64,', Base64.encode(abi.encodePacked(
               '{"name": "#', tokenId.toString(), 
-            '", "description": "', d.tag1, ' ', d.tag2,
+            '", "description": "', d.notion1, ' ', d.notion2,
             '", "image": "', image,
             '", "interaction" : {"read":[],"write":[{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"changePattern","outputs":[],"stateMutability":"nonpayable","type":"function"}]}}'
             ))
@@ -47,8 +47,8 @@ contract OnchainMetadata is ERC721BaseInternal {
     }
 
     function _image(
-        string memory tag1,
-        string memory tag2,
+        string memory notion1,
+        string memory notion2,
         string memory cardPower,
         string memory notification1,
         string memory notification2,
@@ -67,9 +67,9 @@ contract OnchainMetadata is ERC721BaseInternal {
             '"/><g class="cls-2" transform="matrix(3.073298, 0, 0, 3.765627, -40.792856, -274.514233)"><rect class="cls-10" x="78.35" y="72.9" width="195.23" height="53.112"/><rect class="cls-10" x="78.35" y="285.348" width="195.23" height="53.112"/><text class="cls-11" x="88.111" y="94.59">Minter.<tspan class="cls-12" x="146.921" y="94.59" style="font-size: 14px; word-spacing: 0px;">rocks</tspan></text><text class="cls-8" style=" font-size: 10px;" x="164.902" y="273.1">',
             cardPower,
             '</text><text class="cls-13" x="88.111" y="112">',
-            tag1,
+            notion1,
             '<tspan x="88.111" y="123">',
-            tag2,
+            notion2,
             '</tspan></text><text class="cls-14" x="0" y="-5" transform="matrix(0.813628, 0, 0, 1.01345, 91.365326, 304.546661)" style="fill: rgb(118, 150, 44); paint-order: fill;">notification</text><text class="cls-14" x="0" y="-10" transform="matrix(0.994492, 0, 0, 1, 88.111488, 322.839996)">',
             notification1,
             '<tspan x="0" y="5">',
