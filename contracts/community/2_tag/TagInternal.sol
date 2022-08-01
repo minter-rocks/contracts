@@ -52,30 +52,9 @@ abstract contract TagInternal {
             "TagInternal: minimum value error."
         );
 
-        bytes memory bytsTag = bytes(notion);
-        uint256 notionLen = bytsTag.length;
-
-        string memory notion1;
-        string memory notion2;
-
-        if(notionLen > 33){
-            uint256 endLine = 34;
-            while(endLine > 0) {
-                if(bytsTag[endLine] == 0x20){
-                    endLine ++;
-                    break;
-                }
-                endLine--;
-            }
-            endLine = endLine != 0 ? endLine : 33;
-            require(notionLen - endLine <= 33, "TagInternal: notion string overflow");
-            notion1 = notion[:endLine];
-            notion2 = notion[endLine:notionLen];
-        } else {
-            notion1 = notion;
-        }
-
         uint256 power = _consumePower(amount_MATIC);
+
+        (string memory notion1, string memory notion2) = convert2Lines(notion);
 
         (
             t.notion1,
@@ -143,6 +122,63 @@ abstract contract TagInternal {
     ) internal {
         TagStorage.layout().notification1 = notification1;
         TagStorage.layout().notification2 = notification2;
+    }
+
+    function convert2Lines(string calldata input) internal pure returns (
+        string memory output1,
+        string memory output2
+    ) {
+        uint256 endLine;
+        uint256 inputLen2;
+        bool line2;
+        uint256 char;
+        uint256 charAdd;
+        bytes memory inputBytes = bytes(input);
+
+        while (char < inputBytes.length){
+            if (inputBytes[char]>>7==0){
+                charAdd = 1;
+            } else if (inputBytes[char]>>5==bytes1(uint8(0x6))){
+                charAdd = 2;
+            } else if (inputBytes[char]>>4==bytes1(uint8(0xE))){
+                charAdd = 3;
+                inputLen2 ++;
+            } else if (inputBytes[char]>>3==bytes1(uint8(0x1E))){
+                charAdd = 4;
+                inputLen2 += 2;
+            } else {
+                //For safety
+                charAdd = 1;
+            }
+
+            if(!line2 && inputBytes[char] == 0x20){
+                endLine = char+charAdd;
+            }
+
+            char += charAdd;
+            inputLen2 += 2;
+
+            if(inputLen2 > 20){
+                require(
+                    !line2,
+                    "TagInternal: input string overflow1"
+                );
+                line2 = true;
+                endLine = endLine != 0 ? endLine : char-charAdd;
+                inputLen2 = 0;
+            }
+        }
+        
+        if(line2) {
+            require(
+                inputLen2/2 < endLine,
+                "TagInternal: input string overflow2"
+            );
+            output1 = input[:endLine];
+            output2 = input[endLine:char];   
+        } else {
+            output1 = input;
+        }
     }
 
 }
