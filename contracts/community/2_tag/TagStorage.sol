@@ -10,12 +10,12 @@ library TagStorage {
     struct Layout {
         uint256 nextTokenId;
         uint256 minValue;
-        uint256 minLevelup;
         uint256 powerNumerator; //denumerator is 10,000,000,000
         mapping(uint256 => Tag) tags;
         mapping(address => uint256) userPower;
         uint256 totalValue;
         uint256 totalPower;
+        uint256 minLevelup;
         string notification1;
         string notification2;
     }
