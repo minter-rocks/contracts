@@ -6,9 +6,9 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155BurnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155SupplyUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "./ERC1155Capped.sol";
 
-contract Collection5 is Initializable, ERC1155Upgradeable, OwnableUpgradeable, ERC1155BurnableUpgradeable, ERC1155SupplyUpgradeable, UUPSUpgradeable {
+contract Collection5 is Initializable, ERC1155Upgradeable, OwnableUpgradeable, ERC1155BurnableUpgradeable, ERC1155SupplyUpgradeable, ERC1155CappedUpgradeable {
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -19,34 +19,48 @@ contract Collection5 is Initializable, ERC1155Upgradeable, OwnableUpgradeable, E
         __Ownable_init(owner);
         __ERC1155Burnable_init();
         __ERC1155Supply_init();
-        __UUPSUpgradeable_init();
     }
 
     function setURI(string memory newuri) public onlyOwner {
         _setURI(newuri);
     }
 
-    function mint(address account, uint256 id, uint256 amount, bytes memory data)
+    function newId(
+        address account, 
+        uint256 id, 
+        uint256 supplyCap,
+        uint256 initialAmount
+    ) public onlyOwner {
+        require(!exists(id), "id already exists");
+        _setCap(id, supplyCap);
+        _mint(account, id, initialAmount, "");
+    }
+
+    function mint(address account, uint256 id, uint256 amount)
         public
         onlyOwner
     {
-        _mint(account, id, amount, data);
+        require(exists(id), "non-existant id");
+        _mint(account, id, amount, "");
     }
 
-    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
+    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts)
         public
         onlyOwner
     {
-        _mintBatch(to, ids, amounts, data);
+        _mintBatch(to, ids, amounts, "");
     }
-
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        onlyOwner
-        override
-    {}
 
     // The following functions are overrides required by Solidity.
+
+    function _mint(
+        address account, 
+        uint256 id, 
+        uint256 amount, 
+        bytes memory data
+    ) internal virtual override(ERC1155Upgradeable, ERC1155CappedUpgradeable) {
+        super._mint(account, id, amount, data);
+    }
 
     function _beforeTokenTransfer(address operator, address from, address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
         internal
