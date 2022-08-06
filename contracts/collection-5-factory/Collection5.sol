@@ -5,10 +5,19 @@ import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155BurnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155SupplyUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155URIStorageUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./ERC1155Capped.sol";
 
-contract Collection5 is Initializable, ERC1155Upgradeable, OwnableUpgradeable, ERC1155BurnableUpgradeable, ERC1155SupplyUpgradeable, ERC1155CappedUpgradeable {
+contract Collection5 is 
+    Initializable, 
+    ERC1155Upgradeable, 
+    OwnableUpgradeable, 
+    ERC1155BurnableUpgradeable, 
+    ERC1155SupplyUpgradeable, 
+    ERC1155URIStorageUpgradeable, 
+    ERC1155CappedUpgradeable 
+{
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -21,8 +30,8 @@ contract Collection5 is Initializable, ERC1155Upgradeable, OwnableUpgradeable, E
         __ERC1155Supply_init();
     }
 
-    function setURI(string memory newuri) public onlyOwner {
-        _setURI(newuri);
+    function setURI(uint256 tokenId, string memory newuri) public onlyOwner {
+        _setURI(tokenId, newuri);
     }
 
     function newId(
@@ -52,6 +61,13 @@ contract Collection5 is Initializable, ERC1155Upgradeable, OwnableUpgradeable, E
     }
 
     // The following functions are overrides required by Solidity.
+
+    function uri(uint256 tokenId) public view virtual 
+        override(ERC1155Upgradeable, ERC1155URIStorageUpgradeable)
+        returns (string memory) 
+    {
+        return super.uri(tokenId);
+    }
 
     function _mint(
         address account, 
