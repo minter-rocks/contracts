@@ -15,6 +15,9 @@
     - royaltyNumerator
     - royaltyReciever
 
+- deploy Factory 5:
+  $ npx run scripts/deploy5.js (--network <network_name>) 
+
 ## Collection
 
 - every token id has a cap which owner of the contract sets.
@@ -25,3 +28,6 @@
 - there is a default royalty which can be set once at initializing time and also every tokenId can have its particular royalty instead of default royalty.
 - owner of the contract can delete default royalty and token royalties or set 
 - tokenRoyalty only when the token supply is zero.
+
+- deploy collection5:
+  $ Factory5.newCollection(<attributes>)
