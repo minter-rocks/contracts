@@ -1,5 +1,5 @@
 
-## Collection contract version_2 ERC1155 
+## Collection factory version_5 ERC1155 
 
 - every token id has a cap which owner of the contract sets.
 - totalSupply of each id can be maximum of the cap.
