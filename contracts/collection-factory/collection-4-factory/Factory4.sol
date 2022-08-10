@@ -20,9 +20,13 @@ import "./Collection4.sol";
 
 /**
  * @title NFT Collection Factory
- * @author Minter.Rocks
- * @notice create your own NFT collection contract and convert your files to NFTs
- * in the simplest way possible.
+ *
+ * @notice create your own NFT collection contract and convert your files to
+ * ERC721 NFTs in the most gas efficient and simple way possible.
+ * @notice your next collection address is visible before you deploy it!
+ * @notice access to your all collections in one call in the factory.
+ * @notice you only need to specify the collection attributes and create it in one function call. 
+ * @notice you can set a default royalty on all tokens of your collection once in deploying time.
  */
 contract Factory4 {
     using Clones for address;
