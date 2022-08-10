@@ -65,8 +65,19 @@ contract Factory5 {
         );
     }
 
-    function userCollections(address user) public view returns(address[] memory addre) {
+    function userCollections(address user) public view returns(
+        address[] memory addrs,
+        string[] memory infos
+    ) {
+        uint256 len = _userCollections[user].length;
+        
+        addrs = new address[](len);
+        infos = new string[](len);
 
+        for(uint16 i; i < len; i++) {
+            addrs[i] = _userCollections[user][i];
+            infos[i] = Collection5(_userCollections[user][i]).collectionInfo();
+        }
     }
 
     function nextCollectionAddr(
