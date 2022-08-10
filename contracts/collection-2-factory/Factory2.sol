@@ -67,14 +67,17 @@ contract Factory2 {
         uint96 royaltyNumerator,
         address royaltyReciever
     ) public {
-        address collectionAddr = address(implementation).clone();
+        address creatorAddr = msg.sender;
+        address collectionAddr = address(implementation).cloneDeterministic(
+            bytes32(abi.encodePacked(creatorAddr, _userCollections[creatorAddr].length))
+        );
         Collection2(collectionAddr).initialize(
             creatorName,
             tokenName, 
             tokenSymbol,
             baseURI,
             maxSupply,
-            msg.sender,
+            creatorAddr,
             royaltyNumerator,
             royaltyReciever
         );
@@ -84,7 +87,7 @@ contract Factory2 {
             tokenSymbol,
             baseURI,
             maxSupply,
-            msg.sender,
+            creatorAddr,
             collectionAddr, 
             royaltyNumerator
         );

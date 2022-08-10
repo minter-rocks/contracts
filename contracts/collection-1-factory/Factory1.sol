@@ -27,6 +27,8 @@ import "./Collection1.sol";
 contract Factory1 {
     using Clones for address;
 
+    mapping(address => address[]) public _userCollections;
+
     /**
      * @notice the predeployed collection contract abi which the Factory clones.
      */
@@ -61,12 +63,15 @@ contract Factory1 {
         uint96 royaltyNumerator,
         address royaltyReciever
     ) public {
-        address collectionAddr = address(implementation).clone();
+        address creatorAddr = msg.sender;
+        address collectionAddr = address(implementation).cloneDeterministic(
+            bytes32(abi.encodePacked(creatorAddr, _userCollections[creatorAddr].length))
+        );
         Collection1(collectionAddr).initialize(
             creatorName,
             tokenName, 
             tokenSymbol,
-            msg.sender,
+            creatorAddr,
             royaltyNumerator,
             royaltyReciever
         );
@@ -74,9 +79,33 @@ contract Factory1 {
             creatorName, 
             tokenName, 
             tokenSymbol, 
-            msg.sender,
+            creatorAddr,
             collectionAddr, 
             royaltyNumerator
+        );
+    }
+
+    function userCollections(address user) public view returns(
+        address[] memory addrs,
+        string[] memory names
+    ) {
+        uint256 len = _userCollections[user].length;
+        
+        addrs = new address[](len);
+        names = new string[](len);
+
+        for(uint16 i; i < len; i++) {
+            addrs[i] = _userCollections[user][i];
+            names[i] = Collection1(_userCollections[user][i]).name();
+        }
+    }
+
+    function nextCollectionAddr(
+        address creatorAddr
+    ) public view returns(address) {
+        return address(implementation).predictDeterministicAddress(
+            bytes32(abi.encodePacked(creatorAddr, _userCollections[creatorAddr].length)), 
+            address(this)
         );
     }
 }
