@@ -1,7 +1,7 @@
 ## Collection factory version_2 ERC721 
 
  - NFT Collection contract version_1
- - tokenIds are starting from 0 to (maxSupply - 1).
+ - totalSupply is unlimited.
  - token URIs are Basically different.
  - safeMint restricted to the owner.
  - safeMint can be auto increment tokenId or owner of the contract can choose the tokenId.

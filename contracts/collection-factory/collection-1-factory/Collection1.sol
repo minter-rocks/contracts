@@ -31,7 +31,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 /**
  * @title NFT Collection contract version_1
- * @notice tokenIds are starting from 0 to (maxSupply - 1).
+ * @notice totalSupply is unlimited.
  * @notice token URIs are Basically different.
  * @notice safeMint restricted to the owner.
  * @notice safeMint can be auto increment tokenId or owner of the contract can choose the tokenId.
