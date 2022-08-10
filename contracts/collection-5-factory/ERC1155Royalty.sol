@@ -23,7 +23,7 @@ abstract contract ERC1155Royalty is ERC2981, ERC1155Supply {
         address from,
         uint256 id,
         uint256 amount
-    ) internal override {
+    ) internal virtual override {
         super._burn(from, id, amount);
         if(ERC1155Supply.totalSupply(id) == 0)
             _resetTokenRoyalty(id);
@@ -33,7 +33,7 @@ abstract contract ERC1155Royalty is ERC2981, ERC1155Supply {
         address from,
         uint256[] memory ids,
         uint256[] memory amounts
-    ) internal override {
+    ) internal virtual override {
         super._burnBatch(from, ids, amounts);
         for (uint256 i = 0; i < ids.length; i++) 
             if(ERC1155Supply.totalSupply(ids[i]) == 0)

@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155SupplyUpgradeable.sol";
+import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
-abstract contract ERC1155CappedUpgradeable is ERC1155SupplyUpgradeable {
+abstract contract ERC1155Capped is ERC1155Supply {
     mapping (uint256 => uint256) private _cap;
 
     /**
@@ -27,14 +27,7 @@ abstract contract ERC1155CappedUpgradeable is ERC1155SupplyUpgradeable {
         uint256 amount, 
         bytes memory data
     ) internal virtual override {
-        require(ERC1155SupplyUpgradeable.totalSupply(id) + amount <= cap(id), "ERC1155Capped: cap exceeded");
+        require(ERC1155Supply.totalSupply(id) + amount <= cap(id), "ERC1155Capped: cap exceeded");
         super._mint(account, id, amount, data);
     }
-
-    /**
-     * @dev This empty reserved space is put in place to allow future versions to add new
-     * variables without shifting down storage in the inheritance chain.
-     * See https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
-     */
-    uint256[50] private __gap;
 }

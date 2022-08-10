@@ -1,22 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155BurnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155SupplyUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/ERC1155URIStorageUpgradeable.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
+import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
+import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./ERC1155Capped.sol";
+import "./ERC1155Royalty.sol";
 
 contract Collection5 is 
     Initializable, 
-    ERC1155Upgradeable, 
     OwnableUpgradeable, 
-    ERC1155BurnableUpgradeable, 
-    ERC1155SupplyUpgradeable, 
-    ERC1155URIStorageUpgradeable, 
-    ERC1155CappedUpgradeable 
+    ERC1155Burnable, 
+    ERC1155URIStorage, 
+    ERC1155Capped,
+    ERC1155Royalty 
 {
 
     string public collectionInfo;
@@ -40,8 +40,6 @@ contract Collection5 is
         name = _name;
         symbol = _symbol;
         __Ownable_init(_owner);
-        __ERC1155Burnable_init();
-        __ERC1155Supply_init();
         if (_royaltyNumerator > 0) {
             require(_royaltyReciever != address(0), "Collection: Invalid Royalty receiver");
             _setDefaultRoyalty(_royaltyReciever, _royaltyNumerator);
@@ -81,18 +79,18 @@ contract Collection5 is
 
     /**
      * @notice set the royalty for the specified token.
-     * @param tokenId tokenId that you want to reset its royalty.
+     * @param id tokenId that you want to reset its royalty.
      * @param receiver the wallet address that receives the royalty.
      * @param feeNumerator the numerator of the token royalty which denumerator is 10000.
      * @notice you must be the owner of the contract and also owner of the token.
      */
     function setTokenRoyalty(
-        uint256 tokenId,
+        uint256 id,
         address receiver,
         uint96 feeNumerator
     ) public onlyOwner {
-        require(msg.sender == ownerOf(tokenId), "Collection: you must be the owner of the token to set the royalty");
-        _setDefaultRoyalty(receiver, feeNumerator);
+        require(!exists(id), "non-zero supply");
+        _setTokenRoyalty(id, receiver, feeNumerator);
     }
 
     /**
@@ -112,10 +110,11 @@ contract Collection5 is
     function resetTokenRoyalty(uint256 tokenId) public onlyOwner {
         _resetTokenRoyalty(tokenId);
     }
+
     // The following functions are overrides required by Solidity.
 
     function uri(uint256 tokenId) public view virtual 
-        override(ERC1155Upgradeable, ERC1155URIStorageUpgradeable)
+        override(ERC1155, ERC1155URIStorage)
         returns (string memory) 
     {
         return super.uri(tokenId);
@@ -126,13 +125,36 @@ contract Collection5 is
         uint256 id, 
         uint256 amount, 
         bytes memory data
-    ) internal virtual override(ERC1155Upgradeable, ERC1155CappedUpgradeable) {
+    ) internal virtual override(ERC1155, ERC1155Capped) {
         super._mint(account, id, amount, data);
+    }
+
+    function supportsInterface(bytes4 interfaceId) public view virtual override(
+        ERC1155, 
+        ERC1155Royalty 
+    ) returns (bool) {
+        return super.supportsInterface(interfaceId);
+    }
+
+    function _burn(
+        address from,
+        uint256 id,
+        uint256 amount
+    ) internal virtual override(ERC1155, ERC1155Royalty) {
+        super._burn(from, id, amount);
+    }
+
+    function _burnBatch(
+        address from,
+        uint256[] memory ids,
+        uint256[] memory amounts
+    ) internal virtual override(ERC1155, ERC1155Royalty) {
+        super._burnBatch(from, ids, amounts);
     }
 
     function _beforeTokenTransfer(address operator, address from, address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
         internal
-        override(ERC1155Upgradeable, ERC1155SupplyUpgradeable)
+        override(ERC1155, ERC1155Supply)
     {
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
     }
