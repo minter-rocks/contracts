@@ -1,6 +1,26 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
+/**                                   .----------------. 
+ *                                   | .--------------. |
+ *                                   | |  _______     | |
+ *                                   | | |_   __ \    | |
+ *                                   | |   | |__) |   | |
+ *                                   | |   |  __ /    | |
+ *                                   | |  _| |  \ \_  | |
+ *                                   | | |____| |___| | |
+ *                                   | |              | |
+ *                                   | '--------------' |
+ *                                   '------------------' 
+ *
+ *   ███╗   ███╗██╗███╗   ██╗████████╗███████╗██████╗    ██████╗  ██████╗  ██████╗██╗  ██╗███████╗
+ *   ████╗ ████║██║████╗  ██║╚══██╔══╝██╔════╝██╔══██╗   ██╔══██╗██╔═══██╗██╔════╝██║ ██╔╝██╔════╝
+ *   ██╔████╔██║██║██╔██╗ ██║   ██║   █████╗  ██████╔╝   ██████╔╝██║   ██║██║     █████╔╝ ███████╗
+ *   ██║╚██╔╝██║██║██║╚██╗██║   ██║   ██╔══╝  ██╔══██╗   ██╔══██╗██║   ██║██║     ██╔═██╗ ╚════██║
+ *   ██║ ╚═╝ ██║██║██║ ╚████║   ██║   ███████╗██║  ██║██╗██║  ██║╚██████╔╝╚██████╗██║  ██╗███████║
+ *   ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝╚═╝  ╚═╝╚══════╝
+ */
+
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
@@ -10,6 +30,18 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./ERC1155Capped.sol";
 import "./ERC1155Royalty.sol";
 
+/**
+ * @title Collection contract version_2 ERC1155 
+ * @notice every token id has a cap which owner of the contract sets.
+ * @notice totalSupply of each id can be maximum of the cap.
+ * @notice every tokenId has a uri which can be set by the owner.
+ * @notice newId and safeMint restricted to the owner.
+ * @notice the owner has to create newId befor they can mint on that Id.
+ * @notice there is a default royalty which can be set once at initializing time and 
+ * also every tokenId can have its particular royalty instead of default royalty.
+ * @notice owner of the contract can delete default royalty and token royalties or set 
+ * tokenRoyalty only when the token supply is zero.
+ */
 contract Collection5 is 
     Initializable, 
     OwnableUpgradeable, 

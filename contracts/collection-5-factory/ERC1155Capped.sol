@@ -17,10 +17,7 @@ abstract contract ERC1155Capped is ERC1155Supply {
     function _setCap(uint256 tokenId, uint256 supplyCap) internal {
         _cap[tokenId] = supplyCap;
     }
-
-    /**
-     * @dev See {ERC1155-_mint}.
-     */
+    
     function _mint(
         address account, 
         uint256 id, 
