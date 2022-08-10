@@ -30,16 +30,16 @@ contract Factory5 {
 
     event NewCollection(
         string collectionInfo,
-        string tokenName,
-        string tokenSymbol,
+        string collectionName,
+        string collectionSymbol,
         address creatorAddress,
         address contractAddress
     );
 
     function newCollection(
         string memory collectionInfo,
-        string memory tokenName,
-        string memory tokenSymbol,
+        string memory collectionName,
+        string memory collectionSymbol,
         uint96 royaltyNumerator,
         address royaltyReciever
     ) public {
@@ -50,16 +50,16 @@ contract Factory5 {
         _userCollections[creatorAddr].push(collectionAddr);
         Collection5(collectionAddr).initialize(
             collectionInfo,
-            tokenName, 
-            tokenSymbol,
+            collectionName, 
+            collectionSymbol,
             creatorAddr,
             royaltyNumerator,
             royaltyReciever
         );
         emit NewCollection(
             collectionInfo,
-            tokenName,
-            tokenSymbol,
+            collectionName,
+            collectionSymbol,
             creatorAddr,
             collectionAddr
         );
