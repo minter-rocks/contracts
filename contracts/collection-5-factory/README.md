@@ -16,6 +16,7 @@
     - royaltyReciever
 
 - deploy Factory 5:
+
   $ npx run scripts/deploy5.js (--network <network_name>) 
 
 ## Collection
@@ -30,4 +31,5 @@
 - tokenRoyalty only when the token supply is zero.
 
 - deploy collection5:
+
   $ Factory5.newCollection(<attributes>)
