@@ -47,14 +47,13 @@ contract Collection5 is
     }
 
     function newId(
-        address account, 
-        uint256 id, 
-        uint256 supplyCap,
-        uint256 initialAmount
+        uint256 id_, 
+        uint256 cap_,
+        string memory uri_
     ) public onlyOwner {
-        require(!exists(id), "id already exists");
-        _setCap(id, supplyCap);
-        _mint(account, id, initialAmount, "");
+        require(!exists(id_), "id already exists");
+        _setCap(id_, cap_);
+        _setURI(id_, uri_);
     }
 
     function mint(address account, uint256 id, uint256 amount)
@@ -69,7 +68,14 @@ contract Collection5 is
         public
         onlyOwner
     {
+        for (uint256 i = 0; i < ids.length; i++) {
+            require(exists(ids[i]), "non-existant id");
+        }
         _mintBatch(to, ids, amounts, "");
+    }
+
+    function exists(uint256 id) public view override returns (bool) {
+        return ERC1155CappedUpgradeable.cap(id) > 0;
     }
 
     // The following functions are overrides required by Solidity.
