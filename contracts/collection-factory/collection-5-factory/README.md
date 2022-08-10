@@ -1,21 +1,5 @@
 
-# Collection factory version_5 ERC1155 
-
-## Factory
- 
- - deploy your ERC1155 collection in the most gas efficient and simple way possible.
- - your next collection address is visible before you deploy it!
- - access to your all collections in one call in the factory.
- - you only need to specify the collection attributes and create it in one function call. 
- - you can set a default royalty on all tokens of your collection once in deploying time.
- - collection attributes contains:
-    - collectionInfo
-    - collectionName
-    - collectionSymbol
-    - royaltyNumerator
-    - royaltyReciever
-
-## Collection
+## Collection factory version_5 ERC1155 
 
 - every token id has a cap which owner of the contract sets.
 - totalSupply of each id can be maximum of the cap.
@@ -26,12 +10,9 @@
 - owner of the contract can delete default royalty and token royalties or set 
 - tokenRoyalty only when the token supply is zero.
 
-## Deployment
-
- - deploy Factory 5:
- 
-   $ npx run scripts/collection-factory/deploy5.js (--network <network_name>) 
-
- - deploy collection5:
-
-   $ Factory5.newCollection(info, name, symbol, royaltyNumerator, royaltyReciever )
+- collection attributes:
+   - collectionInfo
+   - collectionName
+   - collectionSymbol
+   - royaltyNumerator
+   - royaltyReciever
