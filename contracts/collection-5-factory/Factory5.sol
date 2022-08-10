@@ -39,7 +39,9 @@ contract Factory5 {
     function newCollection(
         string memory collectionInfo,
         string memory tokenName,
-        string memory tokenSymbol
+        string memory tokenSymbol,
+        uint96 royaltyNumerator,
+        address royaltyReciever
     ) public {
         address creatorAddr = msg.sender;
         address collectionAddr = address(collectionBase).cloneDeterministic(
@@ -50,7 +52,9 @@ contract Factory5 {
             collectionInfo,
             tokenName, 
             tokenSymbol,
-            creatorAddr
+            creatorAddr,
+            royaltyNumerator,
+            royaltyReciever
         );
         emit NewCollection(
             collectionInfo,
