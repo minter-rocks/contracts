@@ -27,10 +27,12 @@ import "./Collection4.sol";
 contract Factory4 {
     using Clones for address;
 
+    mapping(address => address[]) public _userCollections;
+
     /**
      * @notice the predeployed collection contract abi which the Factory clones.
      */
-    Collection4 public collectionCont = new Collection4();
+    Collection4 public implementation = new Collection4();
 
     event NewCollection(
         string creatorName,
@@ -67,7 +69,10 @@ contract Factory4 {
         uint96 royaltyNumerator,
         address royaltyReciever
     ) public {
-        address collectionAddr = address(collectionCont).clone();
+        address creatorAddr = msg.sender;
+        address collectionAddr = address(implementation).cloneDeterministic(
+            bytes32(abi.encodePacked(creatorAddr, _userCollections[creatorAddr].length))
+        );
         Collection4(collectionAddr).initialize(
             creatorName,
             tokenName, 
@@ -75,7 +80,7 @@ contract Factory4 {
             baseURI,
             _sameURIForAllTokens,
             totalSupply,
-            msg.sender,
+            creatorAddr,
             royaltyNumerator,
             royaltyReciever
         );
@@ -84,9 +89,33 @@ contract Factory4 {
             tokenName, 
             tokenSymbol, 
             totalSupply,
-            msg.sender,
+            creatorAddr,
             collectionAddr, 
             royaltyNumerator
+        );
+    }
+
+    function userCollections(address user) public view returns(
+        address[] memory addrs,
+        string[] memory names
+    ) {
+        uint256 len = _userCollections[user].length;
+        
+        addrs = new address[](len);
+        names = new string[](len);
+
+        for(uint16 i; i < len; i++) {
+            addrs[i] = _userCollections[user][i];
+            names[i] = Collection4(_userCollections[user][i]).name();
+        }
+    }
+
+    function nextCollectionAddr(
+        address creatorAddr
+    ) public view returns(address) {
+        return address(implementation).predictDeterministicAddress(
+            bytes32(abi.encodePacked(creatorAddr, _userCollections[creatorAddr].length)), 
+            address(this)
         );
     }
 }

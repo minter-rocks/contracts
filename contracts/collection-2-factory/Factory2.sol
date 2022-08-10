@@ -30,7 +30,7 @@ contract Factory2 {
     /**
      * @notice the predeployed collection contract abi which the Factory clones.
      */
-    Collection2 public CollectionCont = new Collection2();
+    Collection2 public implementation = new Collection2();
 
     event NewCollection(
         string creatorName,
@@ -65,7 +65,7 @@ contract Factory2 {
         uint96 royaltyNumerator,
         address royaltyReciever
     ) public {
-        address collectionAddr = address(CollectionCont).clone();
+        address collectionAddr = address(implementation).clone();
         Collection2(collectionAddr).initialize(
             creatorName,
             tokenName, 

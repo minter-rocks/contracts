@@ -26,7 +26,7 @@ contract Factory5 {
     /**
      * @notice the predeployed collection contract abi which the Factory clones.
      */
-    Collection5 public collectionBase = new Collection5();
+    Collection5 public implementation = new Collection5();
 
     event NewCollection(
         string collectionInfo,
@@ -44,7 +44,7 @@ contract Factory5 {
         address royaltyReciever
     ) public {
         address creatorAddr = msg.sender;
-        address collectionAddr = address(collectionBase).cloneDeterministic(
+        address collectionAddr = address(implementation).cloneDeterministic(
             bytes32(abi.encodePacked(creatorAddr, _userCollections[creatorAddr].length))
         );
         _userCollections[creatorAddr].push(collectionAddr);
@@ -83,7 +83,7 @@ contract Factory5 {
     function nextCollectionAddr(
         address creatorAddr
     ) public view returns(address) {
-        return address(collectionBase).predictDeterministicAddress(
+        return address(implementation).predictDeterministicAddress(
             bytes32(abi.encodePacked(creatorAddr, _userCollections[creatorAddr].length)), 
             address(this)
         );
