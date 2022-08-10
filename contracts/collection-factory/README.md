@@ -15,4 +15,4 @@
 
  - deploy collection:
 
-   $ Factory<factory_number>.newCollection(info, name, symbol, royaltyNumerator, royaltyReciever )
+   $ Factory<factory_number>.newCollection(<collection_attributes>)
