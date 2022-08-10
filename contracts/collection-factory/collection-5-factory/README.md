@@ -34,4 +34,4 @@
 
  - deploy collection5:
 
-   $ Factory5.newCollection( <attributes> )
+   $ Factory5.newCollection(info, name, symbol, royaltyNumerator, royaltyReciever )
