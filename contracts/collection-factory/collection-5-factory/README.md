@@ -1,13 +1,12 @@
 
 ## Collection factory version_5 ERC1155 
 
-- collection attributes:
+### collection attributes:
    - collectionInfo
    - collectionName
    - collectionSymbol
    - royaltyNumerator
    - royaltyReciever
-
 
 - every token id has a cap which owner of the contract sets.
 - totalSupply of each id can be maximum of the cap.
