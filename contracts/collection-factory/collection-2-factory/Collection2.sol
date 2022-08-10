@@ -34,9 +34,9 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
  * @notice the contract is ERC721 enumerable.
  * @notice tokenIds are starting from 0 to (maxSupply - 1).
  * @notice tokenURIs are all in the same format baseURI/tokenId.
- * @notice totalSupply is limited and set once at initializing time.
+ * @notice maxSupply is limited and set once at initializing time.
  * @notice safeMint restricted to the owner.
- * @notice safeMint can be auto increment or you can specify the tokenId.
+ * @notice safeMint can be auto increment tokenId or owner of the contract can choose the tokenId.
  * @notice there is a default royalty which can be set once at initializing time and 
  * also every token can have its particular royalty and does not use default royalty.
  * @notice owner of the contract can delete default royalty and token royalties and only 
@@ -162,7 +162,7 @@ contract Collection2 is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrad
         uint96 feeNumerator
     ) public onlyOwner {
         require(msg.sender == ownerOf(tokenId), "Collection: you must be the owner of the token to set the royalty");
-        _setDefaultRoyalty(receiver, feeNumerator);
+        _setTokenRoyalty(tokenId, receiver, feeNumerator);
     }
 
     /**

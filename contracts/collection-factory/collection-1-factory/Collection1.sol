@@ -30,7 +30,15 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 /**
- * @title NFT Collection contract
+ * @title NFT Collection contract version_1
+ * @notice tokenIds are starting from 0 to (maxSupply - 1).
+ * @notice token URIs are Basically different.
+ * @notice safeMint restricted to the owner.
+ * @notice safeMint can be auto increment tokenId or owner of the contract can choose the tokenId.
+ * @notice there is a default royalty which can be set once at initializing time and 
+ * also every token can have its particular royalty and does not use default royalty.
+ * @notice owner of the contract can delete default royalty and token royalties and only 
+ * set royalty for a specific token if they own it.
  */
 contract Collection1 is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeable, ERC721BurnableUpgradeable, ERC721RoyaltyUpgradeable, OwnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
@@ -136,7 +144,7 @@ contract Collection1 is Initializable, ERC721Upgradeable, ERC721URIStorageUpgrad
         uint96 feeNumerator
     ) public onlyOwner {
         require(msg.sender == ownerOf(tokenId), "Collection: you must be the owner of the token to set the royalty");
-        _setDefaultRoyalty(receiver, feeNumerator);
+        _setTokenRoyalty(tokenId, receiver, feeNumerator);
     }
 
     /**
