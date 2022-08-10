@@ -30,7 +30,7 @@
 
  - deploy Factory 5:
  
-   $ npx run scripts/deploy5.js (--network <network_name>) 
+   $ npx run scripts/collection-factory/deploy5.js (--network <network_name>) 
 
  - deploy collection5:
 
