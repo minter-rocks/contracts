@@ -67,16 +67,16 @@ contract Factory5 {
 
     function userCollections(address user) public view returns(
         address[] memory addrs,
-        string[] memory infos
+        string[] memory names
     ) {
         uint256 len = _userCollections[user].length;
         
         addrs = new address[](len);
-        infos = new string[](len);
+        names = new string[](len);
 
         for(uint16 i; i < len; i++) {
             addrs[i] = _userCollections[user][i];
-            infos[i] = Collection5(_userCollections[user][i]).collectionInfo();
+            names[i] = Collection5(_userCollections[user][i]).name();
         }
     }
 
