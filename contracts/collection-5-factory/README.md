@@ -15,9 +15,9 @@
     - royaltyNumerator
     - royaltyReciever
 
-- deploy Factory 5:
+ - deploy Factory 5:
 
-  $ npx run scripts/deploy5.js (--network <network_name>) 
+   $ npx run scripts/deploy5.js (--network <network_name>) 
 
 ## Collection
 
