@@ -18,14 +18,26 @@ contract Collection5 is
     ERC1155URIStorageUpgradeable, 
     ERC1155CappedUpgradeable 
 {
+
+    string public collectionInfo;
+    string public name;
+    string public symbol;
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize(address owner) initializer public {
-        __ERC1155_init("https://someURI/");
-        __Ownable_init(owner);
+    function initialize(
+        string memory _collectionInfo,
+        string memory _name,
+        string memory _symbol,
+        address _owner
+    ) initializer public {
+        collectionInfo = _collectionInfo;
+        name = _name;
+        symbol = _symbol;
+        __Ownable_init(_owner);
         __ERC1155Burnable_init();
         __ERC1155Supply_init();
     }
