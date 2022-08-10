@@ -213,7 +213,7 @@ contract Collection4 is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrad
         uint96 feeNumerator
     ) public onlyOwner {
         require(msg.sender == ownerOf(tokenId), "Collection: you must be the owner of the token to set the royalty");
-        _setDefaultRoyalty(receiver, feeNumerator);
+        _setTokenRoyalty(tokenId, receiver, feeNumerator);
     }
 
     /**
