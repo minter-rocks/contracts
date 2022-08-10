@@ -21,11 +21,11 @@ pragma solidity ^0.8.4;
  *   ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝╚═╝  ╚═╝╚══════╝
  */
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./ERC1155Capped.sol";
 import "./ERC1155Royalty.sol";
@@ -78,10 +78,23 @@ contract Collection5 is
         }
     }
 
+    /**
+     * @notice set new uri for specified tokenId.
+     *
+     * @notice requirement:
+     *    - only owner of the contract can call this function.
+     */
     function setURI(uint256 tokenId, string memory newuri) public onlyOwner {
         _setURI(tokenId, newuri);
     }
 
+    /**
+     * @notice create new token id.
+     *
+     * @notice requirement:
+     *    - only owner of the contract can call this function.
+     *    - the token total supply must be zero.
+     */
     function newId(
         uint256 id_, 
         uint256 cap_,
@@ -92,6 +105,13 @@ contract Collection5 is
         _setURI(id_, uri_);
     }
 
+    /**
+     * @notice mint in specified id.
+     *
+     * @notice requirement:
+     *    - only owner of the contract can call this function.
+     *    - the token cap must be non-zero.
+     */
     function mint(address account, uint256 id, uint256 amount)
         public
         onlyOwner
@@ -99,13 +119,18 @@ contract Collection5 is
         _mint(account, id, amount, "");
     }
 
+    /**
+     * @notice mint in specified ids in one transaction.
+     *
+     * @notice requirement:
+     *    - only owner of the contract can call this function.
+     *    - the token ids cap must be non-zero.
+     */
+
     function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts)
         public
         onlyOwner
     {
-        for (uint256 i = 0; i < ids.length; i++) {
-            require(exists(ids[i]), "non-existant id");
-        }
         _mintBatch(to, ids, amounts, "");
     }
 

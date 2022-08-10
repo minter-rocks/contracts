@@ -17,7 +17,7 @@ abstract contract ERC1155Capped is ERC1155Supply {
     function _setCap(uint256 tokenId, uint256 supplyCap) internal {
         _cap[tokenId] = supplyCap;
     }
-    
+
     function _mint(
         address account, 
         uint256 id, 
@@ -26,5 +26,17 @@ abstract contract ERC1155Capped is ERC1155Supply {
     ) internal virtual override {
         require(ERC1155Supply.totalSupply(id) + amount <= cap(id), "ERC1155Capped: cap exceeded");
         super._mint(account, id, amount, data);
+    }
+
+    function _mintBatch(
+        address to,
+        uint256[] memory ids,
+        uint256[] memory amounts,
+        bytes memory data
+    ) internal virtual override {
+        for (uint256 i = 0; i < ids.length; i++) {
+            require(ERC1155Supply.totalSupply(ids[i]) + amounts[i] <= cap(ids[i]), "ERC1155Capped: cap exceeded");
+        }
+        super._mintBatch(to, ids, amounts, data);
     }
 }
