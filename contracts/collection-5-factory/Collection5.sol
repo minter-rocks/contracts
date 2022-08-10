@@ -32,7 +32,9 @@ contract Collection5 is
         string memory _collectionInfo,
         string memory _name,
         string memory _symbol,
-        address _owner
+        address _owner,
+        uint96 _royaltyNumerator,
+        address _royaltyReciever
     ) initializer public {
         collectionInfo = _collectionInfo;
         name = _name;
@@ -40,6 +42,10 @@ contract Collection5 is
         __Ownable_init(_owner);
         __ERC1155Burnable_init();
         __ERC1155Supply_init();
+        if (_royaltyNumerator > 0) {
+            require(_royaltyReciever != address(0), "Collection: Invalid Royalty receiver");
+            _setDefaultRoyalty(_royaltyReciever, _royaltyNumerator);
+        }
     }
 
     function setURI(uint256 tokenId, string memory newuri) public onlyOwner {
@@ -60,7 +66,6 @@ contract Collection5 is
         public
         onlyOwner
     {
-        require(exists(id), "non-existant id");
         _mint(account, id, amount, "");
     }
 
@@ -74,10 +79,39 @@ contract Collection5 is
         _mintBatch(to, ids, amounts, "");
     }
 
-    function exists(uint256 id) public view override returns (bool) {
-        return ERC1155CappedUpgradeable.cap(id) > 0;
+    /**
+     * @notice set the royalty for the specified token.
+     * @param tokenId tokenId that you want to reset its royalty.
+     * @param receiver the wallet address that receives the royalty.
+     * @param feeNumerator the numerator of the token royalty which denumerator is 10000.
+     * @notice you must be the owner of the contract and also owner of the token.
+     */
+    function setTokenRoyalty(
+        uint256 tokenId,
+        address receiver,
+        uint96 feeNumerator
+    ) public onlyOwner {
+        require(msg.sender == ownerOf(tokenId), "Collection: you must be the owner of the token to set the royalty");
+        _setDefaultRoyalty(receiver, feeNumerator);
     }
 
+    /**
+     * @notice Delete default royalty of Collection tokens.
+     * @notice It can't be set again after that was removed.
+     * @notice only owner of the contract can call this function.
+     */
+    function deleteDefaultRoyalty() public onlyOwner {
+        _deleteDefaultRoyalty();
+    }
+
+    /**
+     * @notice reset the royalty of the specified token.
+     * @param tokenId tokenId that you want to reset its royalty.
+     * @notice only owner of the contract can call this function.
+     */
+    function resetTokenRoyalty(uint256 tokenId) public onlyOwner {
+        _resetTokenRoyalty(tokenId);
+    }
     // The following functions are overrides required by Solidity.
 
     function uri(uint256 tokenId) public view virtual 
