@@ -16,6 +16,7 @@
     - royaltyReciever
 
  - deploy Factory 5:
+ 
    $ npx run scripts/deploy5.js (--network <network_name>) 
 
 ## Collection
