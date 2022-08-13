@@ -75,6 +75,20 @@ abstract contract TagInternal {
         l.totalValue += amount_MATIC;
     }
 
+    function _withdrawTag(uint256 tokenId, address receiver) internal {
+        TagStorage.Layout storage l = TagStorage.layout();
+        TagStorage.Tag storage t = l.tags[tokenId];
+
+        uint256 amount = t.amount_MATIC * 80 / 100;
+        l.userPower[receiver] -= t.votingPower;
+        l.totalPower -= t.votingPower;
+        l.totalValue -= t.amount_MATIC;
+
+        delete l.tags[tokenId];
+
+        payable(receiver).transfer(amount);
+    }
+
     function _levelup(
         uint256 id,
         address tokenOwner,

@@ -26,7 +26,7 @@ async function deployTag () {
   console.log(`${FacetName} deployed: ${facet.address}`)
   cut.push({
     facetAddress: facet.address,
-    action: FacetCutAction.Replace,
+    action: FacetCutAction.Add,
     functionSelectors: getSelectors(facet).remove(['init()'])
   })
 

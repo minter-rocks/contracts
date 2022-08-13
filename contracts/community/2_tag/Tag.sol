@@ -13,9 +13,9 @@ contract Tag is ERC721BaseInternal, TagInternal {
     }
 
     function init() public {
-        _setPowerNumerator(10 ** 10);
-        _setMinValue(10 ** 18);
-        _setMinLevelup(10 ** 17);
+        // _setPowerNumerator(10 ** 10);
+        // _setMinValue(10 ** 18);
+        // _setMinLevelup(10 ** 17);
     }
 
     function userPower(address userAddr) public view returns(uint256) {
@@ -26,7 +26,7 @@ contract Tag is ERC721BaseInternal, TagInternal {
         return _totalPower();
     }
 
-    function tag(string calldata  notion) public payable {
+    function newTag(string calldata  notion) public payable {
         uint256 paidAmount = msg.value;
         address userAddr = msg.sender;
 
@@ -35,6 +35,16 @@ contract Tag is ERC721BaseInternal, TagInternal {
         _safeMint(userAddr, tokenId);
 
         _newTag(userAddr, tokenId, notion, paidAmount, 0, block.number);
+    }
+
+    function withdrawTag(uint256 tokenId) public {
+        require(
+            _isApprovedOrOwner(msg.sender, tokenId) ||
+            msg.sender == LibDiamond.diamondStorage().contractOwner,
+            "Tag: access denyed"
+        );
+        _withdrawTag(tokenId, _ownerOf(tokenId));
+        _burn(tokenId);
     }
 
     function levelup(
