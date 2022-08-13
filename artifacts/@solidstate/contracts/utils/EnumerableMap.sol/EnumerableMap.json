@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "EnumerableMap",
+  "sourceName": "@solidstate/contracts/utils/EnumerableMap.sol",
+  "abi": [],
+  "bytecode": "0x60808060405234601757603a9081601d823930815050f35b600080fdfe600080fdfea26469706673582212205f45d615e24597e6285f91232c0585c9550428be7329a1455b30db36df184d2a64736f6c634300080f0033",
+  "deployedBytecode": "0x600080fdfea26469706673582212205f45d615e24597e6285f91232c0585c9550428be7329a1455b30db36df184d2a64736f6c634300080f0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

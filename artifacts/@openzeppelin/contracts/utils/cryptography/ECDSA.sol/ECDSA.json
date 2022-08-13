@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ECDSA",
+  "sourceName": "@openzeppelin/contracts/utils/cryptography/ECDSA.sol",
+  "abi": [],
+  "bytecode": "0x60808060405234601757603a9081601d823930815050f35b600080fdfe600080fdfea264697066735822122038c93b9c1e6b84be296d2b275b7e1c1ee30a59581df24ae3c6391f08cb9df46564736f6c634300080f0033",
+  "deployedBytecode": "0x600080fdfea264697066735822122038c93b9c1e6b84be296d2b275b7e1c1ee30a59581df24ae3c6391f08cb9df46564736f6c634300080f0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

@@ -10,7 +10,7 @@ library TagStorage {
     struct Layout {
         uint256 nextTokenId;
         uint256 minValue;
-        uint256 powerNumerator; //denumerator is 10,000,000,000
+        uint256 powerNumerator; //denominator is 10,000,000,000
         mapping(uint256 => Tag) tags;
         mapping(address => uint256) userPower;
         uint256 totalValue;

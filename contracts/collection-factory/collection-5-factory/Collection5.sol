@@ -186,6 +186,15 @@ contract Collection5 is
         super._mint(account, id, amount, data);
     }
 
+    function _mintBatch(
+        address to,
+        uint256[] memory ids,
+        uint256[] memory amounts,
+        bytes memory data
+    ) internal virtual override(ERC1155, ERC1155Capped) {
+        super._mintBatch(to, ids, amounts, data);
+    }
+
     function supportsInterface(bytes4 interfaceId) public view virtual override(
         ERC1155, 
         ERC1155Royalty 

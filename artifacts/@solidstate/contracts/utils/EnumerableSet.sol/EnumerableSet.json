@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "EnumerableSet",
+  "sourceName": "@solidstate/contracts/utils/EnumerableSet.sol",
+  "abi": [],
+  "bytecode": "0x60808060405234601757603a9081601d823930815050f35b600080fdfe600080fdfea2646970667358221220ff21bc2465fbfd82d4219dad3711d8a88c3816122c9226157dd004cc81882a2264736f6c634300080f0033",
+  "deployedBytecode": "0x600080fdfea2646970667358221220ff21bc2465fbfd82d4219dad3711d8a88c3816122c9226157dd004cc81882a2264736f6c634300080f0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

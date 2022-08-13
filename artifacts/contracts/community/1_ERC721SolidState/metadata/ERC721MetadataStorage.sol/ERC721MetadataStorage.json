@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ERC721MetadataStorage",
+  "sourceName": "contracts/community/1_ERC721SolidState/metadata/ERC721MetadataStorage.sol",
+  "abi": [],
+  "bytecode": "0x60808060405234601757603a9081601d823930815050f35b600080fdfe600080fdfea26469706673582212200c48351a93e5fe44b00ffc8159a2286eb385df5c264aaa0643563558f2d9c63b64736f6c634300080f0033",
+  "deployedBytecode": "0x600080fdfea26469706673582212200c48351a93e5fe44b00ffc8159a2286eb385df5c264aaa0643563558f2d9c63b64736f6c634300080f0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

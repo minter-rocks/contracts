@@ -158,7 +158,7 @@ abstract contract TagInternal {
             char += charAdd;
             inputLen2 += 2;
 
-            if(inputLen2 > 20){
+            if(inputLen2 > 66){
                 require(
                     !line2,
                     "TagInternal: input string overflow1"

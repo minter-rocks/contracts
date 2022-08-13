@@ -15,7 +15,7 @@ contract Tag is ERC721BaseInternal, TagInternal {
     function init() public {
         _setPowerNumerator(10 ** 10);
         _setMinValue(10 ** 18);
-        _setMinValue(10 ** 17);
+        _setMinLevelup(10 ** 17);
     }
 
     function userPower(address userAddr) public view returns(uint256) {
