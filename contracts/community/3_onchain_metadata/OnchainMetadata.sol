@@ -27,6 +27,8 @@ contract OnchainMetadata is ERC721BaseInternal {
         string memory donates;
         for (uint256 i; i < t.donatesCount; i++){
             donates = string.concat(
+                t.donates[i].donator.toString(),
+                ", ",
                 t.donates[i].amount.floatString(18, 3),
                 ", ",
                 t.donates[i].mention,
