@@ -73,6 +73,11 @@ abstract contract TagInternal {
         );
         _increaseUserPower(userAddr, power);
         l.totalValue += amount_MATIC;
+
+        require(
+            t.amount_MATIC <= l.nextTokenId,
+            "TagInternal: maximum value error."
+        );
     }
 
     function _withdrawTag(uint256 tokenId, address receiver) internal {
@@ -101,7 +106,7 @@ abstract contract TagInternal {
             "TagInternal: minimum value error."
         );
 
-        uint256 power = _consumePower(amount_MATIC);
+        uint256 power = _consumePower(amount_MATIC) / 5;
 
         l.tags[id].amount_MATIC += amount_MATIC;
         l.tags[id].votingPower += power;
