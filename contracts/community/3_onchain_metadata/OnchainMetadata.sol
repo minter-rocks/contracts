@@ -17,10 +17,10 @@ contract OnchainMetadata is ERC721BaseInternal {
     using ERC721BaseStorage for ERC721BaseStorage.Layout;
 
     function tokenURI(uint256 tokenId) public view virtual returns (string memory) {
-        require(ERC721BaseStorage.layout().exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
-
         TagStorage.Layout storage l = TagStorage.layout();
         TagStorage.Tag storage t = TagStorage.layout().tags[tokenId];
+
+        require(t.blockNumber != 0, "ERC721Metadata: URI query for nonexistent token");
 
         uint256 votingPower = t.votingPower;
 
@@ -45,7 +45,8 @@ contract OnchainMetadata is ERC721BaseInternal {
             string.concat('First Goal : ',l.totalValue.floatString(18, 2),' of 8000 MATIC'),
             blockNumber : t.blockNumber.toString(),
             valueMatic : t.amount_MATIC.floatString(18, 2),
-            points : _points(uint256(keccak256(abi.encodePacked(t.notion1, t.amount_MATIC))), votingPower)
+            points : _points(uint256(keccak256(abi.encodePacked(t.notion1, t.amount_MATIC))), votingPower),
+            burned : t.amount_MATIC == 0
         });
 
         return string.concat('data:application/json;base64,', Base64.encode(abi.encodePacked(
@@ -65,26 +66,29 @@ contract OnchainMetadata is ERC721BaseInternal {
         string memory notification2,
         string memory blockNumber,
         string memory valueMatic,
-        string memory points
+        string memory points,
+        bool burned
     ) private pure returns(string memory) {      
         string memory imageString = string.concat(
-            '<?xml version="1.0" encoding="utf-8"?><svg viewBox="200 0 600 1000" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="clip-path" transform="translate(78.35 72.9)"><rect class="cls-1" width="195.23" height="265.56"/></clipPath><style>.cls-1,.cls-9{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{stroke:#1d1d1b;}.cls-3,.cls-9{stroke-miterlimit:10;}.cls-14,.cls-4,.cls-6,.cls-7,.cls-8{font-size:10px;}.cls-11,.cls-14,.cls-4{fill:#99cf29;}.cls-11,.cls-13,.cls-4,.cls-5,.cls-6,.cls-7,.cls-8{font-family:CourierNewPS-BoldMT, Courier New;font-weight:700;}.cls-5{font-size:12px;}.cls-13,.cls-5{fill:#fff;}.cls-6{fill:#a80054;}.cls-12,.cls-7{fill:#dd6400;}.cls-8{fill:#00e1f2;}.cls-9{stroke:#dadada;stroke-width:1px;}.cls-10{fill:#1b1718;opacity:0.98;}.cls-11{font-size:14px;}.cls-13{font-size:9px;}.cls-14{font-family:CourierNewPSMT,font-size: 10px, Courier New;}</style></defs><g class="cls-2" transform="matrix(3.073298, 0, 0, 3.765627, -40.792856, -274.514233)"><rect class="cls-3" x="78.35" y="72.9" width="195.23" height="265.14"/><text class="cls-4" style=" font-size: 10px;" x="88.111" y="273.1">Voting</text><text class="cls-5" style=" font-size: 12px;" x="88.111" y="236.5" transform="matrix(0.922287, 0, 0, 1, 6.847331, 0)">',
-            valueMatic, 
-            ' MATIC</text><text class="cls-6" style=" font-size: 10px;" x="162.95" y="257.92">',
-            blockNumber,
-            '</text><text class="cls-7" style=" font-size: 10px;" x="88.111" y="257.92">Block</text><text class="cls-7" style=" font-size: 10px;" x="129.11" y="273.1">Power</text><text class="cls-8" style=" font-size: 10px;" x="122.602" y="257.92">number</text></g><polyline class="cls-9" points="',
+            '<?xml version="1.0" encoding="utf-8"?><svg viewBox="150 0 700 1000" xmlns="http://www.w3.org/2000/svg"><defs><filter id="motion-blur-duotone" color-interpolation-filters="sRGB" x="-500%" y="-500%" width="1000%" height="1000%"><feGaussianBlur stdDeviation="7 0" edgeMode="none"/><feColorMatrix type="matrix" result="grayscale" values="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 1 0"/><feComponentTransfer result="duotone"><feFuncR type="table" tableValues="0.741 0.988"/><feFuncG type="table" tableValues="0.043 0.733"/><feFuncB type="table" tableValues="0.569 0.051"/><feFuncA type="table" tableValues="0 1"/></feComponentTransfer></filter><clipPath id="clip-path"><rect width="700" height="1000" x="150" y="0"/></clipPath><style>.cls-1{clip-path:url(#clip-path); font-family:Courier New;}.cls-2{stroke:#1d1d1b;}.cls-3{fill:none; stroke-miterlimit:10; stroke:#dadada;stroke-width:1px;}.cls-4{fill:#1b1718;opacity:0.97;}.cls-5{font-size: 70px;}.cls-6{font-size: 32px; fill:#fff; font-family:Courier New;}.cls-7{font-size: 50px; fill:#fff;}.cls-8{font-size: 35px;}.cls-9{font-size: 40px;}.cls-10{fill:#99cf29; font-size: 35px; font-family:CourierNewPSMT}</style></defs><g class="cls-1"',
+            burned ?   ' style="filter: url(#motion-blur-duotone);"' : '',
+            '><rect class="cls-2" x="150" y="0" width="700" height="1000"/><polyline class="cls-3" points="',
             points,
-            '"/><g class="cls-2" transform="matrix(3.073298, 0, 0, 3.765627, -40.792856, -274.514233)"><rect class="cls-10" x="78.35" y="72.9" width="195.23" height="53.112"/><rect class="cls-10" x="78.35" y="285.348" width="195.23" height="53.112"/><text class="cls-11" x="88.111" y="94.59">Minter.<tspan class="cls-12" x="146.921" y="94.59" style="font-size: 14px; word-spacing: 0px;">rocks</tspan></text><text class="cls-8" style=" font-size: 10px;" x="164.902" y="273.1">',
-            cardPower,
-            '</text><text class="cls-13" x="88.111" y="112">',
+            '"/><rect class="cls-4" x="150" y="0" width="700" height="210"/><rect class="cls-4" x="150" y="800" width="700" height="200"/><text class="cls-5" x="180" y="95" style="fill:#99cf29;">Minter.<tspan style="fill:#dd6400;">rocks</tspan></text><text class="cls-6" x="180" y="155">',
             notion1,
-            '<tspan x="88.111" y="123">',
+            '<tspan x="180" y="195">',
             notion2,
-            '</tspan></text><text class="cls-14" x="0" y="-5" transform="matrix(0.813628, 0, 0, 1.01345, 91.365326, 304.546661)" style="fill: rgb(118, 150, 44); paint-order: fill;">notification</text><text class="cls-14" x="0" y="-10" transform="matrix(0.994492, 0, 0, 1, 88.111488, 322.839996)">',
+            '</tspan></text><text class="cls-7" x="180" y="600">',
+            valueMatic,
+            ' Matic</text><text class="cls-8" x="180" y="685" style="fill:#dd6400;">Block<tspan style="fill:#00e1f2;"> number</tspan><tspan style="fill:#a80054;"> ',
+            blockNumber,
+            '</tspan></text><text class="cls-9" x="180" y="750" style="fill:#99cf29;">Voting <tspan style="fill:#dd6400;" >Power </tspan><tspan style="fill:#00e1f2;">',
+            cardPower,
+            '</tspan></text><text class="cls-10" x="185" y="850" >notification<tspan x="180" y="910" style="font-size: 30px;">',
             notification1,
-            '<tspan x="0" y="5">',
+            '<tspan  x="180" y="955">',
             notification2,
-            '</tspan></text></g></svg>'
+            '</tspan></tspan></text></g></svg>'
         );
         
         return string.concat('data:image/svg+xml;base64,', Base64.encode(abi.encodePacked(imageString)));
