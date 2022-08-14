@@ -53,7 +53,7 @@ contract OnchainMetadata is ERC721BaseInternal {
               '{"name": "#', tokenId.toString(), 
             '", "description": "', donates,
             '", "image": "', image,
-            '", "interaction" : {"read":[],"write":[{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"changePattern","outputs":[],"stateMutability":"nonpayable","type":"function"}]}}'
+            '", "interaction" : {"read":[],"write":[{"inputs": [{"internalType": "uint256","name": "tokenId","type": "uint256"},{"internalType": "string","name": "mention","type": "string"}],"name": "levelup","outputs": [],"stateMutability": "payable","type": "function"},{"inputs": [{"internalType": "uint256","name": "tokenId","type": "uint256"}],"name": "withdrawTag","outputs": [],"stateMutability": "nonpayable","type": "function"}]}}'
             ))
         ); 
     }
