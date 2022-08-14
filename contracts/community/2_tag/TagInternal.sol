@@ -89,7 +89,8 @@ abstract contract TagInternal {
         l.totalPower -= t.votingPower;
         l.totalValue -= t.amount_MATIC;
 
-        delete l.tags[tokenId];
+        delete l.tags[tokenId].amount_MATIC;
+        delete l.tags[tokenId].votingPower;
 
         payable(receiver).transfer(amount);
     }
