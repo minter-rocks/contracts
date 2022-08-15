@@ -75,7 +75,7 @@ abstract contract TagInternal {
         l.totalValue += amount_MATIC;
 
         require(
-            t.amount_MATIC <= l.nextTokenId,
+            t.amount_MATIC <= l.nextTokenId * 10 ** 18,
             "TagInternal: maximum value error."
         );
     }
