@@ -21,10 +21,8 @@ library TagStorage {
     }
 
     struct Tag {
-        string notion1;
-        string notion2;
-        uint256 amount_MATIC;
-        uint256 amount_USD;
+        string notion;
+        uint256 value;
         uint256 votingPower;
         uint256 blockNumber;
         uint256 donatesCount;

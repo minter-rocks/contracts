@@ -34,7 +34,7 @@ contract Tag is ERC721BaseInternal, TagInternal {
         
         _safeMint(userAddr, tokenId);
 
-        _newTag(userAddr, tokenId, notion, paidAmount, 0, block.number);
+        _newTag(userAddr, tokenId, notion, paidAmount, block.number);
     }
 
     function withdrawTag(uint256 tokenId) public {
