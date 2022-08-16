@@ -3,12 +3,12 @@
 pragma solidity ^0.8.7;
 
 import "./TagStorage.sol";
-import "./utils/UTF8Length.sol";
+import "./utils/UTF8HoldingSpace.sol";
 
 abstract contract TagInternal {
     using TagStorage for TagStorage.Layout;
     using TagStorage for TagStorage.Tag;
-    using UTF8Length for string;
+    using UTF8HoldingSpace for string;
 
     function _nextTokenId() internal returns(uint256) {
         return TagStorage.layout().nextTokenId++;
@@ -49,7 +49,7 @@ abstract contract TagInternal {
         TagStorage.Tag storage t = l.tags[id];
         
         require(
-            notion.len() <= 66,
+            notion.holdingSpace() <= 66,
             "TagInternal: notion string overflow."
         );
 

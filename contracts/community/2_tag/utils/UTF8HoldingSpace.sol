@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-library UTF8Length {
+library UTF8HoldingSpace {
 
-    function len(
+    function holdingSpace(
         string memory input
     ) internal pure returns(uint256) {
 
