@@ -15,6 +15,7 @@ contract OnchainMetadata is ERC721BaseInternal {
     using UintUtils for uint;
     using UintToFloatString for uint;
     using ERC721BaseStorage for ERC721BaseStorage.Layout;
+    using SVGTextValidator for string;
 
     function tokenURI(uint256 tokenId) public view virtual returns (string memory) {
         TagStorage.Layout storage l = TagStorage.layout();
@@ -35,18 +36,19 @@ contract OnchainMetadata is ERC721BaseInternal {
                 " /n"
             );
         }
+        (string memory notion1, string memory notion2) = convertTo2Lines(t.notion);
 
         string memory image =_image({
-            notion1 : SVGTextValidator.validate(t.notion1),
-            notion2 : SVGTextValidator.validate(t.notion2),
+            notion1 : notion1.validate(),
+            notion2 : notion2.validate(),
             cardPower : votingPower.floatString(18, 3),
             notification1 : l.notification1,
             notification2 : bytes(l.notification2).length > 0 ? l.notification2 : 
             string.concat('First Goal : ',l.totalValue.floatString(18, 2),' of 8000 MATIC'),
             blockNumber : t.blockNumber.toString(),
-            valueMatic : t.amount_MATIC.floatString(18, 2),
-            points : _points(uint256(keccak256(abi.encodePacked(t.notion1, t.amount_MATIC))), votingPower),
-            burned : t.amount_MATIC == 0
+            value : t.value.floatString(18, 2),
+            points : _points(uint256(keccak256(abi.encodePacked(t.notion, t.value))), votingPower),
+            burned : t.value == 0
         });
 
         return string.concat('data:application/json;base64,', Base64.encode(abi.encodePacked(
@@ -65,7 +67,7 @@ contract OnchainMetadata is ERC721BaseInternal {
         string memory notification1,
         string memory notification2,
         string memory blockNumber,
-        string memory valueMatic,
+        string memory value,
         string memory points,
         bool burned
     ) private pure returns(string memory) {      
@@ -79,7 +81,7 @@ contract OnchainMetadata is ERC721BaseInternal {
             '<tspan x="180" y="195">',
             notion2,
             '</tspan></text><text class="cls-7" x="180" y="600">',
-            valueMatic,
+            value,
             ' Matic</text><text class="cls-8" x="180" y="685" style="fill:#dd6400;">Block<tspan style="fill:#00e1f2;"> number</tspan><tspan style="fill:#a80054;"> ',
             blockNumber,
             '</tspan></text><text class="cls-9" x="180" y="750" style="fill:#99cf29;">Voting <tspan style="fill:#dd6400;" >Power </tspan><tspan style="fill:#00e1f2;">',
@@ -111,6 +113,68 @@ contract OnchainMetadata is ERC721BaseInternal {
                 );
                 numPoints--;
             }
+        }
+    }
+    function convertTo2Lines(string memory input) internal pure returns(
+        string memory output1,
+        string memory output2
+    ) {
+        bool line2;
+        uint256 char;
+        uint256 charAdd;
+        uint256 len2;
+        uint256 lineBreak;
+        uint256 forceBreak;
+
+        bytes memory inputBytes = bytes(input);
+
+        while (char < inputBytes.length){
+            if (inputBytes[char]>>7==0){
+                charAdd = 1;
+                len2 += 2;
+            } else if (inputBytes[char]>>5==bytes1(uint8(0x6))){
+                charAdd = 2;
+                len2 += 2;
+            } else if (inputBytes[char]>>4==bytes1(uint8(0xE))){
+                charAdd = 3;
+                len2 += 3;
+            } else if (inputBytes[char]>>3==bytes1(uint8(0x1E))){
+                charAdd = 4;
+                len2 += 4;
+            } else {
+                //For safety
+                charAdd = 1;
+                len2 += 2;
+            }
+
+            if(!line2 && inputBytes[char] == 0x20){
+                lineBreak = char+charAdd;
+            }
+
+            char += charAdd;
+
+            if(len2 > 66){
+                line2 = true;
+                forceBreak = char-charAdd;
+                len2 = 0;
+            }
+        }
+
+        if(line2) {
+            lineBreak = len2/2 < lineBreak ? lineBreak : forceBreak;
+            bytes memory outBytes1 = new bytes(lineBreak);
+            bytes memory outBytes2 = new bytes(char - lineBreak);
+            for(uint8 i; i<lineBreak; i++){
+                outBytes1[i] = inputBytes[i];
+            }
+            for(uint8 i; i<char-lineBreak; i++){
+                outBytes2[i] = inputBytes[i + lineBreak];
+            }
+
+            output1 = string(outBytes1);
+            output2 = string(outBytes2);
+        } else {
+            output1 = input;
         }
     }
 }
