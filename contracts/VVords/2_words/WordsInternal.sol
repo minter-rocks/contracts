@@ -87,7 +87,7 @@ abstract contract WordsInternal is PowerInternal {
             word[0].checkLine(33) && word[1].checkLine(33) && word[2].checkLine(66),
             "WordsInternal: word lines overflow."
         );
-
+ 
         (uint256 min, uint256 max) = _allowedValueRange();
         require(
             value >= min,
